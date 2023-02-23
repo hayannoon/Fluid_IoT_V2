@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/group_name_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Group Name" />
+
+    <CheckBox
+        android:id="@+id/checkBox_bulb1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bulb 1" />
+
+    <CheckBox
+        android:id="@+id/checkBox2_bulb2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bulb 2" />
+
+    <CheckBox
+        android:id="@+id/checkBox3_strip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LED Strip" />
+
+    <CheckBox
+        android:id="@+id/checkBox4_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Camera" />
+
+    <CheckBox
+        android:id="@+id/checkBox5_speaker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Speaker" />
+
+    <Button
+        android:id="@+id/group_create_send_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create" />
+
+</LinearLayout>

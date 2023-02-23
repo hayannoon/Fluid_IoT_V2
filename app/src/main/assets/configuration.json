@@ -1,0 +1,16 @@
+{
+  "groups": [
+    {
+      "name" : "level1",
+      "auth" : ["bulb1"]
+    },
+    {
+      "name" : "level2",
+      "auth" : ["bulb1", "bulb2"]
+    },
+    {
+      "name" : "level3",
+      "auth" : ["bulb1", "bulb2", "camera"]
+    }
+  ]
+}
