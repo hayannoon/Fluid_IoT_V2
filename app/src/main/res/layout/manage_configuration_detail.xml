@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView_groupname_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <CheckBox
+        android:id="@+id/checkBox_bulb1_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bulb 1" />
+
+    <CheckBox
+        android:id="@+id/checkBox_bulb2_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bulb 2" />
+
+    <CheckBox
+        android:id="@+id/checkBox_strip_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LED Strip" />
+
+    <CheckBox
+        android:id="@+id/checkBox_camera_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Camera" />
+
+    <CheckBox
+        android:id="@+id/checkBox_speaker_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Speaker" />
+
+    <Button
+        android:id="@+id/update_config_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="UPDATE" />
+</LinearLayout>

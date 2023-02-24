@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ManageConfiguration">
+
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/group_id_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="manage configuration" />
+        android:textStyle="bold"
+        android:padding="8dp"
+        android:text="Group Name"/>/>
+
+    <ListView
+        android:id="@+id/auth_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

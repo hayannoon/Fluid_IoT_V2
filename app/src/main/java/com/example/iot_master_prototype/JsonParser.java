@@ -14,6 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JsonParser {
 
@@ -36,7 +38,7 @@ public class JsonParser {
             "      \"auth\" : {\n" +
             "        \"bulb1\" : \"true\",\n" +
             "        \"bulb2\" : \"true\",\n" +
-            "        \"strip\" : \"true\",\n" +
+            "        \"strip\" : \"false\",\n" +
             "        \"camera\" : \"false\",\n" +
             "        \"speaker\" : \"false\"\n" +
             "      }\n" +
@@ -149,7 +151,7 @@ public class JsonParser {
         return true;
     }
 
-    void addConfigFile(Auth auth, Context context) throws FileNotFoundException, JSONException {
+    boolean addConfigFile(Auth auth, Context context) throws FileNotFoundException, JSONException {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter addConfigFile function");
         String jsonData = this.getJsonString(AUTH_CONFIGURATION_FILE, context); //saved json String data
         JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
@@ -174,8 +176,73 @@ public class JsonParser {
         String jsonString = jsonObject.toString();
         if (writeConfigFile(AUTH_CONFIGURATION_FILE, jsonString, context)) {
             Log.d(JSONPARSER_DEBUGGING_TAG, "add group Success!!!");
+            return true;
         }
-
+        return false;
     }
+
+    boolean updateConfigFile(int index, Auth auth, Context context) throws FileNotFoundException, JSONException {
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter Update ConfigFile function");
+
+        String jsonData = this.getJsonString(AUTH_CONFIGURATION_FILE, context); //saved json String data
+        JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
+
+        JSONArray groupArray = jsonObject.getJSONArray("groups"); //다시 json 불러와서 해당 인덱스의 auth 객체를 교체해준다.
+        JSONObject targetGroup = (JSONObject) groupArray.get(index);
+
+        JSONObject updatedDeviceAuth = new JSONObject();
+        updatedDeviceAuth.put("bulb1" , auth.isBulb1());
+        updatedDeviceAuth.put("bulb2", auth.isBulb2());
+        updatedDeviceAuth.put("strip", auth.isLedStrip());
+        updatedDeviceAuth.put("camera", auth.isCamera());
+        updatedDeviceAuth.put("speaker", auth.isSpeaker());
+
+
+        targetGroup.put("auth", updatedDeviceAuth); //선택한 그룹의 권한 객체를 교체한다.
+
+        String jsonString = jsonObject.toString();
+        if (writeConfigFile(AUTH_CONFIGURATION_FILE, jsonString, context)) {
+            Log.d(JSONPARSER_DEBUGGING_TAG, "update group Success!!!");
+            return true;
+        }
+        return false;
+    }
+
+     List<Auth> getAuthListFromConfigFile(Context context) throws FileNotFoundException { //read configuration file then return auth List
+        List<Auth> authList = new ArrayList<>();
+        String jsonData = this.getJsonString(AUTH_CONFIGURATION_FILE, context); //saved json String data
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+
+            JSONArray authArray = jsonObject.getJSONArray("groups");
+
+            for (int i = 0; i < authArray.length(); i++) {
+                JSONObject authObject = authArray.getJSONObject(i);
+                Auth auth = new Auth();
+                auth.setGroupID(authObject.getString("group_name"));
+
+                JSONObject authDeviceObject = authObject.getJSONObject("auth");
+                auth.setBulb1(authDeviceObject.getBoolean("bulb1"));
+                auth.setBulb2(authDeviceObject.getBoolean("bulb2"));
+                auth.setLedStrip(authDeviceObject.getBoolean("strip"));
+                auth.setCamera(authDeviceObject.getBoolean("camera"));
+                auth.setSpeaker(authDeviceObject.getBoolean("speaker"));
+                //complete the auth instance
+
+                Log.d(JSONPARSER_DEBUGGING_TAG, "Instance " + i + " added!");
+                authList.add(auth);
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Length of auth list : " + authList.size());
+        return authList;
+    }
+
+
+
+
 
 }

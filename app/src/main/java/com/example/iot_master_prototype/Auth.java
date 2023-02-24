@@ -8,11 +8,25 @@ public class Auth {
 
 
     private String groupID;
+
     private boolean bulb1;
     private boolean bulb2;
     private boolean ledStrip;
     private boolean camera;
     private boolean speaker;
+
+
+    public Auth(){
+
+    }
+
+    public Auth(boolean b1, boolean b2, boolean led, boolean cam, boolean spk){
+        this.bulb1 = b1;
+        this.bulb2 = b2;
+        this.ledStrip = led;
+        this.camera = cam;
+        this.speaker = spk;
+    }
 
     public Auth(String groupID) {
         this.groupID = groupID;

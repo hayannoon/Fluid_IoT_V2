@@ -3,10 +3,12 @@ package com.example.iot_master_prototype;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -46,11 +48,23 @@ public class CreateGroup extends Activity {
                 auth.setSpeaker(speaker.isChecked());
 
                 //Get Json Data -> save to String type variable named jsonData
-                JsonParser jp = new JsonParser(CreateGroup.this); //make a jsonparser instance
+                JsonParser jp = new JsonParser(CreateGroup.this); //make a json parser instance
                 //call add_jsonParseer function
 
                 try { //Add group and write the config file.
-                    jp.addConfigFile(auth, getApplicationContext());
+                    Toast t;
+                    if(jp.addConfigFile(auth, getApplicationContext())){
+                        //추가에 성공한 경우
+                        t = Toast.makeText(getApplicationContext(), "Create Group Success!", Toast.LENGTH_LONG);
+                        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                        t.show();
+                    } else{
+                        //실패한 경우
+                        t = Toast.makeText(getApplicationContext(), "Create Group Failed", Toast.LENGTH_LONG);
+                        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                        t.show();
+
+                    }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
