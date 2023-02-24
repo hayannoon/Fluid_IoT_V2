@@ -12,10 +12,13 @@ import androidx.annotation.Nullable;
 
 import org.json.JSONException;
 
+import java.io.FileNotFoundException;
+
 
 public class CreateGroup extends Activity {
 
     final static String CREATE_GROUP_DEBUGGING_TAG = "IOT_CreateGroup";
+    final static String AUTH_CONFIGURATION_FILE = "configuration.json";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,7 +26,7 @@ public class CreateGroup extends Activity {
         setContentView(R.layout.create_group);
 
         Button createGroupSendButton = (Button) findViewById(R.id.group_create_send_btn);
-        createGroupSendButton.setOnClickListener(new View.OnClickListener(){
+        createGroupSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(CREATE_GROUP_DEBUGGING_TAG, "create new group button clicked");
@@ -35,32 +38,25 @@ public class CreateGroup extends Activity {
                 CheckBox camera = (CheckBox) findViewById(R.id.checkBox4_camera);
                 CheckBox speaker = (CheckBox) findViewById(R.id.checkBox5_speaker);
 
-                /*
-                Log.d(CREATE_GROUP_DEBUGGING_TAG, "Group ID : " + groupID.getText().toString());
-                Log.d(CREATE_GROUP_DEBUGGING_TAG, "bulb1 : " + bulb1.isChecked());
-                Log.d(CREATE_GROUP_DEBUGGING_TAG, "bulb2 : " + bulb2.isChecked());
-                */
+                //Get Json Data -> save to String type variable named jsonData
+                JsonParser jp = new JsonParser(CreateGroup.this); //make a jsonparser instance
 
-                //Get Json Data -> save to jsonData variable
-                JsonParser jp = new JsonParser(CreateGroup.this);
-                String jsonData = jp.getJsonString("configuration.json");
-                jp.jsonParsing(jsonData);
+                String jsonData = null;
+                try {
+                    jsonData = jp.getJsonString(JsonParser.AUTH_CONFIGURATION_FILE, getApplicationContext());
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } //Get json String and saved to the jsonData variable
 
                 try {
-                    jp.changeGroupName("level1", "level111");
-                } catch (JSONException e) {
+                    jp.jsonParsing(jsonData);
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
 
-                jp.jsonParsing(jsonData);
-
-
 
             }
-
         });
 
     }
-
-
 }

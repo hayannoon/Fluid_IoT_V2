@@ -36,4 +36,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="manage configuration" />
+
+    <Button
+        android:id="@+id/reset_configuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RESET CONFIGURATION" />
+
+    <Button
+        android:id="@+id/for_debugging"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="for debugging" />
 </LinearLayout>

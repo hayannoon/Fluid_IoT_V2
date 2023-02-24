@@ -1,16 +1,44 @@
 {
   "groups": [
     {
-      "name" : "level1",
-      "auth" : ["bulb1"]
+      "name" : "master",
+      "auth" : {
+        "bulb1" : "true",
+        "bulb2" : "true",
+        "strip" : "true",
+        "camera" : "true",
+        "speaker" : "true"
+      }
     },
     {
-      "name" : "level2",
-      "auth" : ["bulb1", "bulb2"]
+      "name" : "onlyBulb",
+      "auth" : {
+        "bulb1" : "true",
+        "bulb2" : "true",
+        "strip" : "true",
+        "camera" : "false",
+        "speaker" : "false"
+      }
     },
     {
-      "name" : "level3",
-      "auth" : ["bulb1", "bulb2", "camera"]
+      "name" : "onlyCamera",
+      "auth" : {
+        "bulb1" : "false",
+        "bulb2" : "false",
+        "strip" : "false",
+        "camera" : "true",
+        "speaker" : "false"
+      }
+    },
+    {
+      "name" : "onlySpeaker",
+      "auth" : {
+        "bulb1" : "false",
+        "bulb2" : "false",
+        "strip" : "false",
+        "camera" : "false",
+        "speaker" : "true"
+      }
     }
   ]
 }

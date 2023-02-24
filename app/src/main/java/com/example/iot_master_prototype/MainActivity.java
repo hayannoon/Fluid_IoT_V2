@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONException;
+
+import java.io.FileNotFoundException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -74,6 +77,31 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), ManageConfiguration.class);
                 startActivity(intent);
+            }
+        });
+
+        Button resetConfigButton = (Button) findViewById(R.id.reset_configuration); //reset configuration button event
+        resetConfigButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { // default configuration
+                JsonParser jp = new JsonParser();
+                jp.updateConfigFile(JsonParser.AUTH_CONFIGURATION_FILE, JsonParser.DEFAULT_CONFIG_STRING, getApplicationContext());
+            }
+        });
+
+        Button forDebuggingButton = (Button) findViewById(R.id.for_debugging);
+        forDebuggingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JsonParser jp = new JsonParser();
+                try {
+                    Log.d("IOT", "for debugging button click event occur!!!");
+                    jp.changeGroupName("master", "new master", getApplicationContext());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

@@ -1,23 +1,72 @@
 package com.example.iot_master_prototype;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class JsonParser {
 
     final static String JSONPARSER_DEBUGGING_TAG = "IOT_JsonParser";
+    final static String AUTH_CONFIGURATION_FILE = "configuration.json";
+    final static String DEFAULT_CONFIG_STRING = "{\n" +
+            "  \"groups\": [\n" +
+            "    {\n" +
+            "      \"group_name\" : \"master\",\n" +
+            "      \"auth\" : {\n" +
+            "        \"bulb1\" : \"true\",\n" +
+            "        \"bulb2\" : \"true\",\n" +
+            "        \"strip\" : \"true\",\n" +
+            "        \"camera\" : \"true\",\n" +
+            "        \"speaker\" : \"true\"\n" +
+            "      }\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"group_name\" : \"onlyBulb\",\n" +
+            "      \"auth\" : {\n" +
+            "        \"bulb1\" : \"true\",\n" +
+            "        \"bulb2\" : \"true\",\n" +
+            "        \"strip\" : \"true\",\n" +
+            "        \"camera\" : \"false\",\n" +
+            "        \"speaker\" : \"false\"\n" +
+            "      }\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"group_name\" : \"onlyCamera\",\n" +
+            "      \"auth\" : {\n" +
+            "        \"bulb1\" : \"false\",\n" +
+            "        \"bulb2\" : \"false\",\n" +
+            "        \"strip\" : \"false\",\n" +
+            "        \"camera\" : \"true\",\n" +
+            "        \"speaker\" : \"false\"\n" +
+            "      }\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"group_name\" : \"onlySpeaker\",\n" +
+            "      \"auth\" : {\n" +
+            "        \"bulb1\" : \"false\",\n" +
+            "        \"bulb2\" : \"false\",\n" +
+            "        \"strip\" : \"false\",\n" +
+            "        \"camera\" : \"false\",\n" +
+            "        \"speaker\" : \"true\"\n" +
+            "      }\n" +
+            "    }\n" +
+            "  ]\n" +
+            "}";
 
     Context context;
-    public JsonParser(Context context){
+
+    public JsonParser(Context context) {
         this.context = context;
     }
 
@@ -25,77 +74,78 @@ public class JsonParser {
 
     }
 
-    void jsonParsing(String json)
-    {
+    void jsonParsing(String json) throws FileNotFoundException {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter the jsonParsing function");
-        try{
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Original Data : " + json);
+        try {
             JSONObject jsonObject = new JSONObject(json);
 
             JSONArray authArray = jsonObject.getJSONArray("groups");
 
-            for(int i=0; i<authArray.length(); i++)
-            {
+            for (int i = 0; i < authArray.length(); i++) {
                 JSONObject authObject = authArray.getJSONObject(i);
+                Log.d(JSONPARSER_DEBUGGING_TAG, "Count : " + i);
 
                 Log.d(JSONPARSER_DEBUGGING_TAG, authObject.getString("name"));
                 Log.d(JSONPARSER_DEBUGGING_TAG, authObject.getString("auth"));
 
             }
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
+        }
+        Log.d(JSONPARSER_DEBUGGING_TAG, "EXIT the json parsing function : ");
+    }
+
+    String getJsonString(String fileName, Context context) throws FileNotFoundException { //input = filename, output = json Data(String type)
+        FileInputStream fis = context.openFileInput(fileName);
+        InputStreamReader inputStreamReader =
+                new InputStreamReader(fis, StandardCharsets.UTF_8);
+        StringBuilder stringBuilder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
+            String line = reader.readLine();
+            while (line != null) {
+                stringBuilder.append(line).append('\n');
+                line = reader.readLine();
+            }
+        } catch (IOException e) {
+            // Error occurred when opening raw file for reading.
+        } finally {
+            Log.d("getjsonString_IOT", stringBuilder.toString());
+            return stringBuilder.toString();
         }
     }
 
 
+    boolean changeGroupName(String before, String after, Context context) throws JSONException, FileNotFoundException {
+        String jsonData = this.getJsonString(AUTH_CONFIGURATION_FILE, context); //saved json String data
+        JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
 
+        JSONArray authArray = jsonObject.getJSONArray("groups");
 
-      String getJsonString(String fileName){
+        for (int i = 0; i < authArray.length(); i++) {
+            JSONObject authObject = authArray.getJSONObject(i);
+            if (authObject.getString("group_name").equals(before)) {
+                authObject.put("group_name", after);
 
-         String json = "";
+                Log.d(JSONPARSER_DEBUGGING_TAG, "changed group name from " + before + " after " + after);
+            }
+        } //jsonObject는 새롭게 변경됨. 이걸 다시 String으로 변경해서 파일에 써야함.
 
-         try {
+        jsonData = jsonObject.toString(); //수정된 json의 String 타입 value가 저장.
 
-             InputStream is = context.getAssets().open(fileName);
-             int fileSize = is.available();
+        Log.d(JSONPARSER_DEBUGGING_TAG, "IOT_from changeGroupName -> update COnfig file!!!!");
+        updateConfigFile(AUTH_CONFIGURATION_FILE, jsonData, context);
 
-             byte[] buffer = new byte[fileSize];
-             is.read(buffer);
-             is.close();
+        return true;
+    }
 
-             json = new String(buffer, "UTF-8");
-         }
-         catch (IOException ex)
-         {
-             ex.printStackTrace();
-         }
-
-         return json;
-     }
-
-     boolean changeGroupName(String before, String after) throws JSONException {
-        String jsonData = this.getJsonString("configuration.json");
-         JSONObject jsonObject = new JSONObject(jsonData);
-
-         JSONArray authArray = jsonObject.getJSONArray("groups");
-
-         for(int i=0; i<authArray.length(); i++)
-         {
-             JSONObject authObject = authArray.getJSONObject(i);
-             if(authObject.getString("name").equals(before)){
-                 authObject.put("name", after);
-                 authObject.put("test", "testing");
-
-                 Log.d(JSONPARSER_DEBUGGING_TAG, "changed group name from " + before +" after " + after);
-             }
-         } //jsonObject는 새롭게 변경됨. 이걸 다시 String으로 변경해서 파일에 써야함.
-
-         jsonData = jsonObject.toString(); //수정된 json의 String 타입 value가 저장.
-
-
-
-         return true;
-     }
-
-
+    void updateConfigFile(String fileName, String fileContents, Context context) {
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter UpdateConfigFile function");
+        try (FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE)) {
+            fos.write(fileContents.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

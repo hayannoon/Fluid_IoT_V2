@@ -1,0 +1,24 @@
+{
+  "groups": [
+    {
+      "name" : "level1",
+      "auth" : {
+        "bulb1" : "true",
+        "bulb2" : "false",
+        "strip" : "false",
+        "camera" : "false",
+        "speaker" : "false"
+      }
+    },
+    {
+      "name" : "level2",
+      "auth" : {
+        "bulb1" : "flase",
+        "bulb2" : "false",
+        "strip" : "false",
+        "camera" : "false",
+        "speaker" : "false"
+      }
+    }
+  ]
+}
