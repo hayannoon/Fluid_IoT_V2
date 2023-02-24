@@ -134,18 +134,48 @@ public class JsonParser {
         jsonData = jsonObject.toString(); //수정된 json의 String 타입 value가 저장.
 
         Log.d(JSONPARSER_DEBUGGING_TAG, "IOT_from changeGroupName -> update COnfig file!!!!");
-        updateConfigFile(AUTH_CONFIGURATION_FILE, jsonData, context);
+        writeConfigFile(AUTH_CONFIGURATION_FILE, jsonData, context);
 
         return true;
     }
 
-    void updateConfigFile(String fileName, String fileContents, Context context) {
+    boolean writeConfigFile(String fileName, String fileContents, Context context) {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter UpdateConfigFile function");
         try (FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE)) {
             fos.write(fileContents.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return true;
+    }
+
+    void addConfigFile(Auth auth, Context context) throws FileNotFoundException, JSONException {
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter addConfigFile function");
+        String jsonData = this.getJsonString(AUTH_CONFIGURATION_FILE, context); //saved json String data
+        JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
+        JSONArray groupsArray = jsonObject.getJSONArray("groups");
+
+
+        JSONObject newJsonObject = new JSONObject();
+        JSONObject authForDevices = new JSONObject();
+        newJsonObject.put("group_name", auth.getGroupID() );
+
+        authForDevices.put("bulb1", auth.isBulb1());
+        authForDevices.put("bulb2", auth.isBulb2());
+        authForDevices.put("strip", auth.isLedStrip());
+        authForDevices.put("camera", auth.isCamera());
+        authForDevices.put("speaker", auth.isSpeaker());
+
+        newJsonObject.put("auth", authForDevices);
+
+        groupsArray.put(newJsonObject);
+        //여기까지 오면 새로운 group이 추가된 json Object를 갖게된다. 이제 이걸 다시 String으로 바꿔서 파일에 써야한다.
+
+        String jsonString = jsonObject.toString();
+        if (writeConfigFile(AUTH_CONFIGURATION_FILE, jsonString, context)) {
+            Log.d(JSONPARSER_DEBUGGING_TAG, "add group Success!!!");
+        }
+
     }
 
 }

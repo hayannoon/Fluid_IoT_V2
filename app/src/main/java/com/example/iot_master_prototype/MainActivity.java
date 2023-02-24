@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) { // default configuration
                 JsonParser jp = new JsonParser();
-                jp.updateConfigFile(JsonParser.AUTH_CONFIGURATION_FILE, JsonParser.DEFAULT_CONFIG_STRING, getApplicationContext());
+                jp.writeConfigFile(JsonParser.AUTH_CONFIGURATION_FILE, JsonParser.DEFAULT_CONFIG_STRING, getApplicationContext());
             }
         });
 
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 JsonParser jp = new JsonParser();
                 try {
-                    Log.d("IOT", "for debugging button click event occur!!!");
+                    Log.d(DEBUGGING_TAG, "for debugging button click event occur!!!");
                     jp.changeGroupName("master", "new master", getApplicationContext());
                 } catch (JSONException e) {
                     e.printStackTrace();

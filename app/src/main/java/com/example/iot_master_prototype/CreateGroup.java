@@ -26,7 +26,7 @@ public class CreateGroup extends Activity {
         setContentView(R.layout.create_group);
 
         Button createGroupSendButton = (Button) findViewById(R.id.group_create_send_btn);
-        createGroupSendButton.setOnClickListener(new View.OnClickListener() {
+        createGroupSendButton.setOnClickListener(new View.OnClickListener() { //Create Group
             @Override
             public void onClick(View view) {
                 Log.d(CREATE_GROUP_DEBUGGING_TAG, "create new group button clicked");
@@ -38,21 +38,38 @@ public class CreateGroup extends Activity {
                 CheckBox camera = (CheckBox) findViewById(R.id.checkBox4_camera);
                 CheckBox speaker = (CheckBox) findViewById(R.id.checkBox5_speaker);
 
+                Auth auth = new Auth(groupID.getText().toString());
+                auth.setBulb1(bulb1.isChecked());
+                auth.setBulb2(bulb2.isChecked());
+                auth.setLedStrip(ledStrip.isChecked());
+                auth.setCamera(camera.isChecked());
+                auth.setSpeaker(speaker.isChecked());
+
                 //Get Json Data -> save to String type variable named jsonData
                 JsonParser jp = new JsonParser(CreateGroup.this); //make a jsonparser instance
+                //call add_jsonParseer function
 
-                String jsonData = null;
-                try {
-                    jsonData = jp.getJsonString(JsonParser.AUTH_CONFIGURATION_FILE, getApplicationContext());
+                try { //Add group and write the config file.
+                    jp.addConfigFile(auth, getApplicationContext());
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                } //Get json String and saved to the jsonData variable
-
-                try {
-                    jp.jsonParsing(jsonData);
-                } catch (FileNotFoundException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+//
+//                String jsonData = null;
+//                try {
+//                    jsonData = jp.getJsonString(JsonParser.AUTH_CONFIGURATION_FILE, getApplicationContext());
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                } //Get json String and saved to the jsonData variable
+//
+//                try {
+//                    jp.jsonParsing(jsonData);
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
 
 
             }
