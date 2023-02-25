@@ -141,28 +141,28 @@ public class JsonParser {
     }
 
 
-    boolean changeGroupName(String before, String after, Context context) throws JSONException, FileNotFoundException {
-        String jsonData = this.getJsonString(AUTH_CONFIGURATION_FILE, context); //saved json String data
-        JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
-
-        JSONArray authArray = jsonObject.getJSONArray("groups");
-
-        for (int i = 0; i < authArray.length(); i++) {
-            JSONObject authObject = authArray.getJSONObject(i);
-            if (authObject.getString("group_name").equals(before)) {
-                authObject.put("group_name", after);
-
-                Log.d(JSONPARSER_DEBUGGING_TAG, "changed group name from " + before + " after " + after);
-            }
-        } //jsonObject는 새롭게 변경됨. 이걸 다시 String으로 변경해서 파일에 써야함.
-
-        jsonData = jsonObject.toString(); //수정된 json의 String 타입 value가 저장.
-
-        Log.d(JSONPARSER_DEBUGGING_TAG, "IOT_from changeGroupName -> update COnfig file!!!!");
-        writeConfigFile(AUTH_CONFIGURATION_FILE, jsonData, context);
-
-        return true;
-    }
+//    boolean changeGroupName(String before, String after, Context context) throws JSONException, FileNotFoundException {
+//        String jsonData = this.getJsonString(AUTH_CONFIGURATION_FILE, context); //saved json String data
+//        JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
+//
+//        JSONArray authArray = jsonObject.getJSONArray("groups");
+//
+//        for (int i = 0; i < authArray.length(); i++) {
+//            JSONObject authObject = authArray.getJSONObject(i);
+//            if (authObject.getString("group_name").equals(before)) {
+//                authObject.put("group_name", after);
+//
+//                Log.d(JSONPARSER_DEBUGGING_TAG, "changed group name from " + before + " after " + after);
+//            }
+//        } //jsonObject는 새롭게 변경됨. 이걸 다시 String으로 변경해서 파일에 써야함.
+//
+//        jsonData = jsonObject.toString(); //수정된 json의 String 타입 value가 저장.
+//
+//        Log.d(JSONPARSER_DEBUGGING_TAG, "IOT_from changeGroupName -> update COnfig file!!!!");
+//        writeConfigFile(AUTH_CONFIGURATION_FILE, jsonData, context);
+//
+//        return true;
+//    }
 
     boolean writeConfigFile(String fileName, String fileContents, Context context) {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter function to write" + fileName + "file");

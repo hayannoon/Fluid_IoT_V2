@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        
+
 
         Button manageConfigButton = (Button) findViewById(R.id.manage_configuration); //manage configuration button event
         manageConfigButton.setOnClickListener(new View.OnClickListener() {
@@ -83,15 +83,9 @@ public class MainActivity extends AppCompatActivity {
         forDebuggingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JsonParser jp = new JsonParser();
-                try {
-                    Log.d(DEBUGGING_TAG, "for debugging button click event occur!!!");
-                    jp.changeGroupName("master", "new master", getApplicationContext());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+
+                Log.d(DEBUGGING_TAG, "for debugging button click event occur!!!");
+
             }
         });
 
