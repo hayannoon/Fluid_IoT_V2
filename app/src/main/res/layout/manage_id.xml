@@ -5,8 +5,14 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/account_id_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="delete id" />
+        android:textStyle="bold"
+        android:padding="8dp"
+        android:text="User ID" />
+    <ListView
+        android:id="@+id/account_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

@@ -46,18 +46,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Button deleteIdButton = (Button) findViewById(R.id.manage_account); //delete id button event
-        deleteIdButton.setOnClickListener(new View.OnClickListener() {
+        Button manageIdButton = (Button) findViewById(R.id.manage_account); //delete id button event
+        manageIdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Log.d(DEBUGGING_TAG, "delete ID button clicked!");
+                Log.d(DEBUGGING_TAG, "manage ID button clicked!");
 
-                Intent intent = new Intent(getApplicationContext(), DeleteId.class);
+                Intent intent = new Intent(getApplicationContext(), ManageId.class);
                 startActivity(intent);
             }
         });
-
-
+        
 
         Button manageConfigButton = (Button) findViewById(R.id.manage_configuration); //manage configuration button event
         manageConfigButton.setOnClickListener(new View.OnClickListener() {

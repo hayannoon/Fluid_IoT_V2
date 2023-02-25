@@ -21,18 +21,18 @@ import java.util.List;
 
 public class ManageConfigurationDetail extends Activity implements Serializable {
 
-    final static String JSONPARSER_DEBUGGING_TAG = "IOT_ManageConfigurationDetail";
+    final static String ManageConfigurationDetail_DEBUGGING_TAG = "IOT_ManageConfigurationDetail";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d(JSONPARSER_DEBUGGING_TAG,"auth debugging");
+        Log.d(ManageConfigurationDetail_DEBUGGING_TAG,"auth debugging");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_configuration_detail);
 
         Intent intent = getIntent();
         int position = (int) intent.getSerializableExtra("SELECTED_GROUP");
-        Log.d(JSONPARSER_DEBUGGING_TAG,"auth debugging" + "position : " + position);
+        Log.d(ManageConfigurationDetail_DEBUGGING_TAG,"auth debugging" + "position : " + position);
 
         //다시 제이슨을 읽고, position번째 객체 정보를 보여준다.
 
@@ -68,7 +68,7 @@ public class ManageConfigurationDetail extends Activity implements Serializable 
             updateConfigurationButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-                    Log.d(JSONPARSER_DEBUGGING_TAG,"UPDATE CONFIG BUTTON CLICKED!!!");
+                    Log.d(ManageConfigurationDetail_DEBUGGING_TAG,"UPDATE CONFIG BUTTON CLICKED!!!");
 
 
 
@@ -98,7 +98,7 @@ public class ManageConfigurationDetail extends Activity implements Serializable 
 
                 @Override
                 public void onClick(View view) {
-                    Log.d(JSONPARSER_DEBUGGING_TAG,"DELETE GROUP BUTTON CLICKED!!!");
+                    Log.d(ManageConfigurationDetail_DEBUGGING_TAG,"DELETE GROUP BUTTON CLICKED!!!");
                     Toast t;
                     try {
                         if(jp.removeGroup(position, getApplicationContext())){

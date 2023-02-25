@@ -165,7 +165,7 @@ public class JsonParser {
     }
 
     boolean writeConfigFile(String fileName, String fileContents, Context context) {
-        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter function to write" + fileName +  "file");
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter function to write" + fileName + "file");
         try (FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE)) {
             fos.write(fileContents.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
@@ -184,7 +184,7 @@ public class JsonParser {
 
         JSONObject newJsonObject = new JSONObject();
         JSONObject authForDevices = new JSONObject();
-        newJsonObject.put("group_name", auth.getGroupID() );
+        newJsonObject.put("group_name", auth.getGroupID());
 
         authForDevices.put("bulb1", auth.isBulb1());
         authForDevices.put("bulb2", auth.isBulb2());
@@ -218,22 +218,21 @@ public class JsonParser {
 
         // 중복 ID 검사
         String newUserID = account.getUserID();
-        for(int i = 0 ; i < accountsArray.length() ; i++){
+        for (int i = 0; i < accountsArray.length(); i++) {
             JSONObject accountObject = accountsArray.getJSONObject(i);
-            if(accountObject.getString("user_id").equals(newUserID)){
+            if (accountObject.getString("user_id").equals(newUserID)) {
                 return false;
             }
         }
 
         accountsArray.put(newJsonObject);
         String jsonString = jsonObject.toString();
-        if(writeConfigFile(ACCOUNT_FILE, jsonString, context)){
+        if (writeConfigFile(ACCOUNT_FILE, jsonString, context)) {
             Log.d(JSONPARSER_DEBUGGING_TAG, "add account success!!!");
             return true;
         }
         return true;
     }
-
 
 
     boolean updateConfigFile(int index, Auth auth, Context context) throws FileNotFoundException, JSONException {
@@ -246,7 +245,7 @@ public class JsonParser {
         JSONObject targetGroup = (JSONObject) groupArray.get(index);
 
         JSONObject updatedDeviceAuth = new JSONObject();
-        updatedDeviceAuth.put("bulb1" , auth.isBulb1());
+        updatedDeviceAuth.put("bulb1", auth.isBulb1());
         updatedDeviceAuth.put("bulb2", auth.isBulb2());
         updatedDeviceAuth.put("strip", auth.isLedStrip());
         updatedDeviceAuth.put("camera", auth.isCamera());
@@ -263,10 +262,28 @@ public class JsonParser {
         return false;
     }
 
+    boolean updateAccountFile(int index, Account account, Context context) throws FileNotFoundException, JSONException {
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter Update Account function");
+        String jsonData = this.getJsonString(ACCOUNT_FILE, context);
+        JSONObject jsonObject = new JSONObject(jsonData);
+
+        JSONArray accountArray = jsonObject.getJSONArray("accounts");
+        JSONObject targetAccount = (JSONObject) accountArray.get(index);
+
+        targetAccount.put("user_id", account.getUserID());
+        targetAccount.put("user_pw", account.getUserPW());
+        targetAccount.put("group_name", account.getGroup());//선택한  account의 값들을 바꿔준다.
+
+        String jsonString = jsonObject.toString();
+        if (writeConfigFile(ACCOUNT_FILE, jsonString, context)) {
+            Log.d(JSONPARSER_DEBUGGING_TAG, "update account Success!!!");
+            return true;
+        }
+        return false;
+    }
 
 
-
-     List<Auth> getAuthListFromConfigFile(Context context) throws FileNotFoundException { //read configuration file then return auth List
+    List<Auth> getAuthListFromConfigFile(Context context) throws FileNotFoundException { //read configuration file then return auth List
         List<Auth> authList = new ArrayList<>();
         String jsonData = this.getJsonString(AUTH_CONFIGURATION_FILE, context); //saved json String data
 
@@ -288,7 +305,7 @@ public class JsonParser {
                 auth.setSpeaker(authDeviceObject.getBoolean("speaker"));
                 //complete the auth instance
 
-                Log.d(JSONPARSER_DEBUGGING_TAG, "Instance " + i + " added!");
+                Log.d(JSONPARSER_DEBUGGING_TAG, "Auth Instance " + i + " added!");
                 authList.add(auth);
 
             }
@@ -298,6 +315,30 @@ public class JsonParser {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Length of auth list : " + authList.size());
         return authList;
     }
+
+    List<Account> getAccountListFromAccountFile(Context context) throws FileNotFoundException, JSONException {
+        List<Account> accountList = new ArrayList<>();
+        String jsonData = this.getJsonString(ACCOUNT_FILE, context);
+
+        JSONObject jsonObject = new JSONObject(jsonData);
+        JSONArray accountArray = jsonObject.getJSONArray("accounts");
+
+        for (int i = 0; i < accountArray.length(); i++) {
+            JSONObject accountObject = accountArray.getJSONObject(i);
+            Account account = new Account();
+            account.setUserID(accountObject.getString("user_id"));
+            account.setUserPW(accountObject.getString("user_pw"));
+            account.setGroup(accountObject.getString("group_name"));
+            //complete the account instance!
+
+            Log.d(JSONPARSER_DEBUGGING_TAG, "Account Instance " + i + " added!");
+            accountList.add(account);
+
+        }
+
+        return accountList;
+    }
+
 
     boolean removeGroup(int index, Context context) throws FileNotFoundException, JSONException {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter delte group function");
@@ -318,8 +359,21 @@ public class JsonParser {
         return false;
     }
 
+    boolean removeAccount(int index, Context context) throws FileNotFoundException, JSONException {
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter delte account function");
 
+        String jsonData = this.getJsonString(ACCOUNT_FILE, context);
+        JSONObject jsonObject = new JSONObject(jsonData);
 
+        JSONArray accountArray = jsonObject.getJSONArray("accounts");
+        accountArray.remove(index);
 
+        String jsonString = jsonObject.toString();
+        if (writeConfigFile(ACCOUNT_FILE, jsonString, context)) {
+            Log.d(JSONPARSER_DEBUGGING_TAG, "delete account Success!!!");
+            return true;
+        }
+        return false;
+    }
 
 }

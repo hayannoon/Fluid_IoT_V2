@@ -6,6 +6,10 @@ public class Account {
     private String userPW;
     private String group;
 
+    public Account(){
+
+    }
+
     public Account(String userID, String userPW, String group) {
         this.userID = userID;
         this.userPW = userPW;
