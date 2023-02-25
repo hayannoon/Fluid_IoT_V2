@@ -2,6 +2,8 @@ package com.example.iot_master_prototype;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +23,7 @@ public class JsonParser {
 
     final static String JSONPARSER_DEBUGGING_TAG = "IOT_JsonParser";
     final static String AUTH_CONFIGURATION_FILE = "configuration.json";
+    final static String ACCOUNT_FILE = "account.json";
     final static String DEFAULT_CONFIG_STRING = "{\n" +
             "  \"groups\": [\n" +
             "    {\n" +
@@ -62,6 +65,26 @@ public class JsonParser {
             "        \"camera\" : \"false\",\n" +
             "        \"speaker\" : \"true\"\n" +
             "      }\n" +
+            "    }\n" +
+            "  ]\n" +
+            "}";
+
+    final static String DEFAULT_ACCOUNT_STRING = "{\n" +
+            "  \"accounts\": [\n" +
+            "    {\n" +
+            "      \"user_id\": \"level1_user\",\n" +
+            "      \"user_pw\": \"user1_password\",\n" +
+            "      \"group_name\": \"onlyBulb\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"user_id\": \"level2_user\",\n" +
+            "      \"user_pw\": \"user2_password\",\n" +
+            "      \"group_name\": \"onlyCamera\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"user_id\": \"master_user\",\n" +
+            "      \"user_pw\": \"master_password\",\n" +
+            "      \"group_name\": \"master\"\n" +
             "    }\n" +
             "  ]\n" +
             "}";
@@ -142,7 +165,7 @@ public class JsonParser {
     }
 
     boolean writeConfigFile(String fileName, String fileContents, Context context) {
-        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter UpdateConfigFile function");
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter function to write" + fileName +  "file");
         try (FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE)) {
             fos.write(fileContents.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
@@ -150,6 +173,7 @@ public class JsonParser {
         }
         return true;
     }
+
 
     boolean addConfigFile(Auth auth, Context context) throws FileNotFoundException, JSONException {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter addConfigFile function");
@@ -181,6 +205,37 @@ public class JsonParser {
         return false;
     }
 
+    boolean addAccountFile(Account account, Context context) throws FileNotFoundException, JSONException {
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter addAccountFile function");
+        String jsonData = this.getJsonString(ACCOUNT_FILE, context); //saved json String data
+        JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
+        JSONArray accountsArray = jsonObject.getJSONArray("accounts");
+
+        JSONObject newJsonObject = new JSONObject();
+        newJsonObject.put("user_id", account.getUserID());
+        newJsonObject.put("user_pw", account.getUserPW());
+        newJsonObject.put("group_name", account.getGroup());
+
+        // 중복 ID 검사
+        String newUserID = account.getUserID();
+        for(int i = 0 ; i < accountsArray.length() ; i++){
+            JSONObject accountObject = accountsArray.getJSONObject(i);
+            if(accountObject.getString("user_id").equals(newUserID)){
+                return false;
+            }
+        }
+
+        accountsArray.put(newJsonObject);
+        String jsonString = jsonObject.toString();
+        if(writeConfigFile(ACCOUNT_FILE, jsonString, context)){
+            Log.d(JSONPARSER_DEBUGGING_TAG, "add account success!!!");
+            return true;
+        }
+        return true;
+    }
+
+
+
     boolean updateConfigFile(int index, Auth auth, Context context) throws FileNotFoundException, JSONException {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter Update ConfigFile function");
 
@@ -207,6 +262,9 @@ public class JsonParser {
         }
         return false;
     }
+
+
+
 
      List<Auth> getAuthListFromConfigFile(Context context) throws FileNotFoundException { //read configuration file then return auth List
         List<Auth> authList = new ArrayList<>();
@@ -239,6 +297,25 @@ public class JsonParser {
         }
         Log.d(JSONPARSER_DEBUGGING_TAG, "Length of auth list : " + authList.size());
         return authList;
+    }
+
+    boolean removeGroup(int index, Context context) throws FileNotFoundException, JSONException {
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter delte group function");
+
+        String jsonData = this.getJsonString(AUTH_CONFIGURATION_FILE, context); //saved json String data
+        JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
+
+        JSONArray groupArray = jsonObject.getJSONArray("groups"); //다시 json 불러와서 해당 인덱스의 auth 객체를 교체해준다.
+        groupArray.remove(index); //특정 인덱스의 항목 삭제
+
+        String jsonString = jsonObject.toString();
+        if (writeConfigFile(AUTH_CONFIGURATION_FILE, jsonString, context)) {
+            Log.d(JSONPARSER_DEBUGGING_TAG, "delete group Success!!!");
+            return true;
+        }
+        Log.d(JSONPARSER_DEBUGGING_TAG, "delete group Filed");
+
+        return false;
     }
 
 

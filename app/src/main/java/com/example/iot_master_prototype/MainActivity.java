@@ -45,18 +45,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button deleteGroupButton = (Button) findViewById(R.id.delete_group); //delete group button event
-        deleteGroupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Log.d(DEBUGGING_TAG, "delete Group button clicked!");
 
-                Intent intent = new Intent(getApplicationContext(), DeleteGroup.class);
-                startActivity(intent);
-            }
-        });
-
-        Button deleteIdButton = (Button) findViewById(R.id.delete_id); //delete id button event
+        Button deleteIdButton = (Button) findViewById(R.id.manage_account); //delete id button event
         deleteIdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
@@ -86,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) { // default configuration
                 JsonParser jp = new JsonParser();
                 jp.writeConfigFile(JsonParser.AUTH_CONFIGURATION_FILE, JsonParser.DEFAULT_CONFIG_STRING, getApplicationContext());
+                jp.writeConfigFile(JsonParser.ACCOUNT_FILE, JsonParser.DEFAULT_ACCOUNT_STRING, getApplicationContext());
             }
         });
 

@@ -24,10 +24,8 @@
         </activity>
         <activity android:name=".CreateGroup"></activity>
         <activity android:name="CreateId"></activity>
-        <activity android:name=".DeleteGroup"></activity>
         <activity android:name=".DeleteId"></activity>
         <activity android:name=".ManageConfiguration"></activity>
         <activity android:name=".ManageConfigurationDetail"></activity>
     </application>
-
 </manifest>

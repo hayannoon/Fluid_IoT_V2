@@ -5,8 +5,6 @@ import android.widget.EditText;
 
 public class Auth {
 
-
-
     private String groupID;
 
     private boolean bulb1;

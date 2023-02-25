@@ -14,28 +14,22 @@
         android:text="create group" />
 
     <Button
-        android:id="@+id/delete_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="delete group" />
-
-    <Button
         android:id="@+id/create_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="create id" />
-
-    <Button
-        android:id="@+id/delete_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="delete id" />
+        android:text="create account" />
 
     <Button
         android:id="@+id/manage_configuration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="manage configuration" />
+        android:text="manage group" />
+
+    <Button
+        android:id="@+id/manage_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="manage account" />
 
     <Button
         android:id="@+id/reset_configuration"

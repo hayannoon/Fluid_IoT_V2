@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -9,4 +10,56 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="create id" />
+
+    <EditText
+        android:id="@+id/editText_ID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:hint="ID" />
+
+    <EditText
+        android:id="@+id/editText_PW"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:hint="Password" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/group_select_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:minHeight="48dp"
+            android:text="Group"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/group_select_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            app:layout_constraintEnd_toEndOf="@+id/ImageSend"
+            app:layout_constraintStart_toStartOf="@+id/ImageSend"
+            app:layout_constraintTop_toBottomOf="@+id/ImageSend"></Spinner>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/create_id_send_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CREATE" />
+
+
 </LinearLayout>

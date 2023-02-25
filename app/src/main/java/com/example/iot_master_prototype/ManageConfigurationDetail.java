@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +17,6 @@ import org.json.JSONException;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManageConfigurationDetail extends Activity implements Serializable {
@@ -95,6 +92,37 @@ public class ManageConfigurationDetail extends Activity implements Serializable 
                     }
                 }
             });
+
+            Button deleteGroupButton = (Button) findViewById(R.id.delete_group_btn);
+            deleteGroupButton.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    Log.d(JSONPARSER_DEBUGGING_TAG,"DELETE GROUP BUTTON CLICKED!!!");
+                    Toast t;
+                    try {
+                        if(jp.removeGroup(position, getApplicationContext())){
+                            t = Toast.makeText(getApplicationContext(), "Delete Group Success!", Toast.LENGTH_LONG);
+                            t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                            t.show();
+                        } else{
+                            t = Toast.makeText(getApplicationContext(), "Delete Group Failed", Toast.LENGTH_LONG);
+                            t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                            t.show();
+                        }
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    finish();
+//                    Intent intent = new Intent(getApplicationContext(), ManageConfiguration.class);
+//                    startActivity(intent);
+
+                }
+            });
+
+
 
         }
 
