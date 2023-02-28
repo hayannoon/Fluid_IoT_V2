@@ -88,6 +88,7 @@ public class CreateId extends Activity implements AdapterView.OnItemSelectedList
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                finish();
 
             }
         });

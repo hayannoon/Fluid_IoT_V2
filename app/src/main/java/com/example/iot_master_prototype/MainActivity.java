@@ -23,29 +23,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        Button createGroupButton = (Button) findViewById(R.id.create_group); //Create group Button Event
-        createGroupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-                    public void onClick(View view){
-                    Log.d(DEBUGGING_TAG, "create group button clicked!");
-
-                    Intent intent = new Intent(getApplicationContext(), CreateGroup.class);
-                    startActivity(intent);
-                }
-        });
-
-        Button createIdButton = (Button) findViewById(R.id.create_id); //Create ID button event
-        createIdButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Log.d(DEBUGGING_TAG, "create ID button clicked!");
-
-                Intent intent = new Intent(getApplicationContext(), CreateId.class);
-                startActivity(intent);
-            }
-        });
-
-
         Button manageIdButton = (Button) findViewById(R.id.manage_account); //delete id button event
         manageIdButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
 
 
 

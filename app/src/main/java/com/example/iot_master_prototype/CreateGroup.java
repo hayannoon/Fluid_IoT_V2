@@ -56,12 +56,12 @@ public class CreateGroup extends Activity {
                     if(jp.addConfigFile(auth, getApplicationContext())){
                         //추가에 성공한 경우
                         t = Toast.makeText(getApplicationContext(), "Create Group Success!", Toast.LENGTH_LONG);
-                        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                        t.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL,0,0);
                         t.show();
                     } else{
                         //실패한 경우
                         t = Toast.makeText(getApplicationContext(), "Create Group Failed", Toast.LENGTH_LONG);
-                        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
+                        t.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL,0,0);
                         t.show();
 
                     }
@@ -70,6 +70,8 @@ public class CreateGroup extends Activity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                finish();
 
 //
 //                String jsonData = null;
