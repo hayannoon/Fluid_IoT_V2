@@ -1,6 +1,8 @@
 package com.example.iot_master_prototype;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -55,15 +57,25 @@ public class CreateGroup extends Activity {
                     Toast t;
                     if(jp.addConfigFile(auth, getApplicationContext())){
                         //추가에 성공한 경우
-                        t = Toast.makeText(getApplicationContext(), "Create Group Success!", Toast.LENGTH_LONG);
-                        t.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL,0,0);
-                        t.show();
+                        new AlertDialog.Builder(CreateGroup.this)
+                                .setTitle("[SUCESS]")
+                                .setMessage("New group generation success!")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                    }
+                                }).create().show();
                     } else{
                         //실패한 경우
-                        t = Toast.makeText(getApplicationContext(), "Create Group Failed", Toast.LENGTH_LONG);
-                        t.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL,0,0);
-                        t.show();
-
+                        new AlertDialog.Builder(CreateGroup.this)
+                                .setTitle("[FAILED]")
+                                .setMessage("New group generation failed try again!")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create().show();
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -71,7 +83,7 @@ public class CreateGroup extends Activity {
                     e.printStackTrace();
                 }
 
-                finish();
+                //finish();
 
 //
 //                String jsonData = null;

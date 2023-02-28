@@ -1,6 +1,8 @@
 package com.example.iot_master_prototype;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,11 +28,28 @@ public class CreateId extends Activity implements AdapterView.OnItemSelectedList
     EditText userID;
     EditText userPW;
     Spinner groupSelectSpinner;
-    Toast t;
 
     final static String CREATE_ID_DEBUGGING_TAG = "IOT_CREATE_ID";
 
-
+    void showDialog() {
+        AlertDialog.Builder msgBuilder = new AlertDialog.Builder(this)
+                .setTitle("앱 끈다?")
+                .setMessage("진짜 끈다?")
+                .setPositiveButton("꺼라", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getApplicationContext(), "안 끔", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        AlertDialog msgDlg = msgBuilder.create();
+        msgDlg.show();
+    }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,19 +95,32 @@ public class CreateId extends Activity implements AdapterView.OnItemSelectedList
                 Account newAccount = new Account(userID.getText().toString(), userPW.getText().toString(), groupSelectSpinner.getSelectedItem().toString());
                 try {
                     if(jp.addAccountFile(newAccount, getApplicationContext() )){
-                        t = Toast.makeText(getApplicationContext(), "Create Account Success!", Toast.LENGTH_LONG);
-                        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
-                        t.show();} else{
-                        t = Toast.makeText(getApplicationContext(), "[FAILED] DUPLICATE ID", Toast.LENGTH_LONG);
-                        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
-                        t.show();
+                        new AlertDialog.Builder(CreateId.this)
+                                .setTitle("[SUCESS]")
+                                .setMessage("New account generation success!")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        finish();
+                                    }
+                                }).create().show();
+                        }
+                    else{
+                        new AlertDialog.Builder(CreateId.this)
+                                .setTitle("[FAILED]")
+                                .setMessage("New account generation failed try again!")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                    }
+                                }).create().show();
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                finish();
+                //finish();
 
             }
         });
