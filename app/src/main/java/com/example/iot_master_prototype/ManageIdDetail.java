@@ -1,6 +1,8 @@
 package com.example.iot_master_prototype;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +51,11 @@ public class ManageIdDetail extends Activity implements Serializable, AdapterVie
         } catch (JSONException e) {
             e.printStackTrace();
         } //authList에는 account.json을 파싱해서 클래스 배열로 만든 결과가 담겨있음
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         List<Auth> authList = null;
         try {
@@ -101,49 +108,88 @@ public class ManageIdDetail extends Activity implements Serializable, AdapterVie
             public void onClick(View view) {
                 Log.d(MangeIdDetail_DEBUGGING_TAG, "UPDATE ACCOUNT BUTTON CLICKED!!!");
 
-                Account newAccount = new Account(userID.getText().toString(), userPW.getText().toString(), groupSelectSpinner.getSelectedItem().toString());
-                try {
-                    if (jp.updateAccountFile(position, newAccount, getApplicationContext())) {
-                        t = Toast.makeText(getApplicationContext(), "Update Account Success!", Toast.LENGTH_LONG);
-                        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                        t.show();
-                    } else {
-                        t = Toast.makeText(getApplicationContext(), "Update Account Failed", Toast.LENGTH_LONG);
-                        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                        t.show();
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                finish();
+                new AlertDialog.Builder(ManageIdDetail.this)
+                        .setTitle("[UPDATE ACCOUNT INFO]")
+                        .setMessage("If you click yes, this account information will be updated as you setted.\ncontinue?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Account newAccount = new Account(userID.getText().toString(), userPW.getText().toString(), groupSelectSpinner.getSelectedItem().toString());
+                                try {
+                                    if (jp.updateAccountFile(position, newAccount, getApplicationContext())) {
+                                        t = Toast.makeText(getApplicationContext(), "Update Account Success!", Toast.LENGTH_LONG);
+                                        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                        t.show();
+                                    } else {
+                                        t = Toast.makeText(getApplicationContext(), "Update Account Failed", Toast.LENGTH_LONG);
+                                        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                        t.show();
+                                    }
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                finish();
+
+                            }
+                        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(), "UPDATE ACCOUNT CANCELED", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }).create().show();
+
             }
         });
 
         Button deleteAccountButton = (Button) findViewById(R.id.account_delete_button);
-        deleteAccountButton.setOnClickListener(new View.OnClickListener(){
+        deleteAccountButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 Log.d(MangeIdDetail_DEBUGGING_TAG, "DELETE ACCOUNT BUTTON CLICKED!!!");
 
-                try {
-                    if(jp.removeAccount(position,getApplicationContext())){
-                        t = Toast.makeText(getApplicationContext(), "Delete Account Success!", Toast.LENGTH_LONG);
-                        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
-                        t.show();
-                    }else{
-                        t = Toast.makeText(getApplicationContext(), "Delete Account Failed", Toast.LENGTH_LONG);
-                        t.setGravity(Gravity.CENTER_VERTICAL,0,0);
-                        t.show();
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                finish();
+                new AlertDialog.Builder(ManageIdDetail.this)
+                        .setTitle("[DELETE AN ACCOUNT")
+                        .setMessage("If you click yes, this account will be deleted.\ncontinue?")
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    if (jp.removeAccount(position, getApplicationContext())) {
+                                        t = Toast.makeText(getApplicationContext(), "DELETE ACCOUNT SUCCESS!", Toast.LENGTH_LONG);
+                                        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                        t.show();
+                                    } else {
+                                        t = Toast.makeText(getApplicationContext(), "DELETE ACCOUNT FAILED", Toast.LENGTH_LONG);
+                                        t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                        t.show();
+                                    }
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                finish();
+                            }
+                        }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                t = Toast.makeText(getApplicationContext(), "DELETE ACCOUNT CANCELED", Toast.LENGTH_LONG);
+                                t.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                t.show();
+                            }
+                        }).create().show();
             }
         });
 

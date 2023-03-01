@@ -131,7 +131,6 @@ public class CreateId extends Activity implements AdapterView.OnItemSelectedList
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                //finish();
 
             }
         });

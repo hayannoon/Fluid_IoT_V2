@@ -79,9 +79,7 @@ public class CreateGroup extends Activity {
                                 }).create().show();
                     }
                 }
-//                catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
+
                 catch (JSONException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {

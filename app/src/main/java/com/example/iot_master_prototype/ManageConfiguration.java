@@ -68,8 +68,6 @@ public class ManageConfiguration extends Activity implements Serializable {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    //String data = (String) adapterView.getItemAtPosition(position);
-                    //groupIDTextView.setText(data);
 
                     Intent intent = new Intent(getApplicationContext(), ManageConfigurationDetail.class);
                     intent.putExtra("SELECTED_GROUP", position);

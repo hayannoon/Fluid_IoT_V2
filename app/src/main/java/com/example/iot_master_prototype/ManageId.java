@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ManageId extends Activity implements Serializable {
 
@@ -36,6 +37,11 @@ public class ManageId extends Activity implements Serializable {
         } catch (JSONException e) {
             e.printStackTrace();
         } //accountList에는 json을 파싱해서 클래스 배열로 만든 결과가 담겨있음
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         List<String> userIDList = new ArrayList<>();
         for (Account account : accountList) {

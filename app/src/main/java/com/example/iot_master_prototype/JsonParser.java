@@ -139,27 +139,6 @@ public class JsonParser extends AppCompatActivity {
 
     }
 
-    void jsonParsing(String json) throws FileNotFoundException {
-        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter the jsonParsing function");
-        Log.d(JSONPARSER_DEBUGGING_TAG, "Original Data : " + json);
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-
-            JSONArray authArray = jsonObject.getJSONArray("groups");
-
-            for (int i = 0; i < authArray.length(); i++) {
-                JSONObject authObject = authArray.getJSONObject(i);
-                Log.d(JSONPARSER_DEBUGGING_TAG, "Count : " + i);
-
-                Log.d(JSONPARSER_DEBUGGING_TAG, authObject.getString("name"));
-                Log.d(JSONPARSER_DEBUGGING_TAG, authObject.getString("auth"));
-
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d(JSONPARSER_DEBUGGING_TAG, "EXIT the json parsing function : ");
-    }
 
     String getJsonString(String fileName, Context context) throws FileNotFoundException { //input = filename, output = json Data(String type)
         FileInputStream fis = context.openFileInput(fileName);
@@ -186,7 +165,6 @@ public class JsonParser extends AppCompatActivity {
     }
 
 
-
     boolean writeConfigFile(String fileName, String fileContents, Context context) {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter function to write" + fileName + "file");
         try (FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE)) {
@@ -201,7 +179,7 @@ public class JsonParser extends AppCompatActivity {
         //file Name과 contetnt를 받아와서 서버에 있는 fileName파일에 fileContetns를 Write한다.
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter writeConfigFileToServer FUnction");
 
-        NetworkConnectForWriteJSON net = new NetworkConnectForWriteJSON(fileName,fileContents);
+        NetworkConnectForWriteJSON net = new NetworkConnectForWriteJSON(fileName, fileContents);
         net.start();
         net.join();
         return net.getResult();
@@ -262,10 +240,9 @@ public class JsonParser extends AppCompatActivity {
         //여기까지 오면 새로운 group이 추가된 json Object를 갖게된다. 이제 이걸 다시 String으로 바꿔서 파일에 써야한다.
 
         String jsonString = jsonObject.toString();
-        if(this.writeConfigFileToServer(AUTH_CONFIGURATION_FILE, jsonString)){
+        if (this.writeConfigFileToServer(AUTH_CONFIGURATION_FILE, jsonString)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -295,11 +272,13 @@ public class JsonParser extends AppCompatActivity {
 
         accountsArray.put(newJsonObject);
         String jsonString = jsonObject.toString();
-        if (writeConfigFile(ACCOUNT_FILE, jsonString, context)) {
+
+        if (writeConfigFileToServer(ACCOUNT_FILE, jsonString)) {
             Log.d(JSONPARSER_DEBUGGING_TAG, "add account success!!!");
             return true;
         }
-        return true;
+
+        return false;
     }
 
 
@@ -307,7 +286,6 @@ public class JsonParser extends AppCompatActivity {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter Update ConfigFile function");
         String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE); //get Json Data from server and save the string value
 
-        //String jsonData = this.getJsonString(AUTH_CONFIGURATION_FILE, context); //saved json String data
         JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
 
         JSONArray groupArray = jsonObject.getJSONArray("groups"); //다시 json 불러와서 해당 인덱스의 auth 객체를 교체해준다.
@@ -324,12 +302,8 @@ public class JsonParser extends AppCompatActivity {
         targetGroup.put("auth", updatedDeviceAuth); //선택한 그룹의 권한 객체를 교체한다.
 
         String jsonString = jsonObject.toString();
-//        if (writeConfigFile(AUTH_CONFIGURATION_FILE, jsonString, context)) {
-//            Log.d(JSONPARSER_DEBUGGING_TAG, "update group Success!!!");
-//            return true;
-//        }
 
-        if(writeConfigFileToServer(AUTH_CONFIGURATION_FILE, jsonString)){
+        if (writeConfigFileToServer(AUTH_CONFIGURATION_FILE, jsonString)) {
             Log.d(JSONPARSER_DEBUGGING_TAG, "update group Success!!!");
             return true;
         }
@@ -349,11 +323,8 @@ public class JsonParser extends AppCompatActivity {
         groupArray.remove(index); //특정 인덱스의 항목 삭제
 
         String jsonString = jsonObject.toString();
-//        if (writeConfigFile(AUTH_CONFIGURATION_FILE, jsonString, context)) {
-//            Log.d(JSONPARSER_DEBUGGING_TAG, "delete group Success!!!");
-//            return true;
-//        }
-        if(writeConfigFileToServer(AUTH_CONFIGURATION_FILE, jsonString)){
+
+        if (writeConfigFileToServer(AUTH_CONFIGURATION_FILE, jsonString)) {
             Log.d(JSONPARSER_DEBUGGING_TAG, "delete group Success!!!");
             return true;
         }
@@ -364,9 +335,11 @@ public class JsonParser extends AppCompatActivity {
         return false;
     }
 
-    boolean updateAccountFile(int index, Account account, Context context) throws FileNotFoundException, JSONException {
+    boolean updateAccountFile(int index, Account account, Context context) throws FileNotFoundException, JSONException, ExecutionException, InterruptedException {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter Update Account function");
-        String jsonData = this.getJsonString(ACCOUNT_FILE, context);
+
+        String jsonData = this.getJsonStringFromServer(ACCOUNT_FILE);
+        //String jsonData = this.getJsonString(ACCOUNT_FILE, context);
         JSONObject jsonObject = new JSONObject(jsonData);
 
         JSONArray accountArray = jsonObject.getJSONArray("accounts");
@@ -377,17 +350,17 @@ public class JsonParser extends AppCompatActivity {
         targetAccount.put("group_name", account.getGroup());//선택한  account의 값들을 바꿔준다.
 
         String jsonString = jsonObject.toString();
-        if (writeConfigFile(ACCOUNT_FILE, jsonString, context)) {
+        if (writeConfigFileToServer(ACCOUNT_FILE, jsonString)) {
             Log.d(JSONPARSER_DEBUGGING_TAG, "update account Success!!!");
             return true;
         }
+
         return false;
     }
 
 
     List<Auth> getAuthListFromConfigFile(Context context) throws FileNotFoundException, ExecutionException, InterruptedException { //read configuration file then return auth List
         List<Auth> authList = new ArrayList<>();
-        //String jsonData = this.getJsonString(AUTH_CONFIGURATION_FILE, context); //saved json String data
         String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE); //get Json Data from server and save the string value
 
         try {
@@ -419,9 +392,9 @@ public class JsonParser extends AppCompatActivity {
         return authList;
     }
 
-    List<Account> getAccountListFromAccountFile(Context context) throws FileNotFoundException, JSONException {
+    List<Account> getAccountListFromAccountFile(Context context) throws FileNotFoundException, JSONException, ExecutionException, InterruptedException {
         List<Account> accountList = new ArrayList<>();
-        String jsonData = this.getJsonString(ACCOUNT_FILE, context);
+        String jsonData = this.getJsonStringFromServer(ACCOUNT_FILE);
 
         JSONObject jsonObject = new JSONObject(jsonData);
         JSONArray accountArray = jsonObject.getJSONArray("accounts");
@@ -443,18 +416,19 @@ public class JsonParser extends AppCompatActivity {
     }
 
 
-
-    boolean removeAccount(int index, Context context) throws FileNotFoundException, JSONException {
+    boolean removeAccount(int index, Context context) throws FileNotFoundException, JSONException, ExecutionException, InterruptedException {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter delte account function");
 
-        String jsonData = this.getJsonString(ACCOUNT_FILE, context);
+        String jsonData = this.getJsonStringFromServer(ACCOUNT_FILE);
+        //String jsonData = this.getJsonString(ACCOUNT_FILE, context);
         JSONObject jsonObject = new JSONObject(jsonData);
 
         JSONArray accountArray = jsonObject.getJSONArray("accounts");
         accountArray.remove(index);
 
         String jsonString = jsonObject.toString();
-        if (writeConfigFile(ACCOUNT_FILE, jsonString, context)) {
+
+        if (writeConfigFileToServer(ACCOUNT_FILE, jsonString)) {
             Log.d(JSONPARSER_DEBUGGING_TAG, "delete account Success!!!");
             return true;
         }
@@ -462,7 +436,7 @@ public class JsonParser extends AppCompatActivity {
     }
 
 
-    class NetworkConnectForWriteJSON extends Thread{ //서버에 파일을 Write할때 사용한다.
+    class NetworkConnectForWriteJSON extends Thread { //서버에 파일을 Write할때 사용한다.
 
         final static String NETWORK_CONNECT_DEBUGGING_TAG = "NETWORK_CONNECT_DEBUGGING";
         private String fileContents;
@@ -470,13 +444,13 @@ public class JsonParser extends AppCompatActivity {
         boolean result = false;
 
 
-        public NetworkConnectForWriteJSON(String fileName, String jsonContents){
+        public NetworkConnectForWriteJSON(String fileName, String jsonContents) {
             this.fileContents = jsonContents;
             this.serverURL = this.serverURL.concat(fileName);
         }
 
         @Override
-        public void run(){
+        public void run() {
             try {
                 // Create an HTTP client instance
                 URL url = new URL(this.serverURL);
@@ -499,8 +473,8 @@ public class JsonParser extends AppCompatActivity {
 
                 // Get the response code from the server
                 int responseCode = conn.getResponseCode();
-                Log.d(NETWORK_CONNECT_DEBUGGING_TAG,conn.getContent().toString());
-                if (responseCode == HttpURLConnection.HTTP_OK ||  responseCode==HttpURLConnection.HTTP_NO_CONTENT) {
+                Log.d(NETWORK_CONNECT_DEBUGGING_TAG, conn.getContent().toString());
+                if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
                     Log.d(NETWORK_CONNECT_DEBUGGING_TAG, "UPLOAD_SERVER_SUCCESS");
                     this.result = true;
                     // File uploaded successfully
@@ -515,7 +489,7 @@ public class JsonParser extends AppCompatActivity {
             }
         }
 
-        public boolean getResult(){
+        public boolean getResult() {
             return this.result;
         }
 
@@ -546,13 +520,8 @@ public class JsonParser extends AppCompatActivity {
             super.onPostExecute(s);
             //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
             //내용이 s에 저장된다. 이 s를 json파일에 저장해주면 될듯하다.
-            //resultTextView.setText(s);
-            //tmp = new String(s);
         }
     }
-
-
-
 
 
 }
