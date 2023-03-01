@@ -20,6 +20,7 @@ import org.json.JSONException;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ManageConfigurationDetail extends Activity implements Serializable {
 
@@ -45,6 +46,11 @@ public class ManageConfigurationDetail extends Activity implements Serializable 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } //authList에는 json을 파싱해서 클래스 배열로 만든 결과가 담겨있음
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
         Auth selectedAuthObject = authList.get(position); //유저가 선택한 group으로 진입
@@ -104,6 +110,10 @@ public class ManageConfigurationDetail extends Activity implements Serializable 
                         e.printStackTrace();
                     } catch (JSONException e) {
                         e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             });
@@ -114,38 +124,97 @@ public class ManageConfigurationDetail extends Activity implements Serializable 
                 @Override
                 public void onClick(View view) {
                     Log.d(ManageConfigurationDetail_DEBUGGING_TAG,"DELETE GROUP BUTTON CLICKED!!!");
-                    try {
-                        if(jp.removeGroup(position, getApplicationContext())){
-                            new AlertDialog.Builder(ManageConfigurationDetail.this)
-                                    .setTitle("[SUCESS]")
-                                    .setMessage("GROUP DELETE SUCESS!")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            finish();
+
+                    new AlertDialog.Builder(ManageConfigurationDetail.this)
+                            .setTitle("[DELETE A GROUP]")
+                            .setMessage("If you click yes, this group will be deleted. \ncontinue?")
+                            .setPositiveButton("YES", new DialogInterface.OnClickListener(){
+
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    try {
+                                        if(jp.removeGroup(position, getApplicationContext())){
+                                            new AlertDialog.Builder(ManageConfigurationDetail.this)
+                                                    .setTitle("[SUCESS]")
+                                                    .setMessage("GROUP DELETE SUCESS!")
+                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                            finish();
+                                                        }
+                                                    }).create().show();
+                                            Toast.makeText(getApplicationContext(), "DELETE GROUP COMPLETE", Toast.LENGTH_SHORT).show();
+
+                                        } else{
+                                            //실패한 경우
+                                            new AlertDialog.Builder(ManageConfigurationDetail.this)
+                                                    .setTitle("[FAILED]")
+                                                    .setMessage("GROUP DELETE FAILED \nTRY AGAIN!")
+                                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                                        }
+                                                    }).create().show();
+                                            Toast.makeText(getApplicationContext(), "DELETE GROUP FAILED", Toast.LENGTH_SHORT).show();
+
                                         }
-                                    }).create().show();
-                        } else{
-                            //실패한 경우
-                            new AlertDialog.Builder(ManageConfigurationDetail.this)
-                                    .setTitle("[FAILED]")
-                                    .setMessage("GROUP DELETE FAILED \nTRY AGAIN!")
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                        }
-                                    }).create().show();
-                        }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    finish();
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } catch (ExecutionException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(getApplicationContext(), "DELETE GROUP CANCELED", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .create().show();
+
+//
+//                    try {
+//                        if(jp.removeGroup(position, getApplicationContext())){
+//                            new AlertDialog.Builder(ManageConfigurationDetail.this)
+//                                    .setTitle("[SUCESS]")
+//                                    .setMessage("GROUP DELETE SUCESS!")
+//                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialogInterface, int i) {
+//                                            finish();
+//                                        }
+//                                    }).create().show();
+//                        } else{
+//                            //실패한 경우
+//                            new AlertDialog.Builder(ManageConfigurationDetail.this)
+//                                    .setTitle("[FAILED]")
+//                                    .setMessage("GROUP DELETE FAILED \nTRY AGAIN!")
+//                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialogInterface, int i) {
+//                                        }
+//                                    }).create().show();
+//                        }
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    } catch (ExecutionException e) {
+//                        e.printStackTrace();
+//                    }
+                    //finish();
 //                    Intent intent = new Intent(getApplicationContext(), ManageConfiguration.class);
 //                    startActivity(intent);
 
                 }
+
+
             });
 
 

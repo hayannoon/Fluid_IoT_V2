@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ManageIdDetail extends Activity implements Serializable, AdapterView.OnItemSelectedListener {
     final static String MangeIdDetail_DEBUGGING_TAG = "IOT_ManageIdDetail";
@@ -55,6 +56,11 @@ public class ManageIdDetail extends Activity implements Serializable, AdapterVie
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } //authList에는 configuration.json을 파싱해서 클래스 배열로 만든 결과가 담겨있음
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         List<String> groupIDList = new ArrayList<>();
         for (Auth auth : authList) {

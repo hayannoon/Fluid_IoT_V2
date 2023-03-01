@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import org.json.JSONException;
 
 import java.io.FileNotFoundException;
+import java.util.concurrent.ExecutionException;
 
 
 public class CreateGroup extends Activity {
@@ -54,7 +55,8 @@ public class CreateGroup extends Activity {
                 //call add_jsonParseer function
 
                 try { //Add group and write the config file.
-                    if (jp.addConfigFile(auth, getApplicationContext())) {
+                    //if (jp.addConfigFile(auth, getApplicationContext())) {
+                        if (jp.addConfigFileToServer(auth)) {
                         //추가에 성공한 경우
                         new AlertDialog.Builder(CreateGroup.this)
                                 .setTitle("[SUCESS]")
@@ -76,9 +78,15 @@ public class CreateGroup extends Activity {
                                     }
                                 }).create().show();
                     }
-                } catch (FileNotFoundException e) {
+                }
+//                catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+                catch (JSONException e) {
                     e.printStackTrace();
-                } catch (JSONException e) {
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 

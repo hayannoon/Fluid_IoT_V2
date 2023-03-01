@@ -18,13 +18,14 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 
 public class DebuggingActivity extends AppCompatActivity {
 
     final static String DEBUGGINGACTIVITY_TAG = "IOT_DEBUGGING_ACTIVITY_TAG";
     private TextView resultTextView ;
-
+    private String tmp = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +51,16 @@ public class DebuggingActivity extends AppCompatActivity {
                 //여기서 ID/PW정보로 Group 정보를 가져오고, Group정보에서 True로 지정되어있는 기기의 UI값을 UI_info.json파일을 참조해서 가져온다.
                 // AsyncTask를 통해 HttpURLConnection 수행.
                 NetworkConnectionForRead networkTask = new NetworkConnectionForRead(url, null);
-                networkTask.execute();
+                try {
+                    tmp = networkTask.execute().get();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+
+                Log.d("DDD", tmp);
 
 
             }
@@ -130,6 +140,7 @@ public class DebuggingActivity extends AppCompatActivity {
 
         private String url;
         private ContentValues values;
+        public String resultJson;
 
         public NetworkConnectionForRead(String url, ContentValues values) {
 
@@ -144,6 +155,7 @@ public class DebuggingActivity extends AppCompatActivity {
             RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
             result = requestHttpURLConnection.request(url, values); // 해당 URL로 부터 결과물을 얻어온다.
 
+            //tmp = new String(result);
             return result;
         }
 
@@ -154,7 +166,10 @@ public class DebuggingActivity extends AppCompatActivity {
             //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
             //내용이 s에 저장된다. 이 s를 json파일에 저장해주면 될듯하다.
             resultTextView.setText(s);
+            //Log.d("DDD",tmp);
         }
+
+
     }
 
 

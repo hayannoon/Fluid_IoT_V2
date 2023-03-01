@@ -11,10 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import org.json.JSONException;
-
-import java.io.FileNotFoundException;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,9 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
         Button resetConfigButton = (Button) findViewById(R.id.reset_configuration); //reset configuration button event
         resetConfigButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,10 +59,39 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //finish();
+//                                JsonParser jp = new JsonParser();
+//                                jp.writeConfigFile(JsonParser.AUTH_CONFIGURATION_FILE, JsonParser.DEFAULT_CONFIG_STRING, getApplicationContext());
+//                                jp.writeConfigFile(JsonParser.ACCOUNT_FILE, JsonParser.DEFAULT_ACCOUNT_STRING, getApplicationContext());
+//                                Toast.makeText(getApplicationContext(), "RESET CONFIGURATION COMPLETE", Toast.LENGTH_SHORT).show();
+
+
                                 JsonParser jp = new JsonParser();
                                 jp.writeConfigFile(JsonParser.AUTH_CONFIGURATION_FILE, JsonParser.DEFAULT_CONFIG_STRING, getApplicationContext());
+                                try {
+                                    jp.writeConfigFileToServer(JsonParser.AUTH_CONFIGURATION_FILE, JsonParser.DEFAULT_CONFIG_STRING);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                // RESET CONFIG FILE(GROUP FILE)
+
                                 jp.writeConfigFile(JsonParser.ACCOUNT_FILE, JsonParser.DEFAULT_ACCOUNT_STRING, getApplicationContext());
+                                try {
+                                    jp.writeConfigFileToServer(JsonParser.ACCOUNT_FILE, JsonParser.DEFAULT_ACCOUNT_STRING);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                //RESET ACCOUNT FILE
+
+                                jp.writeConfigFile(JsonParser.DEVICES_INFO_FILE, JsonParser.DEFAULT_DEVICES_INFO_STRING, getApplicationContext());
+                                try {
+                                    jp.writeConfigFileToServer(JsonParser.DEVICES_INFO_FILE, JsonParser.DEFAULT_DEVICES_INFO_STRING);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                //RESET DEVICES INFO FILE
                                 Toast.makeText(getApplicationContext(), "RESET CONFIGURATION COMPLETE", Toast.LENGTH_SHORT).show();
+
+
                             }
                         }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                             @Override
@@ -79,11 +101,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         })
                         .create().show();
-
-                JsonParser jp = new JsonParser();
-                jp.writeConfigFile(JsonParser.AUTH_CONFIGURATION_FILE, JsonParser.DEFAULT_CONFIG_STRING, getApplicationContext());
-                jp.writeConfigFile(JsonParser.ACCOUNT_FILE, JsonParser.DEFAULT_ACCOUNT_STRING, getApplicationContext());
-                jp.writeConfigFile(JsonParser.DEVICES_INFO_FILE, JsonParser.DEFAULT_DEVICES_INFO, getApplicationContext());
             }
         });
 

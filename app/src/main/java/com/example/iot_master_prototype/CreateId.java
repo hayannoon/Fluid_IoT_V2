@@ -21,6 +21,7 @@ import org.json.JSONException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class CreateId extends Activity implements AdapterView.OnItemSelectedListener {
 
@@ -50,6 +51,7 @@ public class CreateId extends Activity implements AdapterView.OnItemSelectedList
         AlertDialog msgDlg = msgBuilder.create();
         msgDlg.show();
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,11 @@ public class CreateId extends Activity implements AdapterView.OnItemSelectedList
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } //authList에는 json을 파싱해서 클래스 배열로 만든 결과가 담겨있음
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         List<String> groupIDList = new ArrayList<>();
         for (Auth auth : authList) {
@@ -118,6 +125,10 @@ public class CreateId extends Activity implements AdapterView.OnItemSelectedList
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 //finish();

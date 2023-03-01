@@ -17,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ManageConfiguration extends Activity implements Serializable {
     final static String MANAGE_CONFIG_DEBUGGING_TAG = "IOT_MANAGE_CONFIGURATION";
@@ -47,6 +48,11 @@ public class ManageConfiguration extends Activity implements Serializable {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } //authList에는 json을 파싱해서 클래스 배열로 만든 결과가 담겨있음
+        catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         List<String> groupIDList = new ArrayList<>();
         for(Auth auth: authList){
