@@ -55,7 +55,6 @@ public class ManageConfiguration extends Activity implements Serializable {
 
 
         if(authList!= null){
-            final TextView groupIDTextView = findViewById(R.id.group_id_textview);
             ListView listView = findViewById(R.id.auth_listview);
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,groupIDList);
             listView.setAdapter(adapter);

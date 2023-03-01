@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/debug_id_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="ID"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/debug_pw_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="pw"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/debug_ui_list_request_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="get UI LIST" />
+
+    <Button
+        android:id="@+id/debug_post_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="POST" />
+
+    <TextView
+        android:id="@+id/debug_ui_list_result_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="result" />
+</LinearLayout>

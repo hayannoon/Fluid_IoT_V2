@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/create_group.xml" value="0.5578125" />
         <entry key="app/src/main/res/layout/create_id.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/debugging_activity.xml" value="0.33" />
         <entry key="app/src/main/res/layout/delete_group.xml" value="0.5578125" />
         <entry key="app/src/main/res/layout/delete_id.xml" value="0.419140625" />
         <entry key="app/src/main/res/layout/manage_configuration.xml" value="0.33" />

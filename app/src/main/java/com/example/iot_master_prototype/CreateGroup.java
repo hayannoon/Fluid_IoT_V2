@@ -54,24 +54,23 @@ public class CreateGroup extends Activity {
                 //call add_jsonParseer function
 
                 try { //Add group and write the config file.
-                    Toast t;
-                    if(jp.addConfigFile(auth, getApplicationContext())){
+                    if (jp.addConfigFile(auth, getApplicationContext())) {
                         //추가에 성공한 경우
                         new AlertDialog.Builder(CreateGroup.this)
                                 .setTitle("[SUCESS]")
                                 .setMessage("New group generation success!")
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         finish();
                                     }
                                 }).create().show();
-                    } else{
+                    } else {
                         //실패한 경우
                         new AlertDialog.Builder(CreateGroup.this)
                                 .setTitle("[FAILED]")
-                                .setMessage("New group generation failed try again!")
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                                .setMessage("New group generation failed. \ntry again!")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                     }
@@ -82,23 +81,6 @@ public class CreateGroup extends Activity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                //finish();
-
-//
-//                String jsonData = null;
-//                try {
-//                    jsonData = jp.getJsonString(JsonParser.AUTH_CONFIGURATION_FILE, getApplicationContext());
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                } //Get json String and saved to the jsonData variable
-//
-//                try {
-//                    jp.jsonParsing(jsonData);
-//                } catch (FileNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-
 
             }
         });

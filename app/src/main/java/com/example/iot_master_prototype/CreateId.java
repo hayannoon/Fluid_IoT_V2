@@ -108,7 +108,7 @@ public class CreateId extends Activity implements AdapterView.OnItemSelectedList
                     else{
                         new AlertDialog.Builder(CreateId.this)
                                 .setTitle("[FAILED]")
-                                .setMessage("New account generation failed try again!")
+                                .setMessage("New account generation failed. \ntry again!")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener(){
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {

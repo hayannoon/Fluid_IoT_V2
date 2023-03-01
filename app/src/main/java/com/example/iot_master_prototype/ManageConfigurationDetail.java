@@ -1,6 +1,8 @@
 package com.example.iot_master_prototype;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -77,13 +79,26 @@ public class ManageConfigurationDetail extends Activity implements Serializable 
                     try {
                         Toast t;
                         if(jp.updateConfigFile(position, newAuth, getApplicationContext())){
-                            t = Toast.makeText(getApplicationContext(), "Update Group Success!", Toast.LENGTH_LONG);
-                            t.setGravity(Gravity.CENTER_VERTICAL,0,0);
-                            t.show();
+                            //추가에 성공한 경우
+                            new AlertDialog.Builder(ManageConfigurationDetail.this)
+                                    .setTitle("[SUCESS]")
+                                    .setMessage("GROUP UPDATE SUCESS!")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            finish();
+                                        }
+                                    }).create().show();
                         }else{
-                            t = Toast.makeText(getApplicationContext(), "Update Group Success!", Toast.LENGTH_LONG);
-                            t.setGravity(Gravity.CENTER_VERTICAL,0,0);
-                            t.show();
+                            //실패한 경우
+                            new AlertDialog.Builder(ManageConfigurationDetail.this)
+                                    .setTitle("[FAILED]")
+                                    .setMessage("GROUP UPDATE FAILED \nTRY AGAIN!")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                        }
+                                    }).create().show();
                         }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
@@ -99,16 +114,27 @@ public class ManageConfigurationDetail extends Activity implements Serializable 
                 @Override
                 public void onClick(View view) {
                     Log.d(ManageConfigurationDetail_DEBUGGING_TAG,"DELETE GROUP BUTTON CLICKED!!!");
-                    Toast t;
                     try {
                         if(jp.removeGroup(position, getApplicationContext())){
-                            t = Toast.makeText(getApplicationContext(), "Delete Group Success!", Toast.LENGTH_LONG);
-                            t.setGravity(Gravity.CENTER_VERTICAL,0,0);
-                            t.show();
+                            new AlertDialog.Builder(ManageConfigurationDetail.this)
+                                    .setTitle("[SUCESS]")
+                                    .setMessage("GROUP DELETE SUCESS!")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            finish();
+                                        }
+                                    }).create().show();
                         } else{
-                            t = Toast.makeText(getApplicationContext(), "Delete Group Failed", Toast.LENGTH_LONG);
-                            t.setGravity(Gravity.CENTER_VERTICAL,0,0);
-                            t.show();
+                            //실패한 경우
+                            new AlertDialog.Builder(ManageConfigurationDetail.this)
+                                    .setTitle("[FAILED]")
+                                    .setMessage("GROUP DELETE FAILED \nTRY AGAIN!")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                        }
+                                    }).create().show();
                         }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();

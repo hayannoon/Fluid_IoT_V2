@@ -49,13 +49,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+
+
+
         Button resetConfigButton = (Button) findViewById(R.id.reset_configuration); //reset configuration button event
         resetConfigButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { // default configuration
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("[RESET CONFIGURATION]")
-                        .setMessage("If you click yes, every account and group information will be deleted. \n continue?")
+                        .setMessage("If you click yes, every account and group information will be deleted. \ncontinue?")
                         .setPositiveButton("YES", new DialogInterface.OnClickListener(){
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -77,16 +83,24 @@ public class MainActivity extends AppCompatActivity {
                 JsonParser jp = new JsonParser();
                 jp.writeConfigFile(JsonParser.AUTH_CONFIGURATION_FILE, JsonParser.DEFAULT_CONFIG_STRING, getApplicationContext());
                 jp.writeConfigFile(JsonParser.ACCOUNT_FILE, JsonParser.DEFAULT_ACCOUNT_STRING, getApplicationContext());
+                jp.writeConfigFile(JsonParser.DEVICES_INFO_FILE, JsonParser.DEFAULT_DEVICES_INFO, getApplicationContext());
             }
         });
+
+
+
+
+
+
+
 
         Button forDebuggingButton = (Button) findViewById(R.id.for_debugging);
         forDebuggingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Log.d(DEBUGGING_TAG, "for debugging button click event occur!!!");
-
+                Intent intent = new Intent(getApplicationContext(), DebuggingActivity.class);
+                startActivity(intent);
             }
         });
 
