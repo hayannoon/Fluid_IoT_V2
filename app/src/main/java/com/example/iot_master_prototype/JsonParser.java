@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class JsonParser extends AppCompatActivity {
+public class JsonParser  {
 
     final static String JSONPARSER_DEBUGGING_TAG = "IOT_JsonParser";
     final static String AUTH_CONFIGURATION_FILE = "configuration.json";

@@ -5,18 +5,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import org.json.JSONException;
 
-import java.io.FileNotFoundException;
 import java.util.concurrent.ExecutionException;
 
 
@@ -55,7 +52,6 @@ public class CreateGroup extends Activity {
                 //call add_jsonParseer function
 
                 try { //Add group and write the config file.
-                    //if (jp.addConfigFile(auth, getApplicationContext())) {
                         if (jp.addConfigFileToServer(auth)) {
                         //추가에 성공한 경우
                         new AlertDialog.Builder(CreateGroup.this)
