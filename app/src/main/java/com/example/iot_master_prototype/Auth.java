@@ -3,6 +3,8 @@ package com.example.iot_master_prototype;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+
 public class Auth {
 
     private String groupID;
@@ -86,5 +88,6 @@ public class Auth {
     public void setSpeaker(boolean speaker) {
         this.speaker = speaker;
     }
+
 
 }

@@ -84,18 +84,23 @@ public class JsonParser  {
     final static String DEFAULT_ACCOUNT_STRING = "{\n" +
             "  \"accounts\": [\n" +
             "    {\n" +
-            "      \"user_id\": \"level1_user\",\n" +
-            "      \"user_pw\": \"user1_password\",\n" +
+            "      \"user_id\": \"level1\",\n" +
+            "      \"user_pw\": \"l1\",\n" +
             "      \"group_name\": \"onlyBulb\"\n" +
             "    },\n" +
             "    {\n" +
-            "      \"user_id\": \"level2_user\",\n" +
-            "      \"user_pw\": \"user2_password\",\n" +
+            "      \"user_id\": \"level2\",\n" +
+            "      \"user_pw\": \"l2\",\n" +
             "      \"group_name\": \"onlyCamera\"\n" +
             "    },\n" +
             "    {\n" +
-            "      \"user_id\": \"master_user\",\n" +
-            "      \"user_pw\": \"master_password\",\n" +
+            "      \"user_id\": \"master\",\n" +
+            "      \"user_pw\": \"m\",\n" +
+            "      \"group_name\": \"master\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"user_id\": \"a\",\n" +
+            "      \"user_pw\": \"b\",\n" +
             "      \"group_name\": \"master\"\n" +
             "    }\n" +
             "  ]\n" +
@@ -104,28 +109,24 @@ public class JsonParser  {
     final static String DEFAULT_DEVICES_INFO_STRING = "{\n" +
             "  \"devices\": [\n" +
             "    {\n" +
-            "      \"bulb1\": {\n" +
-            "        \"id\": \"control_base_item\",\n" +
-            "        \"title\": \"rapo smart bulb\"\n" +
-            "      }\n" +
+            "      \"device_name\": \"bulb1\",\n" +
+            "      \"id\": \"control_base_item\",\n" +
+            "      \"title\": \"rapo smart bulb\"\n" +
             "    },\n" +
             "    {\n" +
-            "      \"bulb2\": {\n" +
-            "        \"id\": \"control_base_item\",\n" +
-            "        \"title\": \"Smart LED Stand\"\n" +
-            "      }\n" +
+            "      \"device_name\": \"bulb2\",\n" +
+            "      \"id\": \"control_base_item\",\n" +
+            "      \"title\": \"Smart LED Stand\"\n" +
             "    },\n" +
             "    {\n" +
-            "      \"camera\": {\n" +
-            "        \"id\": \"control_base_item\",\n" +
-            "        \"title\": \"Home camera 360\"\n" +
-            "      }\n" +
+            "      \"device_name\": \"camera\",\n" +
+            "      \"id\": \"control_base_item\",\n" +
+            "      \"title\": \"Home camera 360\"\n" +
             "    },\n" +
             "    {\n" +
-            "      \"speaker\": {\n" +
-            "        \"id\": \"control_base_item\",\n" +
-            "        \"title\": \"Galaxy Home Mini\"\n" +
-            "      }\n" +
+            "      \"device_name\": \"speaker\",\n" +
+            "      \"id\": \"control_base_item\",\n" +
+            "      \"title\": \"Galaxy Home Mini\"\n" +
             "    }\n" +
             "  ]\n" +
             "}";
@@ -247,8 +248,95 @@ public class JsonParser  {
         }
     }
 
+    String  getUIInfoFromAccount(String userID, String userPW) throws ExecutionException, InterruptedException, JSONException {
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Enter getUIInfoFromAccount function");
 
-    boolean addAccountFile(Account account, Context context) throws FileNotFoundException, JSONException, ExecutionException, InterruptedException {
+        String jsonData = this.getJsonStringFromServer(ACCOUNT_FILE);
+        JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
+        JSONArray accountsArray = jsonObject.getJSONArray("accounts");
+        JSONArray groupArray;
+        JSONArray devicesArray;
+        String returnValue = "{\"devices\":[";
+
+        String selectedGroupName = null;
+        for (int i = 0; i < accountsArray.length(); i++) {
+            JSONObject accountObject = accountsArray.getJSONObject(i);
+            if (accountObject.getString("user_id").equals(userID)) {
+                if(accountObject.getString("user_pw").equals(userPW)){
+                    //ID - PW MATCHING
+                    selectedGroupName = new String(accountObject.getString("group_name")); //Group Name Initialize
+                } else{
+                    // return 1 = ID - PW NOT MATCHING
+                    return "1";
+                }
+            }
+        }
+
+        if(selectedGroupName == null){
+            //return 2 = NO MATCHING ID
+            return "2";
+        }
+
+
+        //여기까지 왔다면 ID/PW는 매칭되는게 있고, Group Name까지 저장이 된 상태
+        //이제 Group파일을 보고 True로 설정된 기기의 리스트를 가져온다.
+
+        jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE);
+        jsonObject = new JSONObject(jsonData);
+        groupArray = jsonObject.getJSONArray("groups");
+
+        JSONObject targetGroup = null;
+        for(int i = 0 ; i < groupArray.length(); i++){
+            JSONObject groupObject = groupArray.getJSONObject(i);
+            if(groupObject.getString("group_name").equals(selectedGroupName)){
+                targetGroup = groupObject;
+                break;
+            }
+        }
+        if(targetGroup == null){
+            //return 3 = NO MATCHING GROUP
+            return "3";
+        }
+
+        //여기까지 왔다면 Group 정보를 가져와서 targetGroup객체에 저장이 완료된 상태.
+        ArrayList<String> allowdDevicesList = new ArrayList<>();
+        JSONObject Auths = targetGroup.getJSONObject("auth");
+
+        if(Auths.getString("bulb1").toString().equals("true")) allowdDevicesList.add("bulb1");
+        if(Auths.getString("bulb2").toString().equals("true")) allowdDevicesList.add("bulb2");
+        if(Auths.getString("strip").toString().equals("true")) allowdDevicesList.add("strip");
+        if(Auths.getString("camera").toString().equals("true")) allowdDevicesList.add("camera");
+        if(Auths.getString("speaker").toString().equals("true")) allowdDevicesList.add("speaker");
+
+        Log.d(JSONPARSER_DEBUGGING_TAG, "NUMBER OF ALLOWED DEVICES : " + allowdDevicesList.size());
+        //여기까지 왔다면  alloweddDevicesList 허용된 디바이스 리스트가 저장된 상태
+
+        jsonData = this.getJsonStringFromServer(DEVICES_INFO_FILE);
+        jsonObject = new JSONObject(jsonData);
+        devicesArray = jsonObject.getJSONArray("devices");
+
+        for(int i = 0 ; i < allowdDevicesList.size() ; i++){
+            String deviceName = allowdDevicesList.get(i).toString();
+            for(int j = 0 ; j < devicesArray.length() ; j++){
+                JSONObject deviceObject = devicesArray.getJSONObject(j);
+                if(deviceObject.getString("device_name").equals(deviceName)){
+                    String tmp = deviceObject.toString();
+                    returnValue += tmp;
+                    returnValue += ",";
+                }
+            }
+        }
+
+        returnValue = returnValue.substring(0, returnValue.length() - 1);
+        returnValue += "]}";
+
+        Log.d(JSONPARSER_DEBUGGING_TAG, returnValue);
+
+        return returnValue;
+    }
+
+
+    boolean addAccountFile(Account account) throws FileNotFoundException, JSONException, ExecutionException, InterruptedException {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter addAccountFile function");
 
         String jsonData = this.getJsonStringFromServer(ACCOUNT_FILE);
@@ -357,6 +445,7 @@ public class JsonParser  {
 
         return false;
     }
+
 
 
     List<Auth> getAuthListFromConfigFile(Context context) throws FileNotFoundException, ExecutionException, InterruptedException { //read configuration file then return auth List

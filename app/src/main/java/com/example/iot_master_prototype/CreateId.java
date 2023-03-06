@@ -101,7 +101,7 @@ public class CreateId extends Activity implements AdapterView.OnItemSelectedList
 
                 Account newAccount = new Account(userID.getText().toString(), userPW.getText().toString(), groupSelectSpinner.getSelectedItem().toString());
                 try {
-                    if(jp.addAccountFile(newAccount, getApplicationContext() )){
+                    if(jp.addAccountFile(newAccount)){
                         new AlertDialog.Builder(CreateId.this)
                                 .setTitle("[SUCESS]")
                                 .setMessage("New account generation success!")

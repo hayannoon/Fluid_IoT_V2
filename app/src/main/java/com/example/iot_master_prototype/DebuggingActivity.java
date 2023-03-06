@@ -13,6 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedWriter;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -35,6 +39,8 @@ public class DebuggingActivity extends AppCompatActivity {
         resultTextView = (TextView) findViewById(R.id.debug_ui_list_result_textview);
         resultTextView.setText("TEST INFO");
 
+        JsonParser jp = new JsonParser();
+
         Button debugGetUIListButton = (Button) findViewById(R.id.debug_ui_list_request_btn);
         debugGetUIListButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,16 +54,55 @@ public class DebuggingActivity extends AppCompatActivity {
 
                 //Do Something
 
+                //1. Get Account File from Server
+
+
+                //2. Find matching ID
+
+                //3. If there is not matched ID => return false
+
+                //4. else => Get Group ID then take the list of true device
+
+                //5. Get Devices_info file then return the {UI-ID, text} list
+
+                String returnValue = "BEFORE";
+
                 resultTextView.setText("Something");
+                try {
+                    returnValue = jp.getUIInfoFromAccount(inputID, inputPW);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                resultTextView.setText(returnValue);
 
                 //Something에는 ID/PW가 가지고 있는 권한에 해당하는 UI 목록을 보여줘야한다.
 
             }
         });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         Button debugPostButton = (Button) findViewById(R.id.debug_post_button);
         debugPostButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 Log.d(DEBUGGINGACTIVITY_TAG, "post btn clicked");
