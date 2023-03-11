@@ -20,9 +20,8 @@ import java.util.concurrent.ExecutionException;
 public class GoogleHomeMain extends Activity {
 
     final static String GOOGLE_HOME_DEGUGGING_TAG = "IoT_Google_Home_Main";
-    final String[] words = new String[] {"master", "User1", "User2"};
+    final String[] words = new String[]{"master", "User1", "User2"};
 
-    Button btn_dialog;
     List<String> mSelectedItem;
     AlertDialog.Builder builder;
     JsonParser jp = new JsonParser();
@@ -33,11 +32,11 @@ public class GoogleHomeMain extends Activity {
         setContentView(R.layout.google_home_main);
 
         Button ledStripButton = (Button) findViewById(R.id.LED_strip_button); //LED-STRIP BUTTON
-        ledStripButton.setOnClickListener(new View.OnClickListener(){
+        ledStripButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Log.d(GOOGLE_HOME_DEGUGGING_TAG,"click LED Strip!");
+                Log.d(GOOGLE_HOME_DEGUGGING_TAG, "click LED Strip!");
                 try {
                     showDialog("strip");
                 } catch (JSONException e) {
@@ -49,11 +48,11 @@ public class GoogleHomeMain extends Activity {
                 }
             }
         });
-        ledStripButton.setOnLongClickListener(new View.OnLongClickListener(){
+        ledStripButton.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override
             public boolean onLongClick(View v) {
-                Log.d(GOOGLE_HOME_DEGUGGING_TAG,"LONG_CLICK LED Strip!");
+                Log.d(GOOGLE_HOME_DEGUGGING_TAG, "LONG_CLICK LED Strip!");
 
                 Intent intent = new Intent(getApplicationContext(), GoogleHome_LED_Strip.class);
                 startActivity(intent);
@@ -63,13 +62,12 @@ public class GoogleHomeMain extends Activity {
         });
 
 
-
         Button rapoBulbButton = (Button) findViewById(R.id.rapo_smart_bulb_button);
-        rapoBulbButton.setOnClickListener(new View.OnClickListener(){
+        rapoBulbButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Log.d(GOOGLE_HOME_DEGUGGING_TAG,"click Rapo Bulb!");
+                Log.d(GOOGLE_HOME_DEGUGGING_TAG, "click Rapo Bulb!");
                 try {
                     showDialog("bulb1");
                 } catch (JSONException e) {
@@ -84,11 +82,11 @@ public class GoogleHomeMain extends Activity {
 
 
         Button smartLEDStandButon = (Button) findViewById(R.id.smart_led_stand_button);
-        smartLEDStandButon.setOnClickListener(new View.OnClickListener(){
+        smartLEDStandButon.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Log.d(GOOGLE_HOME_DEGUGGING_TAG,"click LED STAND!");
+                Log.d(GOOGLE_HOME_DEGUGGING_TAG, "click LED STAND!");
                 try {
                     showDialog("bulb2");
                 } catch (JSONException e) {
@@ -103,11 +101,11 @@ public class GoogleHomeMain extends Activity {
 
 
         Button homeCameraButton = (Button) findViewById(R.id.home_camera_button);
-        homeCameraButton.setOnClickListener(new View.OnClickListener(){
+        homeCameraButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Log.d(GOOGLE_HOME_DEGUGGING_TAG,"click Camera!");
+                Log.d(GOOGLE_HOME_DEGUGGING_TAG, "click Camera!");
                 try {
                     showDialog("camera");
                 } catch (JSONException e) {
@@ -122,11 +120,11 @@ public class GoogleHomeMain extends Activity {
 
 
         Button speakerButton = (Button) findViewById(R.id.galaxy_home_mini_button);
-        speakerButton.setOnClickListener(new View.OnClickListener(){
+        speakerButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Log.d(GOOGLE_HOME_DEGUGGING_TAG,"click Speaker!");
+                Log.d(GOOGLE_HOME_DEGUGGING_TAG, "click Speaker!");
                 try {
                     showDialog("speaker");
                 } catch (JSONException e) {
@@ -140,10 +138,11 @@ public class GoogleHomeMain extends Activity {
         });
     }
 
+
     public void showDialog(String deviceName) throws JSONException, ExecutionException, InterruptedException {
         mSelectedItem = new ArrayList<>();
         builder = new AlertDialog.Builder(GoogleHomeMain.this);
-        builder.setTitle(deviceName + " Auth Setting!");
+        builder.setTitle(deviceName + " access setting");
 
         String[] myItem = null;
         try {
@@ -158,29 +157,29 @@ public class GoogleHomeMain extends Activity {
 
         ArrayList<Boolean> checkedItemsArray = jp.getGroupInfoAboutDevice(deviceName);
         boolean[] checkedItems = new boolean[checkedItemsArray.size()];
-        for(int n = 0 ; n < checkedItemsArray.size() ; n++){
+        for (int n = 0; n < checkedItemsArray.size(); n++) {
             checkedItems[n] = checkedItemsArray.get(n);
         }
         //click event
 
         String[] finalMyItem = myItem;
 
-        for(int i = 0 ; i < checkedItems.length ; i++){
-            if(checkedItems[i]){
+        for (int i = 0; i < checkedItems.length; i++) {
+            if (checkedItems[i]) {
                 mSelectedItem.add(finalMyItem[i]);
             }
         }
 
-        builder.setMultiChoiceItems(myItem, checkedItems, new DialogInterface.OnMultiChoiceClickListener(){
+        builder.setMultiChoiceItems(myItem, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                 //데이터 리스트 담기
 
 
-                if(isChecked){
+                if (isChecked) {
                     mSelectedItem.add(finalMyItem[which]);
-                } else if(mSelectedItem.contains(finalMyItem[which])){
+                } else if (mSelectedItem.contains(finalMyItem[which])) {
                     mSelectedItem.remove(finalMyItem[which]);
                 }
             }
@@ -201,21 +200,8 @@ public class GoogleHomeMain extends Activity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//
-//                for(String item: mSelectedItem){
-//                    //Array 돌면서 selected Item이면 true로 바꾼다.
-//                    try {
-//                        jp.updateConfigFileV2((ArrayList<String>) mSelectedItem, deviceName);
-//                    } catch (ExecutionException e) {
-//                        e.printStackTrace();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-                Toast.makeText(getApplicationContext(), "access control setting completed", Toast.LENGTH_LONG).show();
+
+                Toast.makeText(getApplicationContext(), deviceName + "access control setting completed", Toast.LENGTH_LONG).show();
 
             }
         });

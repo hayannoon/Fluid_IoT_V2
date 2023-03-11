@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../Android/Sdk/platforms/android-33/data/res/layout/simple_spinner_dropdown_item.xml" value="0.32750759878419455" />
+        <entry key="../../Android/Sdk/platforms/android-33/data/res/layout/simple_spinner_item.xml" value="0.32750759878419455" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/create_group.xml" value="0.5578125" />
         <entry key="app/src/main/res/layout/create_id.xml" value="0.33" />
@@ -15,6 +17,7 @@
         <entry key="app/src/main/res/layout/manage_configuration_detail.xml" value="0.39356884057971014" />
         <entry key="app/src/main/res/layout/manage_id.xml" value="0.5584239130434783" />
         <entry key="app/src/main/res/layout/manage_id_detail.xml" value="0.5584239130434783" />
+        <entry key="app/src/main/res/layout/timepicker.xml" value="0.26281560826319816" />
       </map>
     </option>
   </component>

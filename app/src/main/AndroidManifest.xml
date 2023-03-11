@@ -39,5 +39,6 @@
         <activity android:name=".DebuggingActivity"></activity>
         <activity android:name=".GoogleHomeMain"></activity>
         <activity android:name=".GoogleHome_LED_Strip"></activity>
+        <activity android:name=".TimePickerActivity"></activity>
     </application>
 </manifest>
