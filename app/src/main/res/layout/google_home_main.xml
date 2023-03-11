@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/googlehome_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+         />
+
+    <Button
+        android:id="@+id/LED_strip_button"
+        android:layout_width="183dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#00ff0000"/>
+
+    <Button
+        android:id="@+id/rapo_smart_bulb_button"
+        android:layout_width="181dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="68dp"
+        android:background="#00ff0000"
+        app:layout_constraintStart_toEndOf="@+id/LED_strip_button"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/smart_led_stand_button"
+        android:layout_width="182dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:background="#00ff0000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LED_strip_button" />
+
+    <Button
+        android:id="@+id/home_camera_button"
+        android:layout_width="182dp"
+        android:layout_height="84dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:background="#00ff0000"
+        app:layout_constraintStart_toEndOf="@+id/smart_led_stand_button"
+        app:layout_constraintTop_toBottomOf="@+id/rapo_smart_bulb_button" />
+
+    <Button
+        android:id="@+id/galaxy_home_mini_button"
+        android:layout_width="192dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="16dp"
+        android:background="#00ff0000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/smart_led_stand_button" />
+</androidx.constraintlayout.widget.ConstraintLayout>

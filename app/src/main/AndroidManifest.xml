@@ -37,5 +37,6 @@
         <activity android:name=".ManageConfigurationDetail"></activity>
         <activity android:name=".ManageIdDetail"></activity>
         <activity android:name=".DebuggingActivity"></activity>
+        <activity android:name=".GoogleHomeMain"></activity>
     </application>
 </manifest>

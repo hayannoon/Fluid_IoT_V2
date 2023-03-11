@@ -107,10 +107,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-
-
-
         Button forDebuggingButton = (Button) findViewById(R.id.for_debugging);
         forDebuggingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +118,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        Button detailSettingButton = (Button) findViewById(R.id.detail_setting_button);
+        detailSettingButton.setOnClickListener(new View.OnClickListener(){
 
+            @Override
+            public void onClick(View v) {
+                Log.d(DEBUGGING_TAG, "go to google home activity!");
+                Intent intent = new Intent(getApplicationContext(), GoogleHomeMain.class);
+                startActivity(intent);
+            }
+        });
 
 
 
