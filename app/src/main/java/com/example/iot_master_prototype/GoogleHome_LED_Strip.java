@@ -2,6 +2,7 @@ package com.example.iot_master_prototype;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -161,7 +162,7 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
 
         TableRow temporalSettingTableRow1 = (TableRow) findViewById(R.id.strip_start_time_wrapper);
         TableRow temporalSettingTableRow2 = (TableRow) findViewById(R.id.strip_end_time_wrapper);
-        TimePicker startTimePicker = (TimePicker) findViewById(R.id.start_time_picker);
+        TimePicker startTimePicker = (TimePicker) findViewById(R.id.strip_start_time_picker);
         TimePicker endTimePicker = (TimePicker) findViewById(R.id.strip_end_time_picker);
 
 
@@ -195,6 +196,31 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
             }
         });
 
+        startTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                EditText startTimeTextEdit = (EditText) findViewById(R.id.strip_start_time);
+                startTimeTextEdit.setText(hourOfDay + " : " + minute);
+            }
+        });
+
+
+        endTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+            @Override
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                EditText endTimeTextEdit = (EditText) findViewById(R.id.strip_end_time);
+                endTimeTextEdit.setText(hourOfDay + " : " + minute);
+            }
+        });
+
+
+        Button saveButton = (Button) findViewById(R.id.strip_detail_save_button);
+        saveButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("SAVE", "Save something");
+            }
+        });
 
 
     }

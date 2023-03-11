@@ -226,7 +226,10 @@
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
+                android:gravity="center_horizontal|bottom"
+                android:textStyle="bold"
+                android:textSize="20sp"
                 android:text="Start Time" />
 
             <TimePicker
@@ -237,7 +240,10 @@
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
+                android:gravity="center_horizontal|bottom"
+                android:textStyle="bold"
+                android:textSize="20sp"
                 android:text="End Time" />
 
             <TimePicker
@@ -245,6 +251,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/strip_detail_save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="save" />
 
 
     </LinearLayout>
