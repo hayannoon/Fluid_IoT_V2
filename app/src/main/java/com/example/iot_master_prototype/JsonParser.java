@@ -81,6 +81,95 @@ public class JsonParser  {
             "  ]\n" +
             "}";
 
+    final static String DEFAULT_CONFIG_V2_STRING = "{\n" +
+            "  \"groups\": [\n" +
+            "    {\n" +
+            "      \"group_name\": \"master\",\n" +
+            "      \"auth\": {\n" +
+            "        \"bulb1\": {\n" +
+            "          \"on&off\": \"true\",\n" +
+            "          \"brightness\": \"false\"\n" +
+            "        },\n" +
+            "        \"bulb2\": {\n" +
+            "          \"on&off\": \"false\",\n" +
+            "          \"brightness\": \"true\"\n" +
+            "        },\n" +
+            "        \"strip\": \"true\",\n" +
+            "        \"camera\": \"true\",\n" +
+            "        \"speaker\": {\n" +
+            "          \"volume\": \"true\",\n" +
+            "          \"mute\": \"true\",\n" +
+            "          \"on&off\": \"false\",\n" +
+            "          \"start&stop\": \"true\"\n" +
+            "        }\n" +
+            "      }\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"group_name\": \"onlyBulb\",\n" +
+            "      \"auth\": {\n" +
+            "        \"bulb1\": {\n" +
+            "          \"on&off\": \"true\",\n" +
+            "          \"brightness\": \"false\"\n" +
+            "        },\n" +
+            "        \"bulb2\": {\n" +
+            "          \"on&off\": \"true\",\n" +
+            "          \"brightness\": \"false\"\n" +
+            "        },\n" +
+            "        \"strip\": \"false\",\n" +
+            "        \"camera\": \"false\",\n" +
+            "        \"speaker\": {\n" +
+            "          \"volume\": \"true\",\n" +
+            "          \"mute\": \"true\",\n" +
+            "          \"on&off\": \"false\",\n" +
+            "          \"start&stop\": \"true\"\n" +
+            "        }\n" +
+            "      }\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"group_name\": \"onlyCamera\",\n" +
+            "      \"auth\": {\n" +
+            "        \"bulb1\": {\n" +
+            "          \"on&off\": \"true\",\n" +
+            "          \"brightness\": \"false\"\n" +
+            "        },\n" +
+            "        \"bulb2\": {\n" +
+            "          \"on&off\": \"true\",\n" +
+            "          \"brightness\": \"false\"\n" +
+            "        },\n" +
+            "        \"strip\": \"false\",\n" +
+            "        \"camera\": \"true\",\n" +
+            "        \"speaker\": {\n" +
+            "          \"volume\": \"true\",\n" +
+            "          \"mute\": \"true\",\n" +
+            "          \"on&off\": \"false\",\n" +
+            "          \"start&stop\": \"true\"\n" +
+            "        }\n" +
+            "      }\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"group_name\": \"onlySpeaker\",\n" +
+            "      \"auth\": {\n" +
+            "        \"bulb1\": {\n" +
+            "          \"on&off\": \"true\",\n" +
+            "          \"brightness\": \"false\"\n" +
+            "        },\n" +
+            "        \"bulb2\": {\n" +
+            "          \"on&off\": \"true\",\n" +
+            "          \"brightness\": \"false\"\n" +
+            "        },\n" +
+            "        \"strip\": \"false\",\n" +
+            "        \"camera\": \"false\",\n" +
+            "        \"speaker\": {\n" +
+            "          \"volume\": \"true\",\n" +
+            "          \"mute\": \"true\",\n" +
+            "          \"on&off\": \"false\",\n" +
+            "          \"start&stop\": \"true\"\n" +
+            "        }\n" +
+            "      }\n" +
+            "    }\n" +
+            "  ]\n" +
+            "}";
+
     final static String DEFAULT_ACCOUNT_STRING = "{\n" +
             "  \"accounts\": [\n" +
             "    {\n" +
@@ -105,6 +194,8 @@ public class JsonParser  {
             "    }\n" +
             "  ]\n" +
             "}";
+
+
 
     final static String DEFAULT_DEVICES_INFO_STRING = "{\n" +
             "  \"devices\": [\n" +
