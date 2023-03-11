@@ -38,5 +38,6 @@
         <activity android:name=".ManageIdDetail"></activity>
         <activity android:name=".DebuggingActivity"></activity>
         <activity android:name=".GoogleHomeMain"></activity>
+        <activity android:name=".GoogleHome_LED_Strip"></activity>
     </application>
 </manifest>

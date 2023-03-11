@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -489,6 +487,67 @@ public class JsonParser  {
 
         return false;
     }
+
+    boolean updateConfigFileV2(ArrayList<String> allowdGroupArray, String deviceName) throws ExecutionException, InterruptedException, JSONException {
+        String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE); //get Json Data from server and save the string value
+
+        JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
+
+        JSONArray groupArray = jsonObject.getJSONArray("groups"); //다시 json 불러와서 해당 인덱스의 auth 객체를 교체해준다.
+
+        for(int i = 0 ; i < groupArray.length() ; i++){
+            JSONObject targetObject = (JSONObject) groupArray.get(i);
+            String groupName = targetObject.getString("group_name");
+            JSONObject tmp = targetObject.getJSONObject("auth");
+            if(allowdGroupArray.contains(groupName)){
+                tmp.put(deviceName, "true");
+            } else{
+                tmp.put(deviceName, "false");
+            }
+        }
+
+        String jsonString = jsonObject.toString();
+        if (writeConfigFileToServer(AUTH_CONFIGURATION_FILE, jsonString)) {
+            Log.d(JSONPARSER_DEBUGGING_TAG, "update group Success!!!");
+            return true;
+        }
+        return false;
+    }
+
+
+
+    ArrayList<String> getGroupList() throws ExecutionException, InterruptedException, JSONException {
+        ArrayList<String> groupList = new ArrayList<>();
+        String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        JSONObject tmp;
+
+        JSONArray groupArray = jsonObject.getJSONArray("groups");
+        for(int i = 0 ; i < groupArray.length() ; i++){
+            tmp = (JSONObject) groupArray.get(i);
+            groupList.add(tmp.getString("group_name"));
+        }
+
+        return groupList;
+    }
+
+    ArrayList<Boolean> getGroupInfoAboutDevice(String deviceName) throws ExecutionException, JSONException, InterruptedException {
+        ArrayList<Boolean> groupInfoAboutDeviceArray = new ArrayList<>();
+        String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE);
+        JSONObject jsonObject = new JSONObject(jsonData);
+        JSONObject tmp;
+
+        JSONArray groupArray = jsonObject.getJSONArray("groups");
+        for(int i = 0 ; i < groupArray.length() ; i++){
+            tmp = (JSONObject) groupArray.get(i);
+            JSONObject tmp1 = tmp.getJSONObject("auth");
+            groupInfoAboutDeviceArray.add(Boolean.parseBoolean(tmp1.getString(deviceName)));
+        }
+
+        return groupInfoAboutDeviceArray;
+    }
+
+
 
 
     boolean removeGroup(int index, Context context) throws FileNotFoundException, JSONException, InterruptedException, ExecutionException {

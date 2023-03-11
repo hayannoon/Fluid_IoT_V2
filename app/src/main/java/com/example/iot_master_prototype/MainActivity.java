@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     final static String DEBUGGING_TAG = "IOT_MainActivity";
 
+    JsonParser jp = new JsonParser();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
