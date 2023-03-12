@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d(DEBUGGING_TAG, "for debugging button click event occur!!!");
-                Intent intent = new Intent(getApplicationContext(), TimePickerActivity.class);
+                Intent intent = new Intent(getApplicationContext(), DebuggingActivity.class);
                 startActivity(intent);
             }
         });

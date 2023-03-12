@@ -52,6 +52,7 @@ public class DebuggingActivity extends AppCompatActivity {
                 String inputPW = ((EditText) findViewById(R.id.debug_pw_input)).getText().toString();
                 Log.d(DEBUGGINGACTIVITY_TAG, "input ID : " + inputID + ", input PW : " + inputPW);
 
+
                 //Do Something
 
                 //1. Get Account File from Server
@@ -78,6 +79,16 @@ public class DebuggingActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 resultTextView.setText(returnValue);
+
+                try {
+                    jp.getAuthListFromCOnfigFile_v2();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
                 //Something에는 ID/PW가 가지고 있는 권한에 해당하는 UI 목록을 보여줘야한다.
 

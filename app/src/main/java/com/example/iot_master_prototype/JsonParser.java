@@ -21,6 +21,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -29,6 +30,7 @@ public class JsonParser  {
 
     final static String JSONPARSER_DEBUGGING_TAG = "IOT_JsonParser";
     final static String AUTH_CONFIGURATION_FILE = "configuration.json";
+    final static String AUTH_CONFIGURATION_FILE_V2 = "configuration_v2.json";
     final static String ACCOUNT_FILE = "account.json";
     final static String DEVICES_INFO_FILE = "devices_info.json";
     final static String SERVER_URL = "http://13.125.172.116:8080/iot_auth/";
@@ -85,84 +87,148 @@ public class JsonParser  {
             "      \"group_name\": \"master\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
-            "          \"on&off\": \"true\",\n" +
-            "          \"brightness\": \"false\"\n" +
+            "          \"on/off\": \"true\",\n" +
+            "          \"brightness\": \"true\",\n" +
+            "          \"supervised\": \"None\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
             "        },\n" +
             "        \"bulb2\": {\n" +
-            "          \"on&off\": \"false\",\n" +
-            "          \"brightness\": \"true\"\n" +
+            "          \"on/off\": \"true\",\n" +
+            "          \"brightness\": \"true\",\n" +
+            "          \"supervised\": \"None\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
             "        },\n" +
-            "        \"strip\": \"true\",\n" +
+            "        \"strip\": {\n" +
+            "          \"on/off\": \"true\",\n" +
+            "          \"brightness\": \"true\",\n" +
+            "          \"supervised\": \"None\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
+            "        },\n" +
             "        \"camera\": \"true\",\n" +
-            "        \"speaker\": {\n" +
-            "          \"volume\": \"true\",\n" +
-            "          \"mute\": \"true\",\n" +
-            "          \"on&off\": \"false\",\n" +
-            "          \"start&stop\": \"true\"\n" +
-            "        }\n" +
+            "        \"speaker\": \"true\"\n" +
             "      }\n" +
             "    },\n" +
             "    {\n" +
             "      \"group_name\": \"onlyBulb\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
-            "          \"on&off\": \"true\",\n" +
-            "          \"brightness\": \"false\"\n" +
+            "          \"on/off\": \"true\",\n" +
+            "          \"brightness\": \"true\",\n" +
+            "          \"supervised\": \"None\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
             "        },\n" +
             "        \"bulb2\": {\n" +
-            "          \"on&off\": \"true\",\n" +
-            "          \"brightness\": \"false\"\n" +
+            "          \"on/off\": \"false\",\n" +
+            "          \"brightness\": \"true\",\n" +
+            "          \"supervised\": \"None\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
             "        },\n" +
-            "        \"strip\": \"false\",\n" +
+            "        \"strip\": {\n" +
+            "          \"on/off\": \"true\",\n" +
+            "          \"brightness\": \"false\",\n" +
+            "          \"supervised\": \"None\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
+            "        },\n" +
             "        \"camera\": \"false\",\n" +
-            "        \"speaker\": {\n" +
-            "          \"volume\": \"true\",\n" +
-            "          \"mute\": \"true\",\n" +
-            "          \"on&off\": \"false\",\n" +
-            "          \"start&stop\": \"true\"\n" +
-            "        }\n" +
+            "        \"speaker\": \"false\"\n" +
             "      }\n" +
             "    },\n" +
             "    {\n" +
             "      \"group_name\": \"onlyCamera\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
-            "          \"on&off\": \"true\",\n" +
-            "          \"brightness\": \"false\"\n" +
+            "          \"on/off\": \"true\",\n" +
+            "          \"brightness\": \"true\",\n" +
+            "          \"supervised\": \"onlyBulb\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
             "        },\n" +
             "        \"bulb2\": {\n" +
-            "          \"on&off\": \"true\",\n" +
-            "          \"brightness\": \"false\"\n" +
+            "          \"on/off\": \"false\",\n" +
+            "          \"brightness\": \"false\",\n" +
+            "          \"supervised\": \"None\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
             "        },\n" +
-            "        \"strip\": \"false\",\n" +
+            "        \"strip\": {\n" +
+            "          \"on/off\": \"false\",\n" +
+            "          \"brightness\": \"false\",\n" +
+            "          \"supervised\": \"master\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
+            "        },\n" +
             "        \"camera\": \"true\",\n" +
-            "        \"speaker\": {\n" +
-            "          \"volume\": \"true\",\n" +
-            "          \"mute\": \"true\",\n" +
-            "          \"on&off\": \"false\",\n" +
-            "          \"start&stop\": \"true\"\n" +
-            "        }\n" +
+            "        \"speaker\": \"false\"\n" +
             "      }\n" +
             "    },\n" +
             "    {\n" +
             "      \"group_name\": \"onlySpeaker\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
-            "          \"on&off\": \"true\",\n" +
-            "          \"brightness\": \"false\"\n" +
+            "          \"on/off\": \"true\",\n" +
+            "          \"brightness\": \"true\",\n" +
+            "          \"supervised\": \"master\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
             "        },\n" +
             "        \"bulb2\": {\n" +
-            "          \"on&off\": \"true\",\n" +
-            "          \"brightness\": \"false\"\n" +
+            "          \"on/off\": \"false\",\n" +
+            "          \"brightness\": \"true\",\n" +
+            "          \"supervised\": \"master\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
             "        },\n" +
-            "        \"strip\": \"false\",\n" +
+            "        \"strip\": {\n" +
+            "          \"on/off\": \"false\",\n" +
+            "          \"brightness\": \"true\",\n" +
+            "          \"supervised\": \"master\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"14:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
+            "        },\n" +
             "        \"camera\": \"false\",\n" +
-            "        \"speaker\": {\n" +
-            "          \"volume\": \"true\",\n" +
-            "          \"mute\": \"true\",\n" +
-            "          \"on&off\": \"false\",\n" +
-            "          \"start&stop\": \"true\"\n" +
-            "        }\n" +
+            "        \"speaker\": \"true\"\n" +
             "      }\n" +
             "    }\n" +
             "  ]\n" +
@@ -274,6 +340,8 @@ public class JsonParser  {
         net.join();
         return net.getResult();
     }
+
+
 
 
     boolean addConfigFile(Auth auth, Context context) throws FileNotFoundException, JSONException {
@@ -594,6 +662,83 @@ public class JsonParser  {
         }
 
         return false;
+    }
+
+    List<Auth> getAuthListFromCOnfigFile_v2() throws ExecutionException, InterruptedException, JSONException {
+        List<Auth> authList = new ArrayList<>();
+        String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE_V2);
+
+        JSONObject jsonObject = new JSONObject(jsonData);
+        JSONArray authArray = jsonObject.getJSONArray("groups");
+
+        for(int i = 0 ; i < authArray.length() ; i++){
+            JSONObject authObject = authArray.getJSONObject(i);
+            Auth auth = new Auth();
+            auth.setGroupID(authObject.getString("group_name")); //get Name
+
+            JSONObject authDeviceObject = authObject.getJSONObject("auth");
+            JSONObject bulb1Object = authDeviceObject.getJSONObject("bulb1");
+            JSONObject bulb2Object = authDeviceObject.getJSONObject("bulb2");
+            JSONObject ledStripObject = authDeviceObject.getJSONObject("strip");
+
+            auth.setBulb1OnOff(bulb1Object.getBoolean("on/off"));
+            auth.setBulb1Brightness(bulb1Object.getBoolean("brightness"));
+            String isSupervised = bulb1Object.getString("supervised");
+            if(isSupervised.equals("None")){
+                auth.setBulb1IsSupervised(false);
+            }else{
+                auth.setBulb1IsSupervised(true);
+                auth.setBulb1SupervisedBy(isSupervised);
+            }
+
+            JSONObject isTemporalObject = bulb1Object.getJSONObject("temporal");
+            auth.setBulb1IsTemporal(isTemporalObject.getBoolean("isTemporal"));
+            auth.setBulb1StartTime(isTemporalObject.getString("start_time"));
+            auth.setBulb1EndTime(isTemporalObject.getString("end_time"));
+            //여기까지가 Bulb1
+
+            auth.setBulb2OnOff(bulb2Object.getBoolean("on/off"));
+            auth.setBulb2Brightness(bulb2Object.getBoolean("brightness"));
+            isSupervised = bulb2Object.getString("supervised");
+            if(isSupervised.equals("None")){
+                auth.setBulb2IsSupervised(false);
+            }else{
+                auth.setBulb2IsSupervised(true);
+                auth.setBulb2SupervisedBy(isSupervised);
+            }
+
+            isTemporalObject = bulb2Object.getJSONObject("temporal");
+            auth.setBulb2IsTemporal(isTemporalObject.getBoolean("isTemporal"));
+            auth.setBulb2StartTime(isTemporalObject.getString("start_time"));
+            auth.setBulb2EndTime(isTemporalObject.getString("end_time"));
+            //여기까지가 bulb2
+
+            auth.setLedStripOnOff(ledStripObject.getBoolean("on/off"));
+            auth.setLedStripBrightness(ledStripObject.getBoolean("brightness"));
+            isSupervised = ledStripObject.getString("supervised");
+            if(isSupervised.equals("None")){
+                auth.setLedStripIsSupervised(false);
+            }else{
+                auth.setLedStripIsSupervised(true);
+                auth.setLedStripSupervisedBy(isSupervised);
+            }
+
+            isTemporalObject = ledStripObject.getJSONObject("temporal");
+            auth.setLedStripIsTemporal(isTemporalObject.getBoolean("isTemporal"));
+            auth.setLedStripStartTime(isTemporalObject.getString("start_time"));
+            auth.setLedStripEndTime(isTemporalObject.getString("end_time"));
+
+
+
+            auth.setCamera(authDeviceObject.getBoolean("camera"));
+            auth.setSpeaker(authDeviceObject.getBoolean("speaker"));
+
+            Log.d(JSONPARSER_DEBUGGING_TAG, "Auth Instance " + i + " added!");
+            authList.add(auth);
+
+        }
+        Log.d(JSONPARSER_DEBUGGING_TAG, "Length of auth list : " + authList.size());
+        return authList;
     }
 
 

@@ -15,6 +15,197 @@ public class Auth {
     private boolean camera;
     private boolean speaker;
 
+    private boolean bulb1OnOff;
+    private boolean bulb1Brightness;
+    private boolean bulb1IsSupervised;
+    private String bulb1SupervisedBy;
+    private boolean bulb1IsTemporal;
+    private String bulb1StartTime;
+    private String bulb1EndTime;
+
+    private boolean bulb2OnOff;
+    private boolean bulb2Brightness;
+    private boolean bulb2IsSupervised;
+    private String bulb2SupervisedBy;
+    private boolean bulb2IsTemporal;
+    private String bulb2StartTime;
+    private String bulb2EndTime;
+
+    private boolean ledStripOnOff;
+    private boolean ledStripBrightness;
+    private boolean ledStripIsSupervised;
+    private String ledStripSupervisedBy;
+    private boolean ledStripIsTemporal;
+    private String ledStripStartTime;
+    private String ledStripEndTime;
+
+    public boolean isBulb1OnOff() {
+        return bulb1OnOff;
+    }
+
+    public void setBulb1OnOff(boolean bulb1OnOff) {
+        this.bulb1OnOff = bulb1OnOff;
+    }
+
+    public boolean isBulb1Brightness() {
+        return bulb1Brightness;
+    }
+
+    public void setBulb1Brightness(boolean bulb1Brightness) {
+        this.bulb1Brightness = bulb1Brightness;
+    }
+
+    public boolean isBulb1IsSupervised() {
+        return bulb1IsSupervised;
+    }
+
+    public void setBulb1IsSupervised(boolean bulb1IsSupervised) {
+        this.bulb1IsSupervised = bulb1IsSupervised;
+    }
+
+    public String getBulb1SupervisedBy() {
+        return bulb1SupervisedBy;
+    }
+
+    public void setBulb1SupervisedBy(String bulb1SupervisedBy) {
+        this.bulb1SupervisedBy = bulb1SupervisedBy;
+    }
+
+    public boolean isBulb1IsTemporal() {
+        return bulb1IsTemporal;
+    }
+
+    public void setBulb1IsTemporal(boolean bulb1IsTemporal) {
+        this.bulb1IsTemporal = bulb1IsTemporal;
+    }
+
+    public String getBulb1StartTime() {
+        return bulb1StartTime;
+    }
+
+    public void setBulb1StartTime(String bulb1StartTime) {
+        this.bulb1StartTime = bulb1StartTime;
+    }
+
+    public String getBulb1EndTime() {
+        return bulb1EndTime;
+    }
+
+    public void setBulb1EndTime(String bulb1EndTime) {
+        this.bulb1EndTime = bulb1EndTime;
+    }
+
+    public boolean isBulb2OnOff() {
+        return bulb2OnOff;
+    }
+
+    public void setBulb2OnOff(boolean bulb2OnOff) {
+        this.bulb2OnOff = bulb2OnOff;
+    }
+
+    public boolean isBulb2Brightness() {
+        return bulb2Brightness;
+    }
+
+    public void setBulb2Brightness(boolean bulb2Brightness) {
+        this.bulb2Brightness = bulb2Brightness;
+    }
+
+    public boolean isBulb2IsSupervised() {
+        return bulb2IsSupervised;
+    }
+
+    public void setBulb2IsSupervised(boolean bulb2IsSupervised) {
+        this.bulb2IsSupervised = bulb2IsSupervised;
+    }
+
+    public String getBulb2SupervisedBy() {
+        return bulb2SupervisedBy;
+    }
+
+    public void setBulb2SupervisedBy(String bulb2SupervisedBy) {
+        this.bulb2SupervisedBy = bulb2SupervisedBy;
+    }
+
+    public boolean isBulb2IsTemporal() {
+        return bulb2IsTemporal;
+    }
+
+    public void setBulb2IsTemporal(boolean bulb2IsTemporal) {
+        this.bulb2IsTemporal = bulb2IsTemporal;
+    }
+
+    public String getBulb2StartTime() {
+        return bulb2StartTime;
+    }
+
+    public void setBulb2StartTime(String bulb2StartTime) {
+        this.bulb2StartTime = bulb2StartTime;
+    }
+
+    public String getBulb2EndTime() {
+        return bulb2EndTime;
+    }
+
+    public void setBulb2EndTime(String bulb2EndTime) {
+        this.bulb2EndTime = bulb2EndTime;
+    }
+
+    public boolean isLedStripOnOff() {
+        return ledStripOnOff;
+    }
+
+    public void setLedStripOnOff(boolean ledStripOnOff) {
+        this.ledStripOnOff = ledStripOnOff;
+    }
+
+    public boolean isLedStripBrightness() {
+        return ledStripBrightness;
+    }
+
+    public void setLedStripBrightness(boolean ledStripBrightness) {
+        this.ledStripBrightness = ledStripBrightness;
+    }
+
+    public boolean isLedStripIsSupervised() {
+        return ledStripIsSupervised;
+    }
+
+    public void setLedStripIsSupervised(boolean ledStripIsSupervised) {
+        this.ledStripIsSupervised = ledStripIsSupervised;
+    }
+
+    public String getLedStripSupervisedBy() {
+        return ledStripSupervisedBy;
+    }
+
+    public void setLedStripSupervisedBy(String ledStripSupervisedBy) {
+        this.ledStripSupervisedBy = ledStripSupervisedBy;
+    }
+
+    public boolean isLedStripIsTemporal() {
+        return ledStripIsTemporal;
+    }
+
+    public void setLedStripIsTemporal(boolean ledStripIsTemporal) {
+        this.ledStripIsTemporal = ledStripIsTemporal;
+    }
+
+    public String getLedStripStartTime() {
+        return ledStripStartTime;
+    }
+
+    public void setLedStripStartTime(String ledStripStartTime) {
+        this.ledStripStartTime = ledStripStartTime;
+    }
+
+    public String getLedStripEndTime() {
+        return ledStripEndTime;
+    }
+
+    public void setLedStripEndTime(String ledStripEndTime) {
+        this.ledStripEndTime = ledStripEndTime;
+    }
 
     public Auth(){
 
@@ -22,8 +213,23 @@ public class Auth {
 
     public Auth(boolean b1, boolean b2, boolean led, boolean cam, boolean spk){
         this.bulb1 = b1;
+        this.bulb1OnOff = b1;
+        this.bulb1Brightness = b1;
+        this.bulb1IsSupervised = false;
+        this.bulb1IsTemporal = false;
+
         this.bulb2 = b2;
+        this.bulb2OnOff = b2;
+        this.bulb2Brightness = b2;
+        this.bulb2IsSupervised = false;
+        this.bulb2IsTemporal = false;
+
         this.ledStrip = led;
+        this.ledStripOnOff = led;
+        this.ledStripBrightness = led;
+        this.ledStripIsSupervised = false;
+        this.ledStripIsTemporal = false;
+
         this.camera = cam;
         this.speaker = spk;
     }

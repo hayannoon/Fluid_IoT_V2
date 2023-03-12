@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -19,7 +20,7 @@ import android.widget.TimePicker;
 
 import androidx.annotation.Nullable;
 
-import org.w3c.dom.Text;
+import org.json.JSONException;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -32,6 +33,12 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
     String[] items1;
     Spinner groupSelectSpinner;
     Spinner supervisedGroupSelecterSpinner;
+
+    final static String LED_STRIP = "LED-STRIP";
+    final static String ONLY_ON_OFF = "ON/OFF CONTROL";
+    final static String ONLY_BRIGHTNESS = "BRIGHTNESS CONTROL";
+    final static String BOTH = "FULL ACCESS";
+    final static String NOTHING = "NO ACCESS AUTHRITY";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +46,30 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
 
         JsonParser jp = new JsonParser();
         List<Auth> authList = null;
+
+
+        Button onOffButton = (Button) findViewById(R.id.led_on_off_button);
+        ImageView backroundImage = (ImageView) findViewById(R.id.strip_bulb_imageView);
+        final boolean[] onOffIsChecked = {false};
+        final boolean[] brightnessIsChecked = {false};
+        Button ledStripBrightnessButton1 = (Button) findViewById(R.id.led_strip_brightness_button1);
+        Button ledStripBrightnessButton2 = (Button) findViewById(R.id.led_strip_brightness_button2);
+        Button ledStripBrightnessButton3 = (Button) findViewById(R.id.led_strip_brightness_button3);
+        Button ledStripBrightnessButton4 = (Button) findViewById(R.id.led_strip_brightness_button4);
+
+        TableRow supervisedSettingRableRow = (TableRow) findViewById(R.id.strip_supervisedSetting);
+        Switch stripSupervisedPermissionSwitch = (Switch) findViewById(R.id.strip_supervised_permission_switch);
+
+
+        LinearLayout timePickerWapper = (LinearLayout) findViewById(R.id.strip_time_picker_wapper_layout);
+
+        TableRow temporalSettingTableRow1 = (TableRow) findViewById(R.id.strip_start_time_wrapper);
+        TableRow temporalSettingTableRow2 = (TableRow) findViewById(R.id.strip_end_time_wrapper);
+        TimePicker startTimePicker = (TimePicker) findViewById(R.id.strip_start_time_picker);
+        TimePicker endTimePicker = (TimePicker) findViewById(R.id.strip_end_time_picker);
+
+
+        Switch temporalPermissionSwitch = (Switch) findViewById(R.id.temporal_permission_switch);
 
         try {
             authList = jp.getAuthListFromConfigFile(getApplicationContext());
@@ -57,8 +88,99 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
         items = (String[]) groupIDList.toArray(new String[0]); // List to Array
 
         groupSelectSpinner = (Spinner) findViewById(R.id.led_strip_group_select_spinner);
-        //items = new String[]{"Choose Group", "Jacket", "Top", "Bottom", "Accs"};
-        groupSelectSpinner.setOnItemSelectedListener(this);
+
+        //groupSelectSpinner.setOnItemSelectedListener(this);
+
+
+
+
+
+
+
+
+
+
+
+        groupSelectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                List<Auth> authListFromServer = null;
+                Auth selectedAuth = null;
+                String firtst_group = groupSelectSpinner.getSelectedItem().toString();
+                try {
+                    authListFromServer = jp.getAuthListFromCOnfigFile_v2();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Auth auth = authListFromServer.get(position);
+                        //Do many things;
+                        onOffIsChecked[0] = auth.isLedStripOnOff();
+                        brightnessIsChecked[0] = auth.isLedStripBrightness();
+                        if(auth.isLedStripIsSupervised()){
+
+                            int index = 0;
+                            String supervisedByName = auth.getLedStripSupervisedBy();
+                            for(int j = 0 ; j < authListFromServer.size(); j++){
+                                if(supervisedByName.equals(authListFromServer.get(j).getGroupID())){
+                                    index = j;
+                                }
+                            }
+
+
+                            stripSupervisedPermissionSwitch.setChecked(true);
+                            supervisedSettingRableRow.setVisibility(View.VISIBLE);
+                            supervisedGroupSelecterSpinner.setSelection(index);
+                        } else{
+                            stripSupervisedPermissionSwitch.setChecked(false);
+                            supervisedSettingRableRow.setVisibility(View.GONE);
+
+                        } //set supervised permission
+
+
+
+                        if(auth.isLedStripIsTemporal()){
+                            temporalPermissionSwitch.setChecked(true);
+
+                            String start =auth.getLedStripStartTime();
+                            String end = auth.getLedStripEndTime();
+
+
+                            EditText startTimeTextEdit = (EditText) findViewById(R.id.strip_start_time);
+                            startTimeTextEdit.setText(start);
+
+                            EditText endTimeTextEdit = (EditText) findViewById(R.id.strip_end_time);
+                            endTimeTextEdit.setText(end);
+
+                            int parsingChar = start.indexOf(":");
+                            startTimePicker.setHour(Integer.parseInt(start.substring(0,parsingChar).trim()));
+                            startTimePicker.setMinute(Integer.parseInt(start.substring(parsingChar+1).trim()));
+
+                            parsingChar = end.indexOf(":");
+                            endTimePicker.setHour(Integer.parseInt(end.substring(0,parsingChar).trim()));
+                            endTimePicker.setMinute(Integer.parseInt(end.substring(parsingChar+1).trim()));
+                        } else{
+                            temporalPermissionSwitch.setChecked(false);
+                        }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //do nothing
+            }
+        });
+
+
+
+
+
+
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         groupSelectSpinner.setAdapter(adapter);
@@ -72,29 +194,146 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         supervisedGroupSelecterSpinner.setAdapter(adapter1);
 
+        //SETTING START
+        List<Auth> authListFromServer = null;
+        Auth selectedAuth = null;
+        String firtst_group = groupSelectSpinner.getSelectedItem().toString();
+        try {
+            authListFromServer = jp.getAuthListFromCOnfigFile_v2();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
-        Button onOffButton = (Button) findViewById(R.id.led_on_off_button);
+        for(int i = 0 ; i < authListFromServer.size() ; i++){
+            Auth auth = authListFromServer.get(i);
+            if(auth.getGroupID().equals(firtst_group)){
+                //Do many things;
+                onOffIsChecked[0] = auth.isLedStripOnOff();
+                brightnessIsChecked[0] = auth.isLedStripBrightness();
+                if(auth.isLedStripIsSupervised()){
+
+                    int index = 0;
+                    String supervisedByName = auth.getLedStripSupervisedBy();
+                    for(int j = 0 ; j < authListFromServer.size(); j++){
+                            if(supervisedByName.equals(authListFromServer.get(j).getGroupID())){
+                                index = j;
+                            }
+                    }
+
+
+                    stripSupervisedPermissionSwitch.setChecked(true);
+                    supervisedSettingRableRow.setVisibility(View.VISIBLE);
+                    supervisedGroupSelecterSpinner.setSelection(index);
+                } else{
+                    stripSupervisedPermissionSwitch.setChecked(false);
+                    supervisedSettingRableRow.setVisibility(View.GONE);
+
+                } //set supervised permission
+
+
+
+                if(auth.isLedStripIsTemporal()){
+                    temporalPermissionSwitch.setChecked(true);
+
+                    String start =auth.getLedStripStartTime();
+                    String end = auth.getLedStripEndTime();
+
+
+                    EditText startTimeTextEdit = (EditText) findViewById(R.id.strip_start_time);
+                    startTimeTextEdit.setText(start);
+
+                    EditText endTimeTextEdit = (EditText) findViewById(R.id.strip_end_time);
+                    endTimeTextEdit.setText(end);
+
+                    int parsingChar = start.indexOf(":");
+                    startTimePicker.setHour(Integer.parseInt(start.substring(0,parsingChar).trim()));
+                    startTimePicker.setMinute(Integer.parseInt(start.substring(parsingChar+1).trim()));
+
+                    parsingChar = end.indexOf(":");
+                    endTimePicker.setHour(Integer.parseInt(end.substring(0,parsingChar).trim()));
+                    endTimePicker.setMinute(Integer.parseInt(end.substring(parsingChar+1).trim()));
+                } else{
+                    temporalPermissionSwitch.setChecked(false);
+                }
+
+                break;
+            }
+        }
+
+
+
         onOffButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
                 TextView toggleView = (TextView) findViewById(R.id.led_strip_toggle_textview);
-                toggleView.setText("ON/OFF control");
+                if(onOffIsChecked[0]) {
+                    onOffIsChecked[0] = false;
+                }
+                else {
+                    onOffIsChecked[0] = true;
+                }
+
+
+                if(onOffIsChecked[0] ==true){
+                    if(brightnessIsChecked[0] ==true){
+                        toggleView.setText(BOTH);
+                        backroundImage.setImageResource(R.drawable.bulb_both);
+                    } else{
+                        toggleView.setText(ONLY_ON_OFF);
+                        backroundImage.setImageResource(R.drawable.bulb_onoff);
+                    }
+                }
+                else{
+                    if(brightnessIsChecked[0] ==true){
+                        toggleView.setText(ONLY_BRIGHTNESS);
+                        backroundImage.setImageResource(R.drawable.bulb_brightness);
+                    } else{
+                        toggleView.setText(NOTHING);
+                        backroundImage.setImageResource(R.drawable.bulb_specific);
+                    }
+                }
+
             }
         });
 
-        Button ledStripBrightnessButton1 = (Button) findViewById(R.id.led_strip_brightness_button1);
-        Button ledStripBrightnessButton2 = (Button) findViewById(R.id.led_strip_brightness_button2);
-        Button ledStripBrightnessButton3 = (Button) findViewById(R.id.led_strip_brightness_button3);
-        Button ledStripBrightnessButton4 = (Button) findViewById(R.id.led_strip_brightness_button4);
+
 
         ledStripBrightnessButton1.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
                 TextView toggleView = (TextView) findViewById(R.id.led_strip_toggle_textview);
-                toggleView.setText("Brightness control");
+                if(brightnessIsChecked[0] == true){
+                    brightnessIsChecked[0] = false;
+                } else{
+                    brightnessIsChecked[0] = true;
+                }
+
+                if(brightnessIsChecked[0] == true){
+                    if(onOffIsChecked[0] == true){
+                        toggleView.setText(BOTH);
+                        backroundImage.setImageResource(R.drawable.bulb_both);
+                    }else{
+                        toggleView.setText(ONLY_BRIGHTNESS);
+                        backroundImage.setImageResource(R.drawable.bulb_brightness);
+                    }
+                }
+                else{
+                    if(onOffIsChecked[0] == true){
+                        toggleView.setText(ONLY_ON_OFF);
+                        backroundImage.setImageResource(R.drawable.bulb_onoff);
+                    }else{
+                        toggleView.setText(NOTHING);
+                        backroundImage.setImageResource(R.drawable.bulb_specific);
+                    }
+                }
+
             }
         });
 
@@ -103,7 +342,30 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
                 TextView toggleView = (TextView) findViewById(R.id.led_strip_toggle_textview);
-                toggleView.setText("Brightness control");
+                if(brightnessIsChecked[0] == true){
+                    brightnessIsChecked[0] = false;
+                } else{
+                    brightnessIsChecked[0] = true;
+                }
+
+                if(brightnessIsChecked[0] == true){
+                    if(onOffIsChecked[0] == true){
+                        toggleView.setText(BOTH);
+                        backroundImage.setImageResource(R.drawable.bulb_both);
+                    }else{
+                        toggleView.setText(ONLY_BRIGHTNESS);
+                        backroundImage.setImageResource(R.drawable.bulb_brightness);
+                    }
+                }
+                else{
+                    if(onOffIsChecked[0] == true){
+                        toggleView.setText(ONLY_ON_OFF);
+                        backroundImage.setImageResource(R.drawable.bulb_onoff);
+                    }else{
+                        toggleView.setText(NOTHING);
+                        backroundImage.setImageResource(R.drawable.bulb_specific);
+                    }
+                }
             }
         });
 
@@ -112,7 +374,30 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
                 TextView toggleView = (TextView) findViewById(R.id.led_strip_toggle_textview);
-                toggleView.setText("Brightness control");
+                if(brightnessIsChecked[0] == true){
+                    brightnessIsChecked[0] = false;
+                } else{
+                    brightnessIsChecked[0] = true;
+                }
+
+                if(brightnessIsChecked[0] == true){
+                    if(onOffIsChecked[0] == true){
+                        toggleView.setText(BOTH);
+                        backroundImage.setImageResource(R.drawable.bulb_both);
+                    }else{
+                        toggleView.setText(ONLY_BRIGHTNESS);
+                        backroundImage.setImageResource(R.drawable.bulb_brightness);
+                    }
+                }
+                else{
+                    if(onOffIsChecked[0] == true){
+                        toggleView.setText(ONLY_ON_OFF);
+                        backroundImage.setImageResource(R.drawable.bulb_onoff);
+                    }else{
+                        toggleView.setText(NOTHING);
+                        backroundImage.setImageResource(R.drawable.bulb_specific);
+                    }
+                }
             }
         });
 
@@ -121,14 +406,34 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
                 TextView toggleView = (TextView) findViewById(R.id.led_strip_toggle_textview);
-                toggleView.setText("Brightness control");
+                if(brightnessIsChecked[0] == true){
+                    brightnessIsChecked[0] = false;
+                } else{
+                    brightnessIsChecked[0] = true;
+                }
+
+                if(brightnessIsChecked[0] == true){
+                    if(onOffIsChecked[0] == true){
+                        toggleView.setText(BOTH);
+                        backroundImage.setImageResource(R.drawable.bulb_both);
+                    }else{
+                        toggleView.setText(ONLY_BRIGHTNESS);
+                        backroundImage.setImageResource(R.drawable.bulb_brightness);
+                    }
+                }
+                else{
+                    if(onOffIsChecked[0] == true){
+                        toggleView.setText(ONLY_ON_OFF);
+                        backroundImage.setImageResource(R.drawable.bulb_onoff);
+                    }else{
+                        toggleView.setText(NOTHING);
+                        backroundImage.setImageResource(R.drawable.bulb_specific);
+                    }
+                }
             }
         });
 
 
-
-        TableRow supervisedSettingRableRow = (TableRow) findViewById(R.id.strip_supervisedSetting);
-        Switch stripSupervisedPermissionSwitch = (Switch) findViewById(R.id.strip_supervised_permission_switch);
 
         if(stripSupervisedPermissionSwitch.isChecked()){
             supervisedSettingRableRow.setVisibility(View.VISIBLE);
@@ -148,25 +453,16 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
             }
         });
 
-        View container = findViewById(R.id.strip_supervisedSetting);
-        container.animate().setDuration(300).alpha(0.0f).withEndAction(new Runnable() {
-            @Override
-            public void run() {
-                container.setVisibility(View.GONE);
-                container.setAlpha(1.0f);
-            }
-        });
+//        View container = findViewById(R.id.strip_supervisedSetting);
+//        container.animate().setDuration(300).alpha(0.0f).withEndAction(new Runnable() {
+//            @Override
+//            public void run() {
+//                container.setVisibility(View.GONE);
+//                container.setAlpha(1.0f);
+//            }
+//        });
 
 
-        LinearLayout timePickerWapper = (LinearLayout) findViewById(R.id.strip_time_picker_wapper_layout);
-
-        TableRow temporalSettingTableRow1 = (TableRow) findViewById(R.id.strip_start_time_wrapper);
-        TableRow temporalSettingTableRow2 = (TableRow) findViewById(R.id.strip_end_time_wrapper);
-        TimePicker startTimePicker = (TimePicker) findViewById(R.id.strip_start_time_picker);
-        TimePicker endTimePicker = (TimePicker) findViewById(R.id.strip_end_time_picker);
-
-
-        Switch temporalPermissionSwitch = (Switch) findViewById(R.id.temporal_permission_switch);
 
         if(temporalPermissionSwitch.isChecked()){
             temporalSettingTableRow1.setVisibility(View.VISIBLE);

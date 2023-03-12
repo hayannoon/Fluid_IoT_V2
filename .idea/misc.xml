@@ -5,6 +5,7 @@
       <map>
         <entry key="../../Android/Sdk/platforms/android-33/data/res/layout/simple_spinner_dropdown_item.xml" value="0.32750759878419455" />
         <entry key="../../Android/Sdk/platforms/android-33/data/res/layout/simple_spinner_item.xml" value="0.32750759878419455" />
+        <entry key="app/src/main/res/drawable/button_border.xml" value="0.383" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/create_group.xml" value="0.5578125" />
         <entry key="app/src/main/res/layout/create_id.xml" value="0.33" />
