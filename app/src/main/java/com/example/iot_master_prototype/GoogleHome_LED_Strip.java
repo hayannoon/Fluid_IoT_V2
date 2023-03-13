@@ -559,6 +559,8 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
 
 
         Button saveButton = (Button) findViewById(R.id.strip_detail_save_button);
+        EditText finalStartTimeTextEdit = startTimeTextEdit;
+        EditText finalEndTimeTextEdit = endTimeTextEdit;
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -569,9 +571,43 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(DialogInterface dialog, int which) { //SAVE EXECUTION
                                 Toast.makeText(getApplicationContext(), "SAVE AUTH INFO COMPLETE", Toast.LENGTH_SHORT).show();
-//                                finish();
+
+                                //DO Update
+                                String groupNameForUpdate = groupSelectSpinner.getSelectedItem().toString();
+                                int index = groupSelectSpinner.getSelectedItemPosition();
+
+                                Auth newAuth = new Auth(groupNameForUpdate);
+                                //group의 index랑 해당 device의 정보만 채워서 보낸다.
+
+
+                                if (selectedDevice.equals(BULB_1)) {
+                                    if (onOffIsChecked[0] | brightnessIsChecked[0])
+                                        newAuth.setBulb1(true);
+                                    else newAuth.setBulb1(false);
+                                    newAuth.setBulb1OnOff(onOffIsChecked[0]);
+                                    newAuth.setBulb1Brightness(brightnessIsChecked[0]);
+                                    newAuth.setBulb1IsSupervised(stripSupervisedPermissionSwitch.isChecked());
+                                    if (!stripSupervisedPermissionSwitch.isChecked()) {
+                                        newAuth.setBulb1SupervisedBy("None");
+                                    } else {
+                                        newAuth.setBulb1SupervisedBy(supervisedGroupSelecterSpinner.getSelectedItem().toString());
+                                    }
+                                    newAuth.setBulb1IsTemporal(temporalPermissionSwitch.isChecked());
+                                    newAuth.setBulb1StartTime(finalStartTimeTextEdit.getText().toString());
+                                    newAuth.setBulb1EndTime(finalEndTimeTextEdit.getText().toString());
+                                    try {
+                                        jp.updateCnofigFile_V2_Bulb1(index, newAuth);
+                                    } catch (ExecutionException e) {
+                                        e.printStackTrace();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
                             }
                         }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                             @Override

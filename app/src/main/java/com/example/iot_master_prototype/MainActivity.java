@@ -90,6 +90,13 @@ public class MainActivity extends AppCompatActivity {
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
+
+
+                                try {
+                                    jp.writeConfigFileToServer(JsonParser.AUTH_CONFIGURATION_FILE_V2, JsonParser.DEFAULT_CONFIG_V2_STRING);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                                 //RESET DEVICES INFO FILE
                                 Toast.makeText(getApplicationContext(), "RESET CONFIGURATION COMPLETE", Toast.LENGTH_SHORT).show();
 

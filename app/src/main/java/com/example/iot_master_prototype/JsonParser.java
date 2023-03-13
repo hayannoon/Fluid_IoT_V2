@@ -112,12 +112,23 @@ public class JsonParser  {
             "          \"supervised\": \"None\",\n" +
             "          \"temporal\": {\n" +
             "            \"isTemporal\": \"false\",\n" +
-            "            \"start_time\": \"14:00\",\n" +
+            "            \"start_time\": \"10:00\",\n" +
             "            \"end_time\": \"16:00\"\n" +
             "          }\n" +
             "        },\n" +
             "        \"camera\": \"true\",\n" +
-            "        \"speaker\": \"true\"\n" +
+            "        \"speaker\": {\n" +
+            "          \"volume\": \"true\",\n" +
+            "          \"mute\": \"true\",\n" +
+            "          \"on/off\": \"false\",\n" +
+            "          \"start/stop\": \"true\",\n" +
+            "          \"supervised\": \"master\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"10:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
+            "        }\n" +
             "      }\n" +
             "    },\n" +
             "    {\n" +
@@ -128,7 +139,7 @@ public class JsonParser  {
             "          \"brightness\": \"true\",\n" +
             "          \"supervised\": \"None\",\n" +
             "          \"temporal\": {\n" +
-            "            \"isTemporal\": \"false\",\n" +
+            "            \"isTemporal\": \"true\",\n" +
             "            \"start_time\": \"14:00\",\n" +
             "            \"end_time\": \"16:00\"\n" +
             "          }\n" +
@@ -148,21 +159,32 @@ public class JsonParser  {
             "          \"brightness\": \"false\",\n" +
             "          \"supervised\": \"None\",\n" +
             "          \"temporal\": {\n" +
-            "            \"isTemporal\": \"false\",\n" +
-            "            \"start_time\": \"14:00\",\n" +
-            "            \"end_time\": \"16:00\"\n" +
+            "            \"isTemporal\": \"true\",\n" +
+            "            \"start_time\": \"18:00\",\n" +
+            "            \"end_time\": \"20:00\"\n" +
             "          }\n" +
             "        },\n" +
             "        \"camera\": \"false\",\n" +
-            "        \"speaker\": \"false\"\n" +
+            "        \"speaker\": {\n" +
+            "          \"volume\": \"true\",\n" +
+            "          \"mute\": \"true\",\n" +
+            "          \"on/off\": \"false\",\n" +
+            "          \"start/stop\": \"true\",\n" +
+            "          \"supervised\": \"master\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"10:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
+            "        }\n" +
             "      }\n" +
             "    },\n" +
             "    {\n" +
             "      \"group_name\": \"onlyCamera\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
-            "          \"on/off\": \"true\",\n" +
-            "          \"brightness\": \"true\",\n" +
+            "          \"on/off\": \"false\",\n" +
+            "          \"brightness\": \"false\",\n" +
             "          \"supervised\": \"onlyBulb\",\n" +
             "          \"temporal\": {\n" +
             "            \"isTemporal\": \"false\",\n" +
@@ -183,24 +205,35 @@ public class JsonParser  {
             "        \"strip\": {\n" +
             "          \"on/off\": \"false\",\n" +
             "          \"brightness\": \"false\",\n" +
-            "          \"supervised\": \"master\",\n" +
+            "          \"supervised\": \"onlyBulb\",\n" +
             "          \"temporal\": {\n" +
-            "            \"isTemporal\": \"false\",\n" +
-            "            \"start_time\": \"14:00\",\n" +
-            "            \"end_time\": \"16:00\"\n" +
+            "            \"isTemporal\": \"true\",\n" +
+            "            \"start_time\": \"08:00\",\n" +
+            "            \"end_time\": \"19:00\"\n" +
             "          }\n" +
             "        },\n" +
             "        \"camera\": \"true\",\n" +
-            "        \"speaker\": \"false\"\n" +
+            "        \"speaker\": {\n" +
+            "          \"volume\": \"true\",\n" +
+            "          \"mute\": \"true\",\n" +
+            "          \"on/off\": \"false\",\n" +
+            "          \"start/stop\": \"true\",\n" +
+            "          \"supervised\": \"master\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"10:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
+            "        }\n" +
             "      }\n" +
             "    },\n" +
             "    {\n" +
             "      \"group_name\": \"onlySpeaker\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
-            "          \"on/off\": \"true\",\n" +
-            "          \"brightness\": \"true\",\n" +
-            "          \"supervised\": \"master\",\n" +
+            "          \"on/off\": \"false\",\n" +
+            "          \"brightness\": \"false\",\n" +
+            "          \"supervised\": \"None\",\n" +
             "          \"temporal\": {\n" +
             "            \"isTemporal\": \"false\",\n" +
             "            \"start_time\": \"14:00\",\n" +
@@ -209,8 +242,8 @@ public class JsonParser  {
             "        },\n" +
             "        \"bulb2\": {\n" +
             "          \"on/off\": \"false\",\n" +
-            "          \"brightness\": \"true\",\n" +
-            "          \"supervised\": \"master\",\n" +
+            "          \"brightness\": \"false\",\n" +
+            "          \"supervised\": \"None\",\n" +
             "          \"temporal\": {\n" +
             "            \"isTemporal\": \"false\",\n" +
             "            \"start_time\": \"14:00\",\n" +
@@ -219,8 +252,8 @@ public class JsonParser  {
             "        },\n" +
             "        \"strip\": {\n" +
             "          \"on/off\": \"false\",\n" +
-            "          \"brightness\": \"true\",\n" +
-            "          \"supervised\": \"master\",\n" +
+            "          \"brightness\": \"false\",\n" +
+            "          \"supervised\": \"None\",\n" +
             "          \"temporal\": {\n" +
             "            \"isTemporal\": \"false\",\n" +
             "            \"start_time\": \"14:00\",\n" +
@@ -228,7 +261,18 @@ public class JsonParser  {
             "          }\n" +
             "        },\n" +
             "        \"camera\": \"false\",\n" +
-            "        \"speaker\": \"true\"\n" +
+            "        \"speaker\": {\n" +
+            "          \"volume\": \"true\",\n" +
+            "          \"mute\": \"true\",\n" +
+            "          \"on/off\": \"false\",\n" +
+            "          \"start/stop\": \"true\",\n" +
+            "          \"supervised\": \"master\",\n" +
+            "          \"temporal\": {\n" +
+            "            \"isTemporal\": \"false\",\n" +
+            "            \"start_time\": \"10:00\",\n" +
+            "            \"end_time\": \"16:00\"\n" +
+            "          }\n" +
+            "        }\n" +
             "      }\n" +
             "    }\n" +
             "  ]\n" +
@@ -555,6 +599,42 @@ public class JsonParser  {
 
         return false;
     }
+
+    boolean updateCnofigFile_V2_Bulb1(int index, Auth auth) throws ExecutionException, InterruptedException, JSONException {
+        String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE_V2);
+
+        JSONObject jsonObject = new JSONObject(jsonData);
+
+        JSONArray groupArray = jsonObject.getJSONArray("groups"); //다시 json 불러와서 해당 인덱스의 auth 객체를 교체해준다.
+        JSONObject targetGroup = (JSONObject) groupArray.get(index);
+
+        JSONObject updateDeviceAuth = new JSONObject();
+        //여기서 정보 update
+
+        //Update Bulb 1
+        JSONObject newBulb1 = new JSONObject();
+        JSONObject newBulb1Temporal = new JSONObject();
+        newBulb1.put("on/off", Boolean.toString(auth.isBulb1OnOff()));
+        newBulb1.put("brightness", Boolean.toString(auth.isBulb1Brightness()));
+        newBulb1.put("supervised", auth.getBulb1SupervisedBy());
+        newBulb1Temporal.put("isTemporal", Boolean.toString(auth.isBulb1IsTemporal()));
+        newBulb1Temporal.put("start_time", auth.getBulb1StartTime());
+        newBulb1Temporal.put("end_time", auth.getBulb1EndTime());
+        newBulb1.put("temporal", newBulb1Temporal);
+        updateDeviceAuth.put("bulb1", newBulb1);
+
+        targetGroup.put("auth", updateDeviceAuth);
+
+        String jsonString = jsonObject.toString();
+
+        if(writeConfigFileToServer(AUTH_CONFIGURATION_FILE_V2, jsonString)){
+            return true;
+        }
+
+        return false;
+    }
+
+
 
     boolean updateConfigFileV2(ArrayList<String> allowdGroupArray, String deviceName) throws ExecutionException, InterruptedException, JSONException {
         String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE); //get Json Data from server and save the string value
