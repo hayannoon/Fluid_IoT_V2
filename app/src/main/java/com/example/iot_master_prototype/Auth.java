@@ -1,10 +1,5 @@
 package com.example.iot_master_prototype;
 
-import android.widget.CheckBox;
-import android.widget.EditText;
-
-import java.util.ArrayList;
-
 public class Auth {
 
     private String groupID;
@@ -41,7 +36,7 @@ public class Auth {
 
     private boolean speakerVolume;
     private boolean speakerMute;
-    private boolean spakerOnOff;
+    private boolean speakerOnOff;
     private boolean speakerStartStop;
     private boolean speakerSupervised;
     private String speakerSupervisedBy;
@@ -65,12 +60,12 @@ public class Auth {
         this.speakerMute = speakerMute;
     }
 
-    public boolean isSpakerOnOff() {
-        return spakerOnOff;
+    public boolean isSpeakerOnOff() {
+        return speakerOnOff;
     }
 
-    public void setSpakerOnOff(boolean spakerOnOff) {
-        this.spakerOnOff = spakerOnOff;
+    public void setSpeakerOnOff(boolean speakerOnOff) {
+        this.speakerOnOff = speakerOnOff;
     }
 
     public boolean isSpeakerStartStop() {
@@ -315,7 +310,7 @@ public class Auth {
         this.camera = cam;
 
         this.speaker = spk;
-        this.spakerOnOff = spk;
+        this.speakerOnOff = spk;
         this.speakerMute = spk;
         this.speakerVolume = spk;
         this.speakerStartStop = spk;

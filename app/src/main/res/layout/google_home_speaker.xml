@@ -77,8 +77,171 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/speaker_on_off_button" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TableLayout
+            android:id="@+id/speaker_tableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TableRow>
+
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="145dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:text="group" />
+
+                <Spinner
+                    android:id="@+id/speaker_group_select_spinner"
+                    android:layout_width="165dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:gravity="center"
+                    android:minHeight="48dp"></Spinner>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <Switch
+                    android:id="@+id/speaker_supervised_permission_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:text="supervised permission" />
+
+                <Switch
+                    android:id="@+id/speaker_temporal_permssion_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:text="tempral permission" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/speaker_supervisedSetting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:text="supervised by" />
+
+                <Spinner
+                    android:id="@+id/speaker_supervised_group_select_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:gravity="center"
+                    android:minHeight="48dp"></Spinner>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/speaker_start_time_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Start Time" />
+
+                <EditText
+                    android:id="@+id/speaker_start_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="time" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/speaker_end_time_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="End Time" />
+
+                <EditText
+                    android:id="@+id/speaker_end_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="time" />
+            </TableRow>
+
+
+        </TableLayout>
+
+        <LinearLayout
+            android:id="@+id/speaker_time_picker_wrapper_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/speaker_start_time_textview"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center_horizontal|bottom"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="Start Time" />
+
+            <TimePicker
+                android:id="@+id/speaker_start_time_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/speaker_end_time_textview"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center_horizontal|bottom"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="End Time" />
+
+            <TimePicker
+                android:id="@+id/speaker_end_time_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/speaker_detail_save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="save" />
+
 
     </LinearLayout>
 </ScrollView>

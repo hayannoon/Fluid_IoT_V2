@@ -21,7 +21,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -89,31 +88,31 @@ public class JsonParser  {
             "        \"bulb1\": {\n" +
             "          \"on/off\": \"true\",\n" +
             "          \"brightness\": \"true\",\n" +
-            "          \"supervised\": \"None\",\n" +
+            "          \"supervised\": \"onlyBulb\",\n" +
             "          \"temporal\": {\n" +
             "            \"isTemporal\": \"false\",\n" +
-            "            \"start_time\": \"14:00\",\n" +
-            "            \"end_time\": \"16:00\"\n" +
+            "            \"start_time\": \"23 : 10\",\n" +
+            "            \"end_time\": \"14 : 10\"\n" +
             "          }\n" +
             "        },\n" +
             "        \"bulb2\": {\n" +
             "          \"on/off\": \"true\",\n" +
             "          \"brightness\": \"true\",\n" +
-            "          \"supervised\": \"None\",\n" +
+            "          \"supervised\": \"master\",\n" +
             "          \"temporal\": {\n" +
-            "            \"isTemporal\": \"false\",\n" +
-            "            \"start_time\": \"14:00\",\n" +
-            "            \"end_time\": \"16:00\"\n" +
+            "            \"isTemporal\": \"true\",\n" +
+            "            \"start_time\": \"12 : 15\",\n" +
+            "            \"end_time\": \"15 : 7\"\n" +
             "          }\n" +
             "        },\n" +
             "        \"strip\": {\n" +
-            "          \"on/off\": \"true\",\n" +
+            "          \"on/off\": \"false\",\n" +
             "          \"brightness\": \"true\",\n" +
             "          \"supervised\": \"None\",\n" +
             "          \"temporal\": {\n" +
             "            \"isTemporal\": \"false\",\n" +
-            "            \"start_time\": \"10:00\",\n" +
-            "            \"end_time\": \"16:00\"\n" +
+            "            \"start_time\": \"\",\n" +
+            "            \"end_time\": \"\"\n" +
             "          }\n" +
             "        },\n" +
             "        \"camera\": \"true\",\n" +
@@ -169,10 +168,10 @@ public class JsonParser  {
             "          \"volume\": \"true\",\n" +
             "          \"mute\": \"true\",\n" +
             "          \"on/off\": \"false\",\n" +
-            "          \"start/stop\": \"true\",\n" +
+            "          \"start/stop\": \"false\",\n" +
             "          \"supervised\": \"master\",\n" +
             "          \"temporal\": {\n" +
-            "            \"isTemporal\": \"false\",\n" +
+            "            \"isTemporal\": \"true\",\n" +
             "            \"start_time\": \"10:00\",\n" +
             "            \"end_time\": \"16:00\"\n" +
             "          }\n" +
@@ -193,13 +192,13 @@ public class JsonParser  {
             "          }\n" +
             "        },\n" +
             "        \"bulb2\": {\n" +
-            "          \"on/off\": \"false\",\n" +
-            "          \"brightness\": \"false\",\n" +
-            "          \"supervised\": \"None\",\n" +
+            "          \"on/off\": \"true\",\n" +
+            "          \"brightness\": \"true\",\n" +
+            "          \"supervised\": \"master\",\n" +
             "          \"temporal\": {\n" +
-            "            \"isTemporal\": \"false\",\n" +
-            "            \"start_time\": \"14:00\",\n" +
-            "            \"end_time\": \"16:00\"\n" +
+            "            \"isTemporal\": \"true\",\n" +
+            "            \"start_time\": \"12 : 15\",\n" +
+            "            \"end_time\": \"15 : 7\"\n" +
             "          }\n" +
             "        },\n" +
             "        \"strip\": {\n" +
@@ -262,21 +261,22 @@ public class JsonParser  {
             "        },\n" +
             "        \"camera\": \"false\",\n" +
             "        \"speaker\": {\n" +
-            "          \"volume\": \"true\",\n" +
+            "          \"volume\": \"false\",\n" +
             "          \"mute\": \"true\",\n" +
             "          \"on/off\": \"false\",\n" +
             "          \"start/stop\": \"true\",\n" +
-            "          \"supervised\": \"master\",\n" +
+            "          \"supervised\": \"onlyBulb\",\n" +
             "          \"temporal\": {\n" +
-            "            \"isTemporal\": \"false\",\n" +
-            "            \"start_time\": \"10:00\",\n" +
-            "            \"end_time\": \"16:00\"\n" +
+            "            \"isTemporal\": \"true\",\n" +
+            "            \"start_time\": \"12:00\",\n" +
+            "            \"end_time\": \"18:00\"\n" +
             "          }\n" +
             "        }\n" +
             "      }\n" +
             "    }\n" +
             "  ]\n" +
             "}";
+
 
     final static String DEFAULT_ACCOUNT_STRING = "{\n" +
             "  \"accounts\": [\n" +
@@ -871,7 +871,7 @@ public class JsonParser  {
             //여기까지가 LED STRIP
 
 
-            auth.setSpakerOnOff(speakerObject.getBoolean("on/off"));
+            auth.setSpeakerOnOff(speakerObject.getBoolean("on/off"));
             auth.setSpeakerMute(speakerObject.getBoolean("mute"));
             auth.setSpeakerVolume(speakerObject.getBoolean("volume"));
             auth.setSpeakerStartStop(speakerObject.getBoolean("start/stop"));

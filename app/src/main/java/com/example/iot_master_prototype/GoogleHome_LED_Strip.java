@@ -172,6 +172,7 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
                 TextView toggleView = (TextView) findViewById(R.id.led_strip_toggle_textview);
                 toggleView.setText(authStatus); //상단에 기기 이름 + 현재 권한 상태 설정
 
+
                 if (isSupervisedIsChecked[0]) { //supervised가 켜져있는 경우
                     int index = 0;
                     for (int j = 0; j < authListFromServer.size(); j++) {
