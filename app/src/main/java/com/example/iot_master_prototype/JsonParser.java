@@ -694,6 +694,37 @@ public class JsonParser  {
         return false;
     }
 
+    boolean updateConfigFile_V2_SPEAKER(int index, Auth auth) throws ExecutionException, InterruptedException, JSONException {
+        String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE_V2);
+        JSONObject jsonObject = new JSONObject(jsonData);
+
+        JSONArray groupArray = jsonObject.getJSONArray("groups");
+        JSONObject targetGroup = (JSONObject) groupArray.get(index);
+
+        JSONObject authOfTargetGroup = targetGroup.getJSONObject("auth");
+
+        JSONObject newSpeaker = new JSONObject();
+        JSONObject newSpeakerTemporal = new JSONObject();
+        newSpeaker.put("volume", Boolean.toString(auth.isSpeakerVolume()));
+        newSpeaker.put("mute", Boolean.toString(auth.isSpeakerMute()));
+        newSpeaker.put("on/off", Boolean.toString(auth.isSpeakerOnOff()));
+        newSpeaker.put("start/stop", Boolean.toString(auth.isSpeakerStartStop()));
+        newSpeaker.put("supervised", auth.getSpeakerSupervisedBy());
+        newSpeakerTemporal.put("isTemporal", Boolean.toString(auth.isSpeakerIsTemporal()));
+        newSpeakerTemporal.put("start_time", auth.getSpeakerStartTime());
+        newSpeakerTemporal.put("end_time", auth.getSpeakerEndTime());
+        newSpeaker.put("temporal",newSpeakerTemporal);
+
+        authOfTargetGroup.put("speaker", newSpeaker);
+
+        String jsonString = jsonObject.toString();
+
+        if(writeConfigFileToServer(AUTH_CONFIGURATION_FILE_V2, jsonString)){
+            return true;
+        }
+        return false;
+    }
+
 
 
     boolean updateConfigFileV2(ArrayList<String> allowdGroupArray, String deviceName) throws ExecutionException, InterruptedException, JSONException {

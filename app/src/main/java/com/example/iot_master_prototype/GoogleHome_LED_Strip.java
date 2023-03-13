@@ -518,9 +518,9 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
             timePickerWapper.setVisibility(View.VISIBLE);
 
         } else {
-            temporalSettingTableRow1.setVisibility(View.INVISIBLE);
-            temporalSettingTableRow2.setVisibility(View.INVISIBLE);
-            timePickerWapper.setVisibility(View.INVISIBLE);
+            temporalSettingTableRow1.setVisibility(View.GONE);
+            temporalSettingTableRow2.setVisibility(View.GONE);
+            timePickerWapper.setVisibility(View.GONE);
         }
 
         temporalPermissionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

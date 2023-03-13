@@ -275,9 +275,9 @@ public class GoogleHome_Speaker extends Activity implements AdapterView.OnItemSe
             temporalSettingTableRow2.setVisibility(View.VISIBLE);
             timePickerWrapper.setVisibility(View.VISIBLE);
         } else{
-            temporalSettingTableRow1.setVisibility(View.INVISIBLE);
-            temporalSettingTableRow2.setVisibility(View.INVISIBLE);
-            timePickerWrapper.setVisibility(View.INVISIBLE);
+            temporalSettingTableRow1.setVisibility(View.GONE);
+            temporalSettingTableRow2.setVisibility(View.GONE);
+            timePickerWrapper.setVisibility(View.GONE);
         }
 
 
@@ -372,6 +372,43 @@ public class GoogleHome_Speaker extends Activity implements AdapterView.OnItemSe
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //DO SAVE ~~~~
+                                String groupNameForUpdate = groupSelectSpinner.getSelectedItem().toString();
+                                int index = groupSelectSpinner.getSelectedItemPosition();
+
+                                Auth newAuth = new Auth(groupNameForUpdate);
+                                //group의 index와 해당 devcie의 정보만 채워서 보낸다.
+
+                                if(onOffIsChecked[0] | volumeIsChecked[0] | startStopIsChecked[0] | muteIsChecked[0]){
+                                    newAuth.setSpeaker(true);
+                                } else{
+                                    newAuth.setSpeaker(false);
+                                }
+
+                                newAuth.setSpeakerVolume(volumeIsChecked[0]);
+                                newAuth.setSpeakerMute(muteIsChecked[0]);
+                                newAuth.setSpeakerOnOff(onOffIsChecked[0]);
+                                newAuth.setSpeakerStartStop(startStopIsChecked[0]);
+                                newAuth.setSpeakerSupervised(speakerSupervisedPermissionSwitch.isChecked());
+                                if(!speakerSupervisedPermissionSwitch.isChecked()){
+                                    newAuth.setSpeakerSupervisedBy("None");
+                                }else{
+                                    newAuth.setSpeakerSupervisedBy(supervisedGroupSelectSpinner.getSelectedItem().toString());
+                                }
+
+                                newAuth.setSpeakerIsTemporal(speakerTemporalPermissionSwitch.isChecked());
+                                newAuth.setSpeakerStartTime(finalStartTimeTextEdit.getText().toString());
+                                newAuth.setSpeakerEndTime(finalEndTimeTextEdit.getText().toString());
+
+                                try {
+                                    jp.updateConfigFile_V2_SPEAKER(index,newAuth);
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
 
                                 Toast.makeText(getApplicationContext(), "UPDATE AUTH INFO COMPLETE", Toast.LENGTH_SHORT).show();
 
