@@ -3,6 +3,7 @@ package com.example.iot_master_prototype;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -26,14 +26,12 @@ import androidx.annotation.Nullable;
 import org.json.JSONException;
 
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItemSelectedListener {
+public class GoogleHome_LED_Strip extends Activity implements Serializable, AdapterView.OnItemSelectedListener {
 
     String[] items;
     String[] items1;
@@ -42,25 +40,39 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
 
     String authStatus = NOTHING;
 
-    final static String LED_STRIP = "LED-STRIP";
-    final static String ONLY_ON_OFF = LED_STRIP + "\nON/OFF CONTROL";
-    final static String ONLY_BRIGHTNESS = LED_STRIP + "\nBRIGHTNESS CONTROL";
-    final static String BOTH = LED_STRIP+ "\nFULL ACCESS";
-    final static String NOTHING = LED_STRIP + "\nNO ACCESS";
+
+    final static String BULB_1 = "bulb1";
+    final static String BULB_2 = "bulb2";
+    final static String STRIP = "strip";
+
+    final static String ONLY_ON_OFF = "ON/OFF CONTROL";
+    final static String ONLY_BRIGHTNESS = "BRIGHTNESS CONTROL";
+    final static String BOTH = "FULL ACCESS";
+    final static String NOTHING = "NO ACCESS";
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.google_home_led_strip);
+        setContentView(R.layout.google_home_led_strip); //Bulb 배경 깔고
 
         JsonParser jp = new JsonParser();
         List<Auth> authList = null;
 
+        Intent intent = getIntent();
+        String selectedDevice = (String) intent.getSerializableExtra("SELECTED_DEVICE");
 
-        Button onOffButton = (Button) findViewById(R.id.led_on_off_button);
+
+        //Get the instance from ID
+
+        final Button[] onOffButton = {(Button) findViewById(R.id.led_on_off_button)};
         ImageView backroundImage = (ImageView) findViewById(R.id.strip_bulb_imageView);
-        final boolean[] onOffIsChecked = {false};
-        final boolean[] brightnessIsChecked = {false};
+        boolean[] onOffIsChecked = {false};
+        boolean[] brightnessIsChecked = {false};
+        boolean[] isSupervisedIsChecked = {false};
+        boolean[] isTemporalIsChecked = {false};
+        String[] supervisedBy = {null};
+
         Button ledStripBrightnessButton1 = (Button) findViewById(R.id.led_strip_brightness_button1);
         Button ledStripBrightnessButton2 = (Button) findViewById(R.id.led_strip_brightness_button2);
         Button ledStripBrightnessButton3 = (Button) findViewById(R.id.led_strip_brightness_button3);
@@ -69,7 +81,6 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
         TableRow supervisedSettingRableRow = (TableRow) findViewById(R.id.strip_supervisedSetting);
         Switch stripSupervisedPermissionSwitch = (Switch) findViewById(R.id.strip_supervised_permission_switch);
 
-
         LinearLayout timePickerWapper = (LinearLayout) findViewById(R.id.strip_time_picker_wapper_layout);
 
         TableRow temporalSettingTableRow1 = (TableRow) findViewById(R.id.strip_start_time_wrapper);
@@ -77,40 +88,33 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
         TimePicker startTimePicker = (TimePicker) findViewById(R.id.strip_start_time_picker);
         TimePicker endTimePicker = (TimePicker) findViewById(R.id.strip_end_time_picker);
 
-
         Switch temporalPermissionSwitch = (Switch) findViewById(R.id.temporal_permission_switch);
-
 
         EditText startTimeTextEdit = (EditText) findViewById(R.id.strip_start_time);
         EditText endTimeTextEdit = (EditText) findViewById(R.id.strip_end_time);
 
-
         try {
-            authList = jp.getAuthListFromConfigFile(getApplicationContext());
+            authList = jp.getAuthListFromConfigFile(getApplicationContext()); //
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }//authList에는 json을 파싱해서 클래스 배열로 만든 결과가 담겨있음
+        }//authList에는 json을 파싱해서 클래스 배열로 만든 결과가 담겨있고 여기는 모든 그룹의 권한 정보가 있음.
 
         List<String> groupIDList = new ArrayList<>();
         for (Auth auth : authList) {
             groupIDList.add(auth.getGroupID());
         } //여기까지 오면 GroupIDList 완성
-        items = (String[]) groupIDList.toArray(new String[0]); // List to Array
 
+        items = (String[]) groupIDList.toArray(new String[0]); // List to Array
         groupSelectSpinner = (Spinner) findViewById(R.id.led_strip_group_select_spinner);
 
-        //groupSelectSpinner.setOnItemSelectedListener(this);
-
-
-        groupSelectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        groupSelectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //Group선택 Spinner에 항목 세팅
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 List<Auth> authListFromServer = null;
-                Auth selectedAuth = null;
                 String firtst_group = groupSelectSpinner.getSelectedItem().toString();
                 try {
                     authListFromServer = jp.getAuthListFromCOnfigFile_v2();
@@ -123,45 +127,59 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
                 }
 
                 Auth auth = authListFromServer.get(position);
+                // Group을 사용자가 변경할때마다 auth에 저장된 그룹 인스턴스가 해당 그룹에 맞게 변경된다.
                 //Do many things;
 
 
+                if (selectedDevice.equals(STRIP)) { //STRIP인 경우
+                    onOffIsChecked[0] = auth.isLedStripOnOff();
+                    brightnessIsChecked[0] = auth.isLedStripBrightness();
+                    isSupervisedIsChecked[0] = auth.isLedStripIsSupervised();
+                    supervisedBy[0] = auth.getLedStripSupervisedBy();
+                    isTemporalIsChecked[0] = auth.isLedStripIsTemporal();
+                } else if (selectedDevice.equals(BULB_1)) {
+                    onOffIsChecked[0] = auth.isBulb1OnOff();
+                    brightnessIsChecked[0] = auth.isBulb1Brightness();
+                    isSupervisedIsChecked[0] = auth.isBulb1IsSupervised();
+                    supervisedBy[0] = auth.getBulb1SupervisedBy();
+                    isTemporalIsChecked[0] = auth.isBulb1IsTemporal();
+                } else if (selectedDevice.equals(BULB_2)) {
+                    onOffIsChecked[0] = auth.isBulb2OnOff();
+                    brightnessIsChecked[0] = auth.isBulb2Brightness();
+                    isSupervisedIsChecked[0] = auth.isBulb2IsSupervised();
+                    supervisedBy[0] = auth.getBulb2SupervisedBy();
+                    isTemporalIsChecked[0] = auth.isBulb2IsTemporal();
+                }
 
-
-                onOffIsChecked[0] = auth.isLedStripOnOff();
-                brightnessIsChecked[0] = auth.isLedStripBrightness();
-                TextView toggleView = (TextView) findViewById(R.id.led_strip_toggle_textview);
-
-                if(onOffIsChecked[0]){
-                    if(brightnessIsChecked[0]){
-                        authStatus = BOTH;
+                //공통 로직
+                if (onOffIsChecked[0]) { //사용자가 클릭할때마다 배경 변경을 위한 코드
+                    if (brightnessIsChecked[0]) {
+                        authStatus = selectedDevice + "\n" + BOTH;
                         backroundImage.setImageResource(R.drawable.bulb_both);
-                    }else{
-                        authStatus = ONLY_ON_OFF;
+                    } else {
+                        authStatus = selectedDevice + "\n" + ONLY_ON_OFF;
                         backroundImage.setImageResource(R.drawable.bulb_onoff);
                     }
-                } else{
-                    if(brightnessIsChecked[0]){
-                        authStatus = ONLY_BRIGHTNESS;
+                } else {
+                    if (brightnessIsChecked[0]) {
+                        authStatus = selectedDevice + "\n" + ONLY_BRIGHTNESS;
                         backroundImage.setImageResource(R.drawable.bulb_brightness);
-                    }else{
-                        authStatus = NOTHING;
+                    } else {
+                        authStatus = selectedDevice + "\n" + NOTHING;
                         backroundImage.setImageResource(R.drawable.bulb_specific);
                     }
                 }
-                toggleView.setText(authStatus);
-                
+                TextView toggleView = (TextView) findViewById(R.id.led_strip_toggle_textview);
+                toggleView.setText(authStatus); //상단에 기기 이름 + 현재 권한 상태 설정
 
-                if (auth.isLedStripIsSupervised()) {
-
+                if (isSupervisedIsChecked[0]) { //supervised가 켜져있는 경우
                     int index = 0;
-                    String supervisedByName = auth.getLedStripSupervisedBy();
                     for (int j = 0; j < authListFromServer.size(); j++) {
-                        if (supervisedByName.equals(authListFromServer.get(j).getGroupID())) {
+                        String tmpGroup = authListFromServer.get(j).getGroupID();
+                        if (supervisedBy[0].equals(tmpGroup)) {
                             index = j;
                         }
-                    }
-
+                    } //Index를 찾는다.
 
                     stripSupervisedPermissionSwitch.setChecked(true);
                     supervisedSettingRableRow.setVisibility(View.VISIBLE);
@@ -173,12 +191,20 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
                 } //set supervised permission
 
 
-                if (auth.isLedStripIsTemporal()) {
+                if (isTemporalIsChecked[0]) {
+                    String start, end;
                     temporalPermissionSwitch.setChecked(true);
 
-                    String start = auth.getLedStripStartTime();
-                    String end = auth.getLedStripEndTime();
-
+                    if (selectedDevice.equals(BULB_1)) {
+                        start = auth.getBulb1StartTime();
+                        end = auth.getBulb1EndTime();
+                    } else if (selectedDevice.equals(BULB_2)) {
+                        start = auth.getBulb2StartTime();
+                        end = auth.getBulb2EndTime();
+                    } else { //LED STRIP
+                        start = auth.getLedStripStartTime();
+                        end = auth.getLedStripEndTime();
+                    }
 
                     EditText startTimeTextEdit = (EditText) findViewById(R.id.strip_start_time);
                     startTimeTextEdit.setText(start);
@@ -195,7 +221,7 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
                     endTimePicker.setMinute(Integer.parseInt(end.substring(parsingChar + 1).trim()));
                 } else {
                     temporalPermissionSwitch.setChecked(false);
-                }
+                } //Time Picker 설정 완료
 
             }
 
@@ -205,13 +231,12 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
             }
         });
 
-
+        //Supervised Permission setting
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         groupSelectSpinner.setAdapter(adapter);
 
         items1 = (String[]) groupIDList.toArray(new String[0]); // List to Array
-
 
         supervisedGroupSelecterSpinner = (Spinner) findViewById(R.id.led_strip_supervised_group_select_spinner);
         supervisedGroupSelecterSpinner.setOnItemSelectedListener(this);
@@ -236,20 +261,45 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
 
         for (int i = 0; i < authListFromServer.size(); i++) {
             Auth auth = authListFromServer.get(i);
-            if (auth.getGroupID().equals(firtst_group)) {
+            if (auth.getGroupID().equals(firtst_group)) { // ???
                 //Do many things;
-                onOffIsChecked[0] = auth.isLedStripOnOff();
-                brightnessIsChecked[0] = auth.isLedStripBrightness();
-                if (auth.isLedStripIsSupervised()) {
+                String supervisedByName;
+                String start;
+                String end;
 
+                if (selectedDevice.equals(BULB_1)) {
+                    onOffIsChecked[0] = auth.isBulb1OnOff();
+                    brightnessIsChecked[0] = auth.isBulb1Brightness();
+                    isSupervisedIsChecked[0] = auth.isBulb1IsSupervised();
+                    supervisedByName = auth.getBulb1SupervisedBy();
+                    isTemporalIsChecked[0] = auth.isBulb1IsTemporal();
+                    start = auth.getBulb1StartTime();
+                    end = auth.getBulb1EndTime();
+                } else if (selectedDevice.equals(BULB_2)) {
+                    onOffIsChecked[0] = auth.isBulb2OnOff();
+                    brightnessIsChecked[0] = auth.isBulb2Brightness();
+                    isSupervisedIsChecked[0] = auth.isBulb2IsSupervised();
+                    supervisedByName = auth.getBulb2SupervisedBy();
+                    isTemporalIsChecked[0] = auth.isBulb2IsTemporal();
+                    start = auth.getBulb2StartTime();
+                    end = auth.getBulb2EndTime();
+                } else { //STRIP
+                    onOffIsChecked[0] = auth.isLedStripOnOff();
+                    brightnessIsChecked[0] = auth.isLedStripBrightness();
+                    isSupervisedIsChecked[0] = auth.isLedStripIsSupervised();
+                    supervisedByName = auth.getLedStripSupervisedBy();
+                    isTemporalIsChecked[0] = auth.isLedStripIsTemporal();
+                    start = auth.getLedStripStartTime();
+                    end = auth.getLedStripEndTime();
+                }
+
+                if (isSupervisedIsChecked[0]) {
                     int index = 0;
-                    String supervisedByName = auth.getLedStripSupervisedBy();
                     for (int j = 0; j < authListFromServer.size(); j++) {
                         if (supervisedByName.equals(authListFromServer.get(j).getGroupID())) {
                             index = j;
                         }
-                    }
-
+                    }//그룹이 속한 index 찾기
 
                     stripSupervisedPermissionSwitch.setChecked(true);
                     supervisedSettingRableRow.setVisibility(View.VISIBLE);
@@ -257,16 +307,11 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
                 } else {
                     stripSupervisedPermissionSwitch.setChecked(false);
                     supervisedSettingRableRow.setVisibility(View.GONE);
-
                 } //set supervised permission
 
 
-                if (auth.isLedStripIsTemporal()) {
+                if (isTemporalIsChecked[0]) {
                     temporalPermissionSwitch.setChecked(true);
-
-                    String start = auth.getLedStripStartTime();
-                    String end = auth.getLedStripEndTime();
-
 
                     startTimeTextEdit = (EditText) findViewById(R.id.strip_start_time);
                     startTimeTextEdit.setText(start);
@@ -284,13 +329,12 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
                 } else {
                     temporalPermissionSwitch.setChecked(false);
                 }
-
                 break;
             }
         }
 
 
-        onOffButton.setOnClickListener(new View.OnClickListener() {
+        onOffButton[0].setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -300,7 +344,7 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
                 } else {
                     onOffIsChecked[0] = true;
                 }
-
+                //toggle
 
                 if (onOffIsChecked[0] == true) {
                     if (brightnessIsChecked[0] == true) {
@@ -454,7 +498,6 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
             supervisedSettingRableRow.setVisibility(View.VISIBLE);
         } else {
             supervisedSettingRableRow.setVisibility(View.GONE);
-
         }
 
         stripSupervisedPermissionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -467,7 +510,6 @@ public class GoogleHome_LED_Strip extends Activity implements AdapterView.OnItem
                 }
             }
         });
-
 
 
         if (temporalPermissionSwitch.isChecked()) {

@@ -12,12 +12,13 @@ import android.widget.Toast;
 
 import org.json.JSONException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
-public class GoogleHomeMain extends Activity {
+public class GoogleHomeMain extends Activity implements Serializable {
 
     final static String GOOGLE_HOME_DEGUGGING_TAG = "IoT_Google_Home_Main";
     final String[] words = new String[]{"master", "User1", "User2"};
@@ -48,6 +49,8 @@ public class GoogleHomeMain extends Activity {
                 }
             }
         });
+
+
         ledStripButton.setOnLongClickListener(new View.OnLongClickListener() {
 
             @Override
@@ -55,6 +58,7 @@ public class GoogleHomeMain extends Activity {
                 Log.d(GOOGLE_HOME_DEGUGGING_TAG, "LONG_CLICK LED Strip!");
 
                 Intent intent = new Intent(getApplicationContext(), GoogleHome_LED_Strip.class);
+                intent.putExtra("SELECTED_DEVICE", GoogleHome_LED_Strip.STRIP);
                 startActivity(intent);
 
                 return true;
@@ -81,6 +85,17 @@ public class GoogleHomeMain extends Activity {
         });
 
 
+        rapoBulbButton.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), GoogleHome_LED_Strip.class);
+                intent.putExtra("SELECTED_DEVICE", GoogleHome_LED_Strip.BULB_1);
+                startActivity(intent);
+
+                return true;
+            }
+        });
+
         Button smartLEDStandButon = (Button) findViewById(R.id.smart_led_stand_button);
         smartLEDStandButon.setOnClickListener(new View.OnClickListener() {
 
@@ -96,6 +111,17 @@ public class GoogleHomeMain extends Activity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        smartLEDStandButon.setOnLongClickListener(new View.OnLongClickListener(){
+
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), GoogleHome_LED_Strip.class);
+                intent.putExtra("SELECTED_DEVICE", GoogleHome_LED_Strip.BULB_2);
+                startActivity(intent);
+                return true;
             }
         });
 
