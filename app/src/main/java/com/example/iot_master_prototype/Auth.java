@@ -39,6 +39,88 @@ public class Auth {
     private String ledStripStartTime;
     private String ledStripEndTime;
 
+    private boolean speakerVolume;
+    private boolean speakerMute;
+    private boolean spakerOnOff;
+    private boolean speakerStartStop;
+    private boolean speakerSupervised;
+    private String speakerSupervisedBy;
+    private boolean speakerIsTemporal;
+    private String speakerStartTime;
+    private String speakerEndTime;
+
+    public boolean isSpeakerVolume() {
+        return speakerVolume;
+    }
+
+    public void setSpeakerVolume(boolean speakerVolume) {
+        this.speakerVolume = speakerVolume;
+    }
+
+    public boolean isSpeakerMute() {
+        return speakerMute;
+    }
+
+    public void setSpeakerMute(boolean speakerMute) {
+        this.speakerMute = speakerMute;
+    }
+
+    public boolean isSpakerOnOff() {
+        return spakerOnOff;
+    }
+
+    public void setSpakerOnOff(boolean spakerOnOff) {
+        this.spakerOnOff = spakerOnOff;
+    }
+
+    public boolean isSpeakerStartStop() {
+        return speakerStartStop;
+    }
+
+    public void setSpeakerStartStop(boolean speakerStartStop) {
+        this.speakerStartStop = speakerStartStop;
+    }
+
+    public boolean isSpeakerSupervised() {
+        return speakerSupervised;
+    }
+
+    public void setSpeakerSupervised(boolean speakerSupervised) {
+        this.speakerSupervised = speakerSupervised;
+    }
+
+    public String getSpeakerSupervisedBy() {
+        return speakerSupervisedBy;
+    }
+
+    public void setSpeakerSupervisedBy(String speakerSupervisedBy) {
+        this.speakerSupervisedBy = speakerSupervisedBy;
+    }
+
+    public boolean isSpeakerIsTemporal() {
+        return speakerIsTemporal;
+    }
+
+    public void setSpeakerIsTemporal(boolean speakerIsTemporal) {
+        this.speakerIsTemporal = speakerIsTemporal;
+    }
+
+    public String getSpeakerStartTime() {
+        return speakerStartTime;
+    }
+
+    public void setSpeakerStartTime(String spakerStartTime) {
+        this.speakerStartTime = spakerStartTime;
+    }
+
+    public String getSpeakerEndTime() {
+        return speakerEndTime;
+    }
+
+    public void setSpeakerEndTime(String speakerEndTime) {
+        this.speakerEndTime = speakerEndTime;
+    }
+
     public boolean isBulb1OnOff() {
         return bulb1OnOff;
     }
@@ -231,7 +313,12 @@ public class Auth {
         this.ledStripIsTemporal = false;
 
         this.camera = cam;
+
         this.speaker = spk;
+        this.spakerOnOff = spk;
+        this.speakerMute = spk;
+        this.speakerVolume = spk;
+        this.speakerStartStop = spk;
     }
 
     public Auth(String groupID) {

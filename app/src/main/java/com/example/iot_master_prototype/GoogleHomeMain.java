@@ -162,7 +162,24 @@ public class GoogleHomeMain extends Activity implements Serializable {
                 }
             }
         });
+
+        speakerButton.setOnLongClickListener(new View.OnLongClickListener(){
+
+            @Override
+            public boolean onLongClick(View v) {
+
+                Log.d(GOOGLE_HOME_DEGUGGING_TAG, "LONG_CLICK LED Speaker!");
+
+                Intent intent = new Intent(getApplicationContext(), GoogleHome_Speaker.class);
+                intent.putExtra("SELECTED_DEVICE", GoogleHome_Speaker.SPEAKER);
+                startActivity(intent);
+
+                return true;
+            }
+        });
     }
+
+
 
 
     public void showDialog(String deviceName) throws JSONException, ExecutionException, InterruptedException {

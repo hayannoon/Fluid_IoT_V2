@@ -600,7 +600,7 @@ public class JsonParser  {
         return false;
     }
 
-    boolean updateCnofigFile_V2_Bulb1(int index, Auth auth) throws ExecutionException, InterruptedException, JSONException {
+    boolean updateConfigFile_V2_Bulb1(int index, Auth auth) throws ExecutionException, InterruptedException, JSONException {
         String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE_V2);
 
         JSONObject jsonObject = new JSONObject(jsonData);
@@ -608,7 +608,9 @@ public class JsonParser  {
         JSONArray groupArray = jsonObject.getJSONArray("groups"); //다시 json 불러와서 해당 인덱스의 auth 객체를 교체해준다.
         JSONObject targetGroup = (JSONObject) groupArray.get(index);
 
-        JSONObject updateDeviceAuth = new JSONObject();
+        JSONObject authOfTargetGroup = targetGroup.getJSONObject("auth");
+
+        //JSONObject updateDeviceAuth = new JSONObject();
         //여기서 정보 update
 
         //Update Bulb 1
@@ -621,9 +623,8 @@ public class JsonParser  {
         newBulb1Temporal.put("start_time", auth.getBulb1StartTime());
         newBulb1Temporal.put("end_time", auth.getBulb1EndTime());
         newBulb1.put("temporal", newBulb1Temporal);
-        updateDeviceAuth.put("bulb1", newBulb1);
 
-        targetGroup.put("auth", updateDeviceAuth);
+        authOfTargetGroup.put("bulb1", newBulb1);
 
         String jsonString = jsonObject.toString();
 
@@ -631,6 +632,65 @@ public class JsonParser  {
             return true;
         }
 
+        return false;
+    }
+
+    boolean updateConfigFile_V2_Bulb2(int index, Auth auth) throws ExecutionException, InterruptedException, JSONException {
+        String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE_V2);
+        JSONObject jsonObject = new JSONObject(jsonData);
+
+        JSONArray groupArray = jsonObject.getJSONArray("groups");
+        JSONObject targetGroup = (JSONObject) groupArray.get(index);
+
+        JSONObject authOfTargetGroup = targetGroup.getJSONObject("auth");
+
+        JSONObject newBulb2 = new JSONObject();
+        JSONObject newBulb2Temporal = new JSONObject();
+        newBulb2.put("on/off", Boolean.toString(auth.isBulb2OnOff()));
+        newBulb2.put("brightness", Boolean.toString(auth.isBulb2Brightness()));
+        newBulb2.put("supervised", auth.getBulb2SupervisedBy());
+        newBulb2Temporal.put("isTemporal", Boolean.toString(auth.isBulb2IsTemporal()));
+        newBulb2Temporal.put("start_time", auth.getBulb2StartTime());
+        newBulb2Temporal.put("end_time", auth.getBulb2EndTime());
+        newBulb2.put("temporal", newBulb2Temporal);
+
+        authOfTargetGroup.put("bulb2", newBulb2);
+
+        String jsonString = jsonObject.toString();
+
+        if(writeConfigFileToServer(AUTH_CONFIGURATION_FILE_V2, jsonString)){
+            return true;
+        }
+
+        return false;
+    }
+
+    boolean updateConfigFile_V2_LED_STRIP(int index, Auth auth) throws ExecutionException, InterruptedException, JSONException {
+        String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE_V2);
+        JSONObject jsonObject = new JSONObject(jsonData);
+
+        JSONArray groupArray = jsonObject.getJSONArray("groups");
+        JSONObject targetGroup = (JSONObject) groupArray.get(index);
+
+        JSONObject authOfTargetGroup = targetGroup.getJSONObject("auth");
+
+        JSONObject newStrip = new JSONObject();
+        JSONObject newStripTemporal = new JSONObject();
+        newStrip.put("on/off", Boolean.toString(auth.isLedStripOnOff()));
+        newStrip.put("brightness", Boolean.toString(auth.isLedStripBrightness()));
+        newStrip.put("supervised", auth.getLedStripSupervisedBy());
+        newStripTemporal.put("isTemporal", Boolean.toString(auth.isLedStripIsTemporal()));
+        newStripTemporal.put("start_time", auth.getLedStripStartTime());
+        newStripTemporal.put("end_time", auth.getLedStripEndTime());
+        newStrip.put("temporal", newStripTemporal);
+
+        authOfTargetGroup.put("strip", newStrip);
+
+        String jsonString = jsonObject.toString();
+
+        if(writeConfigFileToServer(AUTH_CONFIGURATION_FILE_V2, jsonString)){
+            return true;
+        }
         return false;
     }
 
@@ -760,6 +820,7 @@ public class JsonParser  {
             JSONObject bulb1Object = authDeviceObject.getJSONObject("bulb1");
             JSONObject bulb2Object = authDeviceObject.getJSONObject("bulb2");
             JSONObject ledStripObject = authDeviceObject.getJSONObject("strip");
+            JSONObject speakerObject = authDeviceObject.getJSONObject("speaker");
 
             auth.setBulb1OnOff(bulb1Object.getBoolean("on/off"));
             auth.setBulb1Brightness(bulb1Object.getBoolean("brightness"));
@@ -807,11 +868,27 @@ public class JsonParser  {
             auth.setLedStripIsTemporal(isTemporalObject.getBoolean("isTemporal"));
             auth.setLedStripStartTime(isTemporalObject.getString("start_time"));
             auth.setLedStripEndTime(isTemporalObject.getString("end_time"));
+            //여기까지가 LED STRIP
 
 
+            auth.setSpakerOnOff(speakerObject.getBoolean("on/off"));
+            auth.setSpeakerMute(speakerObject.getBoolean("mute"));
+            auth.setSpeakerVolume(speakerObject.getBoolean("volume"));
+            auth.setSpeakerStartStop(speakerObject.getBoolean("start/stop"));
+            isSupervised = speakerObject.getString("supervised");
+            if(isSupervised.equals("None")){
+                auth.setSpeakerSupervised(false);
+            } else{
+                auth.setSpeakerSupervised(true);
+                auth.setSpeakerSupervisedBy(isSupervised);
+            }
+
+            isTemporalObject = speakerObject.getJSONObject("temporal");
+            auth.setSpeakerIsTemporal(isTemporalObject.getBoolean("isTemporal"));
+            auth.setSpeakerStartTime(isTemporalObject.getString("start_time"));
+            auth.setSpeakerEndTime(isTemporalObject.getString("end_time"));
 
             auth.setCamera(authDeviceObject.getBoolean("camera"));
-            auth.setSpeaker(authDeviceObject.getBoolean("speaker"));
 
             Log.d(JSONPARSER_DEBUGGING_TAG, "Auth Instance " + i + " added!");
             authList.add(auth);

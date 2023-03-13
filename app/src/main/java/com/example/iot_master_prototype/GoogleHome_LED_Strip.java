@@ -348,18 +348,18 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
 
                 if (onOffIsChecked[0] == true) {
                     if (brightnessIsChecked[0] == true) {
-                        toggleView.setText(BOTH);
+                        toggleView.setText(selectedDevice+"\n"+BOTH);
                         backroundImage.setImageResource(R.drawable.bulb_both);
                     } else {
-                        toggleView.setText(ONLY_ON_OFF);
+                        toggleView.setText(selectedDevice+"\n"+ONLY_ON_OFF);
                         backroundImage.setImageResource(R.drawable.bulb_onoff);
                     }
                 } else {
                     if (brightnessIsChecked[0] == true) {
-                        toggleView.setText(ONLY_BRIGHTNESS);
+                        toggleView.setText(selectedDevice+"\n"+ONLY_BRIGHTNESS);
                         backroundImage.setImageResource(R.drawable.bulb_brightness);
                     } else {
-                        toggleView.setText(NOTHING);
+                        toggleView.setText(selectedDevice+"\n"+NOTHING);
                         backroundImage.setImageResource(R.drawable.bulb_specific);
                     }
                 }
@@ -381,22 +381,21 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
 
                 if (brightnessIsChecked[0] == true) {
                     if (onOffIsChecked[0] == true) {
-                        toggleView.setText(BOTH);
+                        toggleView.setText(selectedDevice+"\n"+BOTH);
                         backroundImage.setImageResource(R.drawable.bulb_both);
                     } else {
-                        toggleView.setText(ONLY_BRIGHTNESS);
+                        toggleView.setText(selectedDevice+"\n"+ONLY_BRIGHTNESS);
                         backroundImage.setImageResource(R.drawable.bulb_brightness);
                     }
                 } else {
                     if (onOffIsChecked[0] == true) {
-                        toggleView.setText(ONLY_ON_OFF);
+                        toggleView.setText(selectedDevice+"\n"+ONLY_ON_OFF);
                         backroundImage.setImageResource(R.drawable.bulb_onoff);
                     } else {
-                        toggleView.setText(NOTHING);
+                        toggleView.setText(selectedDevice+"\n"+NOTHING);
                         backroundImage.setImageResource(R.drawable.bulb_specific);
                     }
                 }
-
             }
         });
 
@@ -413,18 +412,18 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
 
                 if (brightnessIsChecked[0] == true) {
                     if (onOffIsChecked[0] == true) {
-                        toggleView.setText(BOTH);
+                        toggleView.setText(selectedDevice+"\n"+BOTH);
                         backroundImage.setImageResource(R.drawable.bulb_both);
                     } else {
-                        toggleView.setText(ONLY_BRIGHTNESS);
+                        toggleView.setText(selectedDevice+"\n"+ONLY_BRIGHTNESS);
                         backroundImage.setImageResource(R.drawable.bulb_brightness);
                     }
                 } else {
                     if (onOffIsChecked[0] == true) {
-                        toggleView.setText(ONLY_ON_OFF);
+                        toggleView.setText(selectedDevice+"\n"+ONLY_ON_OFF);
                         backroundImage.setImageResource(R.drawable.bulb_onoff);
                     } else {
-                        toggleView.setText(NOTHING);
+                        toggleView.setText(selectedDevice+"\n"+NOTHING);
                         backroundImage.setImageResource(R.drawable.bulb_specific);
                     }
                 }
@@ -444,18 +443,18 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
 
                 if (brightnessIsChecked[0] == true) {
                     if (onOffIsChecked[0] == true) {
-                        toggleView.setText(BOTH);
+                        toggleView.setText(selectedDevice+"\n"+BOTH);
                         backroundImage.setImageResource(R.drawable.bulb_both);
                     } else {
-                        toggleView.setText(ONLY_BRIGHTNESS);
+                        toggleView.setText(selectedDevice+"\n"+ONLY_BRIGHTNESS);
                         backroundImage.setImageResource(R.drawable.bulb_brightness);
                     }
                 } else {
                     if (onOffIsChecked[0] == true) {
-                        toggleView.setText(ONLY_ON_OFF);
+                        toggleView.setText(selectedDevice+"\n"+ONLY_ON_OFF);
                         backroundImage.setImageResource(R.drawable.bulb_onoff);
                     } else {
-                        toggleView.setText(NOTHING);
+                        toggleView.setText(selectedDevice+"\n"+NOTHING);
                         backroundImage.setImageResource(R.drawable.bulb_specific);
                     }
                 }
@@ -475,18 +474,18 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
 
                 if (brightnessIsChecked[0] == true) {
                     if (onOffIsChecked[0] == true) {
-                        toggleView.setText(BOTH);
+                        toggleView.setText(selectedDevice+"\n"+BOTH);
                         backroundImage.setImageResource(R.drawable.bulb_both);
                     } else {
-                        toggleView.setText(ONLY_BRIGHTNESS);
+                        toggleView.setText(selectedDevice+"\n"+ONLY_BRIGHTNESS);
                         backroundImage.setImageResource(R.drawable.bulb_brightness);
                     }
                 } else {
                     if (onOffIsChecked[0] == true) {
-                        toggleView.setText(ONLY_ON_OFF);
+                        toggleView.setText(selectedDevice+"\n"+ONLY_ON_OFF);
                         backroundImage.setImageResource(R.drawable.bulb_onoff);
                     } else {
-                        toggleView.setText(NOTHING);
+                        toggleView.setText(selectedDevice+"\n"+NOTHING);
                         backroundImage.setImageResource(R.drawable.bulb_specific);
                     }
                 }
@@ -582,7 +581,7 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
                                 //group의 index랑 해당 device의 정보만 채워서 보낸다.
 
 
-                                if (selectedDevice.equals(BULB_1)) {
+                                if (selectedDevice.equals(BULB_1)) { //Bulb1
                                     if (onOffIsChecked[0] | brightnessIsChecked[0])
                                         newAuth.setBulb1(true);
                                     else newAuth.setBulb1(false);
@@ -598,7 +597,7 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
                                     newAuth.setBulb1StartTime(finalStartTimeTextEdit.getText().toString());
                                     newAuth.setBulb1EndTime(finalEndTimeTextEdit.getText().toString());
                                     try {
-                                        jp.updateCnofigFile_V2_Bulb1(index, newAuth);
+                                        jp.updateConfigFile_V2_Bulb1(index, newAuth);
                                     } catch (ExecutionException e) {
                                         e.printStackTrace();
                                     } catch (InterruptedException e) {
@@ -608,6 +607,61 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
                                     }
                                 }
 
+                                else if(selectedDevice.equals(BULB_2)){
+                                    if(onOffIsChecked[0] | brightnessIsChecked[0])
+                                        newAuth.setBulb2(true);
+                                    else newAuth.setBulb2(false);
+
+                                    newAuth.setBulb2OnOff(onOffIsChecked[0]);
+                                    newAuth.setBulb2Brightness(brightnessIsChecked[0]);
+
+                                    newAuth.setBulb2IsSupervised(stripSupervisedPermissionSwitch.isChecked());
+                                    if (!stripSupervisedPermissionSwitch.isChecked()) {
+                                        newAuth.setBulb2SupervisedBy("None");
+                                    } else {
+                                        newAuth.setBulb2SupervisedBy(supervisedGroupSelecterSpinner.getSelectedItem().toString());
+                                    }
+                                    newAuth.setBulb2IsTemporal(temporalPermissionSwitch.isChecked());
+                                    newAuth.setBulb2StartTime(finalStartTimeTextEdit.getText().toString());
+                                    newAuth.setBulb2EndTime(finalEndTimeTextEdit.getText().toString());
+                                    try {
+                                        jp.updateConfigFile_V2_Bulb2(index, newAuth);
+                                    } catch (ExecutionException e) {
+                                        e.printStackTrace();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                else if(selectedDevice.equals(STRIP)){
+                                    if(onOffIsChecked[0] | brightnessIsChecked[0])
+                                        newAuth.setLedStrip(true);
+                                    else newAuth.setLedStrip(false);
+
+                                    newAuth.setLedStripOnOff(onOffIsChecked[0]);
+                                    newAuth.setLedStripBrightness(brightnessIsChecked[0]);
+
+                                    newAuth.setLedStripIsSupervised(stripSupervisedPermissionSwitch.isChecked());
+                                    if (!stripSupervisedPermissionSwitch.isChecked()) {
+                                        newAuth.setLedStripSupervisedBy("None");
+                                    } else {
+                                        newAuth.setLedStripSupervisedBy(supervisedGroupSelecterSpinner.getSelectedItem().toString());
+                                    }
+                                    newAuth.setLedStripIsTemporal(temporalPermissionSwitch.isChecked());
+                                    newAuth.setLedStripStartTime(finalStartTimeTextEdit.getText().toString());
+                                    newAuth.setLedStripEndTime(finalEndTimeTextEdit.getText().toString());
+                                    try {
+                                        jp.updateConfigFile_V2_LED_STRIP(index, newAuth);
+                                    } catch (ExecutionException e) {
+                                        e.printStackTrace();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
                         }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                             @Override
@@ -616,7 +670,6 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
                             }
                         })
                         .create().show();
-
             }
         });
 
