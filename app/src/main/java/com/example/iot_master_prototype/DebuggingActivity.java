@@ -69,19 +69,30 @@ public class DebuggingActivity extends AppCompatActivity {
                 String returnValue = "BEFORE";
 
                 resultTextView.setText("Something");
-                try {
-                    returnValue = jp.getUIInfoFromAccount(inputID, inputPW);
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                resultTextView.setText(returnValue);
+//                try {
+//                    returnValue = jp.getUIInfoFromAccount(inputID, inputPW);
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                resultTextView.setText(returnValue);
+//
+//                try {
+//                    jp.getAuthListFromCOnfigFile_v2();
+//                } catch (ExecutionException e) {
+//                    e.printStackTrace();
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+
 
                 try {
-                    jp.getAuthListFromCOnfigFile_v2();
+                    returnValue = jp.getPermissionInfoFromAccount(inputID, inputPW);
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -89,6 +100,10 @@ public class DebuggingActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                resultTextView.setText(returnValue);
+
+
 
                 //Something에는 ID/PW가 가지고 있는 권한에 해당하는 UI 목록을 보여줘야한다.
 

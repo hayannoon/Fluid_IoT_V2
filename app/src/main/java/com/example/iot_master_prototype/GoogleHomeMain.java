@@ -244,6 +244,8 @@ public class GoogleHomeMain extends Activity implements Serializable {
                     e.printStackTrace();
                 }
 
+
+
                 Toast.makeText(getApplicationContext(), deviceName + "access control setting completed", Toast.LENGTH_LONG).show();
 
             }

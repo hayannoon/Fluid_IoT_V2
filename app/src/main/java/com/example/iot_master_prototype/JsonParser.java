@@ -560,7 +560,55 @@ public class JsonParser  {
         return false;
     }
 
+    String getPermissionInfoFromAccount(String userID,String userPW) throws ExecutionException, InterruptedException, JSONException {
+        String jsonData = this.getJsonStringFromServer(ACCOUNT_FILE);
+        JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
+        JSONArray accountsArray = jsonObject.getJSONArray("accounts");
+        JSONArray groupArray;
+        String returnValue = "{\"auth\" : ";
 
+        String selectedGroupName = null;
+        for (int i = 0; i < accountsArray.length(); i++) {
+            JSONObject accountObject = accountsArray.getJSONObject(i);
+            if (accountObject.getString("user_id").equals(userID)) {
+                if(accountObject.getString("user_pw").equals(userPW)){
+                    //ID - PW MATCHING
+                    selectedGroupName = new String(accountObject.getString("group_name")); //Group Name Initialize
+                } else{
+                    // return 1 = ID - PW NOT MATCHING
+                    return "1";
+                }
+            }
+        }
+
+        if(selectedGroupName == null){
+            //return 2 = NO MATCHING ID
+            return "2";
+        }
+        //여기까지 왔다면 ID/PW는 매칭되는게 있고, Group Name까지 저장이 된 상태
+        //이제 Group파일을 보고 True로 설정된 기기의 리스트를 가져온다.
+
+        jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE_V2);
+        jsonObject = new JSONObject(jsonData);
+        groupArray = jsonObject.getJSONArray("groups");
+
+        JSONObject targetGroup = null;
+        for(int i =0  ; i < groupArray.length() ; i++){
+            JSONObject groupObject = groupArray.getJSONObject(i);
+            if(groupObject.getString("group_name").equals(selectedGroupName)){
+                targetGroup = groupObject;
+                break;
+            }
+        }
+        if(targetGroup == null) return "3";
+
+        //여기까지 오면 Group 정보를 가져와서 targetGroup에 해당 JSON OBJECT가 담겨있는 상태
+
+        JSONObject authInfoOfTargetGroup = targetGroup.getJSONObject("auth");
+        return authInfoOfTargetGroup.toString();
+
+
+    }
 
 
     String  getUIInfoFromAccount(String userID, String userPW) throws ExecutionException, InterruptedException, JSONException {
@@ -867,6 +915,22 @@ public class JsonParser  {
         return false;
     }
 
+    boolean updateConfigFileV2_(ArrayList<String> allowedGroupArray, String deviceName) throws ExecutionException, InterruptedException, JSONException {
+
+        //여기서 FILE_V2에도 써주면 될듯
+        //bulb1, bul2, strip, camera, speaker
+        //파일 열고, groupArray를 돌면서 allowdGrupArray에 속한지 확인하고, 속한다면 그 device의 권한 정보를 바꿔주는 방식
+        String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE); //get Json Data from server and save the string value
+
+        JSONObject jsonObject = new JSONObject(jsonData); //make jsonObject instance
+
+        JSONArray groupArray = jsonObject.getJSONArray("groups"); //다시 json 불러와서 해당 인덱스의 auth 객체를 교체해준다.
+
+        //일단 구현을 꼭 할필요 없을수도 있으니 STOP
+
+        return false;
+    }
+
 
 
     ArrayList<String> getGroupList() throws ExecutionException, InterruptedException, JSONException {
@@ -1120,6 +1184,8 @@ public class JsonParser  {
         }
         return false;
     }
+
+
 
 
     class NetworkConnectForWriteJSON extends Thread { //서버에 파일을 Write할때 사용한다.
