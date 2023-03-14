@@ -164,8 +164,6 @@ public class GoogleHome_Speaker extends Activity implements AdapterView.OnItemSe
 
             }
 
-
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -406,6 +404,18 @@ public class GoogleHome_Speaker extends Activity implements AdapterView.OnItemSe
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                                try {
+                                    jp.updateConfigFile(index,newAuth,getApplicationContext());
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
 

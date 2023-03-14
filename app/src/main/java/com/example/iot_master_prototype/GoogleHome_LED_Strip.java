@@ -62,7 +62,6 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
         Intent intent = getIntent();
         String selectedDevice = (String) intent.getSerializableExtra("SELECTED_DEVICE");
 
-
         //Get the instance from ID
 
         final Button[] onOffButton = {(Button) findViewById(R.id.led_on_off_button)};
@@ -663,6 +662,19 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
                                         e.printStackTrace();
                                     }
                                 }
+
+                                try {
+                                    jp.updateConfigFile(index, newAuth, getApplicationContext());
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (ExecutionException e) {
+                                    e.printStackTrace();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
                         }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                             @Override
@@ -673,7 +685,6 @@ public class GoogleHome_LED_Strip extends Activity implements Serializable, Adap
                         .create().show();
             }
         });
-
 
     }
 

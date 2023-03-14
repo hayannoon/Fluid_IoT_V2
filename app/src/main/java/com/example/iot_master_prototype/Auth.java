@@ -44,6 +44,77 @@ public class Auth {
     private String speakerStartTime;
     private String speakerEndTime;
 
+    public void setBulb1Specific(){
+        if(this.bulb1){
+            this.bulb1OnOff = true;
+            this.bulb1Brightness = true;
+            this.bulb1IsSupervised = false;
+            this.bulb1SupervisedBy = "None";
+            this.bulb1IsTemporal = false;
+        }else{
+            this.bulb1OnOff = false;
+            this.bulb1Brightness = false;
+            this.bulb1IsSupervised = false;
+            this.bulb1SupervisedBy = "None";
+            this.bulb1IsTemporal = false;
+        }
+    }
+    public void setBulb2Specific(){
+        if(this.bulb2) {
+            this.bulb2OnOff = true;
+            this.bulb2Brightness = true;
+            this.bulb2IsSupervised = false;
+            this.bulb2SupervisedBy = "None";
+            this.bulb2IsTemporal = false;
+        }else{
+            this.bulb2OnOff = false;
+            this.bulb2Brightness = false;
+            this.bulb2IsSupervised = false;
+            this.bulb2SupervisedBy = "None";
+            this.bulb2IsTemporal = false;
+        }
+    }
+    public void setLedStripSpecific(){
+        if(this.ledStrip){
+            this.ledStripOnOff = true;
+            this.ledStripBrightness = true;
+            this.ledStripIsSupervised = false;
+            this.ledStripSupervisedBy = "None";
+            this.ledStripIsTemporal = false;
+        }
+        else{
+            this.ledStripOnOff = false;
+            this.ledStripBrightness = false;
+            this.ledStripIsSupervised = false;
+            this.ledStripSupervisedBy = "None";
+            this.ledStripIsTemporal = false;
+        }
+    }
+
+    public void setSpeakerSpecific(){
+        if(this.speaker){
+            this.speakerVolume = true;
+            this.speakerMute = true;
+            this.speakerOnOff = true;
+            this.speakerStartStop = true;
+            this.speakerSupervised = false;
+            this.speakerSupervisedBy = "None";
+            this.speakerIsTemporal = false;
+        }
+        else{
+            this.speakerVolume = false;
+            this.speakerMute = false;
+            this.speakerOnOff = false;
+            this.speakerStartStop = false;
+            this.speakerSupervised = false;
+            this.speakerSupervisedBy = "None";
+            this.speakerIsTemporal = false;
+        }
+        }
+
+
+
+
     public boolean isSpeakerVolume() {
         return speakerVolume;
     }

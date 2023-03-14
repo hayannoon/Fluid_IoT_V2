@@ -35,6 +35,25 @@ public class JsonParser  {
     final static String SERVER_URL = "http://13.125.172.116:8080/iot_auth/";
     private String tmp = null;
 
+    final static String BULB_ON_OFF = "on/off";
+    final static String BULB_BRIGHTNESS = "brightness";
+    final static String BULB_SUPERVISED = "supervised";
+    final static String BULB_TEMPORAL = "temporal";
+    final static String BULB_ISTEMPORAL = "isTemporal";
+    final static String BULB_START_TIME = "start_time";
+    final static String BULB_END_TIME = "end_time";
+
+    final static String SPEAKER_VOLUME = "volume";
+    final static String SPEAKER_MUTE = "mute";
+    final static String SPEAKER_ON_OFF = "on/off";
+    final static String SPEAKER_START_STOP = "start/stop";
+    final static String SPEAKER_SUPERVISED = "supervised";
+    final static String SPEAKER_TEMPORAL = "temporal";
+    final static String SPEAKER_ISTEMPORAL = "isTemporal";
+    final static String SPEAKER_START_TIME = "start_time";
+    final static String SPEAKER_END_TIME = "end_time";
+
+
     final static String DEFAULT_CONFIG_STRING = "{\n" +
             "  \"groups\": [\n" +
             "    {\n" +
@@ -448,6 +467,101 @@ public class JsonParser  {
             return false;
         }
     }
+
+    boolean addConfigFileToServer_V2(Auth auth) throws ExecutionException, InterruptedException, JSONException {
+        String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE_V2);
+
+        JSONObject jsonObject = new JSONObject(jsonData);
+        JSONArray groupArray = jsonObject.getJSONArray("groups");
+
+        JSONObject newJsonObject = new JSONObject();
+
+
+        JSONObject authWrapperObject = new JSONObject();
+        JSONObject authForBulb1Object = new JSONObject();
+        JSONObject authForBulb2Object = new JSONObject();
+        JSONObject authForStripObject = new JSONObject();
+        JSONObject authForSpeakerObject = new JSONObject();
+
+        JSONObject authForBulb1Temporal = new JSONObject();
+        JSONObject authForBUlb2Temporal = new JSONObject();
+        JSONObject authForStripTemporal = new JSONObject();
+        JSONObject authForSpeakerTemporal = new JSONObject();
+
+
+        newJsonObject.put("group_name", auth.getGroupID());
+
+
+        //여기서부터 Bulb1
+        authForBulb1Object.put(BULB_ON_OFF, String.valueOf(auth.isBulb1OnOff()));
+        authForBulb1Object.put(BULB_BRIGHTNESS, String.valueOf(auth.isBulb1Brightness()));
+        authForBulb1Object.put(BULB_SUPERVISED, String.valueOf(auth.isBulb1IsSupervised()));
+
+        authForBulb1Temporal.put(BULB_ISTEMPORAL, String.valueOf(auth.isBulb1IsTemporal()));
+        authForBulb1Temporal.put(BULB_START_TIME, "");
+        authForBulb1Temporal.put(BULB_END_TIME,"");
+
+        authForBulb1Object.put(BULB_TEMPORAL,authForBulb1Temporal);
+        authWrapperObject.put("bulb1", authForBulb1Object);
+
+        //여기까지가 Bulb 1
+
+        authForBulb2Object.put(BULB_ON_OFF, String.valueOf(auth.isBulb2OnOff()));
+        authForBulb2Object.put(BULB_BRIGHTNESS, String.valueOf(auth.isBulb2Brightness()));
+        authForBulb2Object.put(BULB_SUPERVISED, String.valueOf(auth.isBulb2IsSupervised()));
+
+        authForBUlb2Temporal.put(BULB_ISTEMPORAL, String.valueOf(auth.isBulb2IsTemporal()));
+        authForBUlb2Temporal.put(BULB_START_TIME, "");
+        authForBUlb2Temporal.put(BULB_END_TIME, "");
+
+        authForBulb2Object.put(BULB_TEMPORAL, authForBUlb2Temporal);
+        authWrapperObject.put("bulb2", authForBulb2Object);
+        //여기까지가 Bulb 2
+
+        authForStripObject.put(BULB_ON_OFF, String.valueOf(auth.isLedStripOnOff()));
+        authForStripObject.put(BULB_BRIGHTNESS, String.valueOf(auth.isLedStripBrightness()));
+        authForStripObject.put(BULB_SUPERVISED, String.valueOf(auth.isLedStripIsSupervised()));
+
+        authForStripTemporal.put(BULB_ISTEMPORAL, String.valueOf(auth.isLedStripIsTemporal()));
+        authForStripTemporal.put(BULB_START_TIME,"");
+        authForStripTemporal.put(BULB_END_TIME,"");
+
+        authForStripObject.put(BULB_TEMPORAL, authForStripTemporal);
+        authWrapperObject.put("strip", authForStripObject);
+        //여기까지가 STRIP
+
+        authWrapperObject.put("camera", String.valueOf(auth.isCamera()));
+        //여기까지가 camera
+
+        authForSpeakerObject.put(SPEAKER_VOLUME, auth.isSpeakerVolume());
+        authForSpeakerObject.put(SPEAKER_MUTE, auth.isSpeakerMute());
+        authForSpeakerObject.put(SPEAKER_ON_OFF, auth.isSpeakerOnOff());
+        authForSpeakerObject.put(SPEAKER_START_STOP, auth.isSpeakerStartStop());
+
+        authForSpeakerTemporal.put(SPEAKER_ISTEMPORAL, String.valueOf(auth.isSpeakerIsTemporal()));
+        authForSpeakerTemporal.put(SPEAKER_START_STOP, "");
+        authForSpeakerTemporal.put(SPEAKER_END_TIME, "");
+
+        authForSpeakerObject.put(SPEAKER_TEMPORAL, authForSpeakerTemporal);
+        authWrapperObject.put("speaker", authForSpeakerObject);
+
+
+
+        newJsonObject.put("auth", authWrapperObject);
+        groupArray.put(newJsonObject);
+
+        String jsonString = jsonObject.toString();
+
+
+        if(writeConfigFileToServer(AUTH_CONFIGURATION_FILE_V2, jsonString)) return true;
+
+
+
+        return false;
+    }
+
+
+
 
     String  getUIInfoFromAccount(String userID, String userPW) throws ExecutionException, InterruptedException, JSONException {
         Log.d(JSONPARSER_DEBUGGING_TAG, "Enter getUIInfoFromAccount function");

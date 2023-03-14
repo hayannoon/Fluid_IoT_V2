@@ -47,22 +47,46 @@ public class CreateGroup extends Activity {
                 auth.setCamera(camera.isChecked());
                 auth.setSpeaker(speaker.isChecked());
 
+                auth.setBulb1Specific();
+                auth.setBulb2Specific();
+                auth.setLedStripSpecific();
+                auth.setSpeakerSpecific();
+                //그룹 생성할때 다 해줘야겠다.
+
+
                 //Get Json Data -> save to String type variable named jsonData
                 JsonParser jp = new JsonParser(CreateGroup.this); //make a json parser instance
                 //call add_jsonParseer function
 
+
+
+
+
+
                 try { //Add group and write the config file.
-                        if (jp.addConfigFileToServer(auth)) {
-                        //추가에 성공한 경우
-                        new AlertDialog.Builder(CreateGroup.this)
-                                .setTitle("[SUCESS]")
-                                .setMessage("New group generation success!")
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        finish();
-                                    }
-                                }).create().show();
+                        if (jp.addConfigFileToServer(auth)) { //기본적으로 configuration.json에 coarse-grained하게 설정
+                            if(jp.addConfigFileToServer_V2(auth)){
+                                //추가에 성공한 경우
+                                new AlertDialog.Builder(CreateGroup.this)
+                                        .setTitle("[SUCESS]")
+                                        .setMessage("New group generation success!")
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                finish();
+                                            }
+                                        }).create().show();
+                            }
+//                        //추가에 성공한 경우
+//                        new AlertDialog.Builder(CreateGroup.this)
+//                                .setTitle("[SUCESS]")
+//                                .setMessage("New group generation success!")
+//                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialogInterface, int i) {
+//                                        finish();
+//                                    }
+//                                }).create().show();
                     } else {
                         //실패한 경우
                         new AlertDialog.Builder(CreateGroup.this)
