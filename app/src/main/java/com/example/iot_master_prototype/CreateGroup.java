@@ -61,8 +61,6 @@ public class CreateGroup extends Activity {
 
 
 
-
-
                 try { //Add group and write the config file.
                         if (jp.addConfigFileToServer(auth)) { //기본적으로 configuration.json에 coarse-grained하게 설정
                             if(jp.addConfigFileToServer_V2(auth)){

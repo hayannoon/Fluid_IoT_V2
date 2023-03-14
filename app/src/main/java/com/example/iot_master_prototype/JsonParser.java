@@ -67,7 +67,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\" : \"onlyBulb\",\n" +
+            "      \"group_name\" : \"group_A\",\n" +
             "      \"auth\" : {\n" +
             "        \"bulb1\" : \"true\",\n" +
             "        \"bulb2\" : \"true\",\n" +
@@ -77,7 +77,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\" : \"onlyCamera\",\n" +
+            "      \"group_name\" : \"group_B\",\n" +
             "      \"auth\" : {\n" +
             "        \"bulb1\" : \"false\",\n" +
             "        \"bulb2\" : \"false\",\n" +
@@ -87,7 +87,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\" : \"onlySpeaker\",\n" +
+            "      \"group_name\" : \"group_C\",\n" +
             "      \"auth\" : {\n" +
             "        \"bulb1\" : \"false\",\n" +
             "        \"bulb2\" : \"false\",\n" +
@@ -107,7 +107,7 @@ public class JsonParser  {
             "        \"bulb1\": {\n" +
             "          \"on/off\": \"true\",\n" +
             "          \"brightness\": \"true\",\n" +
-            "          \"supervised\": \"onlyBulb\",\n" +
+            "          \"supervised\": \"None\",\n" +
             "          \"temporal\": {\n" +
             "            \"isTemporal\": \"false\",\n" +
             "            \"start_time\": \"23 : 10\",\n" +
@@ -117,7 +117,7 @@ public class JsonParser  {
             "        \"bulb2\": {\n" +
             "          \"on/off\": \"true\",\n" +
             "          \"brightness\": \"true\",\n" +
-            "          \"supervised\": \"master\",\n" +
+            "          \"supervised\": \"None\",\n" +
             "          \"temporal\": {\n" +
             "            \"isTemporal\": \"true\",\n" +
             "            \"start_time\": \"12 : 15\",\n" +
@@ -125,7 +125,7 @@ public class JsonParser  {
             "          }\n" +
             "        },\n" +
             "        \"strip\": {\n" +
-            "          \"on/off\": \"false\",\n" +
+            "          \"on/off\": \"true\",\n" +
             "          \"brightness\": \"true\",\n" +
             "          \"supervised\": \"None\",\n" +
             "          \"temporal\": {\n" +
@@ -138,9 +138,9 @@ public class JsonParser  {
             "        \"speaker\": {\n" +
             "          \"volume\": \"true\",\n" +
             "          \"mute\": \"true\",\n" +
-            "          \"on/off\": \"false\",\n" +
+            "          \"on/off\": \"true\",\n" +
             "          \"start/stop\": \"true\",\n" +
-            "          \"supervised\": \"master\",\n" +
+            "          \"supervised\": \"None\",\n" +
             "          \"temporal\": {\n" +
             "            \"isTemporal\": \"false\",\n" +
             "            \"start_time\": \"10:00\",\n" +
@@ -150,7 +150,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\": \"onlyBulb\",\n" +
+            "      \"group_name\": \"group_A\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
             "          \"on/off\": \"true\",\n" +
@@ -198,7 +198,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\": \"onlyCamera\",\n" +
+            "      \"group_name\": \"group_B\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
             "          \"on/off\": \"false\",\n" +
@@ -246,7 +246,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\": \"onlySpeaker\",\n" +
+            "      \"group_name\": \"group_C\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
             "          \"on/off\": \"false\",\n" +
@@ -302,12 +302,12 @@ public class JsonParser  {
             "    {\n" +
             "      \"user_id\": \"level1\",\n" +
             "      \"user_pw\": \"l1\",\n" +
-            "      \"group_name\": \"onlyBulb\"\n" +
+            "      \"group_name\": \"group_A\"\n" +
             "    },\n" +
             "    {\n" +
             "      \"user_id\": \"level2\",\n" +
             "      \"user_pw\": \"l2\",\n" +
-            "      \"group_name\": \"onlyCamera\"\n" +
+            "      \"group_name\": \"group_B\"\n" +
             "    },\n" +
             "    {\n" +
             "      \"user_id\": \"master\",\n" +
@@ -317,7 +317,7 @@ public class JsonParser  {
             "    {\n" +
             "      \"user_id\": \"a\",\n" +
             "      \"user_pw\": \"b\",\n" +
-            "      \"group_name\": \"master\"\n" +
+            "      \"group_name\": \"gruop_C\"\n" +
             "    }\n" +
             "  ]\n" +
             "}";
@@ -607,7 +607,6 @@ public class JsonParser  {
         JSONObject authInfoOfTargetGroup = targetGroup.getJSONObject("auth");
         return authInfoOfTargetGroup.toString();
 
-
     }
 
 
@@ -761,6 +760,9 @@ public class JsonParser  {
 
         return false;
     }
+
+
+
 
     boolean updateConfigFile_V2_Bulb1(int index, Auth auth) throws ExecutionException, InterruptedException, JSONException {
         String jsonData = this.getJsonStringFromServer(AUTH_CONFIGURATION_FILE_V2);
