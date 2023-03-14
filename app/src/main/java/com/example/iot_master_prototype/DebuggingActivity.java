@@ -103,7 +103,7 @@ public class DebuggingActivity extends AppCompatActivity {
 
                 resultTextView.setText(returnValue);
 
-
+                Log.d("RETURNVALUE", returnValue);
 
                 //Something에는 ID/PW가 가지고 있는 권한에 해당하는 UI 목록을 보여줘야한다.
 

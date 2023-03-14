@@ -533,10 +533,10 @@ public class JsonParser  {
         authWrapperObject.put("camera", String.valueOf(auth.isCamera()));
         //여기까지가 camera
 
-        authForSpeakerObject.put(SPEAKER_VOLUME, auth.isSpeakerVolume());
-        authForSpeakerObject.put(SPEAKER_MUTE, auth.isSpeakerMute());
-        authForSpeakerObject.put(SPEAKER_ON_OFF, auth.isSpeakerOnOff());
-        authForSpeakerObject.put(SPEAKER_START_STOP, auth.isSpeakerStartStop());
+        authForSpeakerObject.put(SPEAKER_VOLUME, String.valueOf(auth.isSpeakerVolume()));
+        authForSpeakerObject.put(SPEAKER_MUTE, String.valueOf(auth.isSpeakerMute()));
+        authForSpeakerObject.put(SPEAKER_ON_OFF, String.valueOf(auth.isSpeakerOnOff()));
+        authForSpeakerObject.put(SPEAKER_START_STOP, String.valueOf(auth.isSpeakerStartStop()));
 
         authForSpeakerTemporal.put(SPEAKER_ISTEMPORAL, String.valueOf(auth.isSpeakerIsTemporal()));
         authForSpeakerTemporal.put(SPEAKER_START_STOP, "");
