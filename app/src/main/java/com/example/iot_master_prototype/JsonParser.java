@@ -67,7 +67,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\" : \"group_A\",\n" +
+            "      \"group_name\" : \"guest_A\",\n" +
             "      \"auth\" : {\n" +
             "        \"bulb1\" : \"true\",\n" +
             "        \"bulb2\" : \"true\",\n" +
@@ -77,7 +77,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\" : \"group_B\",\n" +
+            "      \"group_name\" : \"guest_B\",\n" +
             "      \"auth\" : {\n" +
             "        \"bulb1\" : \"false\",\n" +
             "        \"bulb2\" : \"false\",\n" +
@@ -87,7 +87,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\" : \"group_C\",\n" +
+            "      \"group_name\" : \"guest_C\",\n" +
             "      \"auth\" : {\n" +
             "        \"bulb1\" : \"false\",\n" +
             "        \"bulb2\" : \"false\",\n" +
@@ -150,7 +150,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\": \"group_A\",\n" +
+            "      \"group_name\": \"guest_A\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
             "          \"on/off\": \"true\",\n" +
@@ -198,7 +198,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\": \"group_B\",\n" +
+            "      \"group_name\": \"guest_B\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
             "          \"on/off\": \"false\",\n" +
@@ -246,7 +246,7 @@ public class JsonParser  {
             "      }\n" +
             "    },\n" +
             "    {\n" +
-            "      \"group_name\": \"group_C\",\n" +
+            "      \"group_name\": \"guest_C\",\n" +
             "      \"auth\": {\n" +
             "        \"bulb1\": {\n" +
             "          \"on/off\": \"false\",\n" +
@@ -302,12 +302,12 @@ public class JsonParser  {
             "    {\n" +
             "      \"user_id\": \"level1\",\n" +
             "      \"user_pw\": \"l1\",\n" +
-            "      \"group_name\": \"group_A\"\n" +
+            "      \"group_name\": \"guest_A\"\n" +
             "    },\n" +
             "    {\n" +
             "      \"user_id\": \"level2\",\n" +
             "      \"user_pw\": \"l2\",\n" +
-            "      \"group_name\": \"group_B\"\n" +
+            "      \"group_name\": \"guest_B\"\n" +
             "    },\n" +
             "    {\n" +
             "      \"user_id\": \"master\",\n" +
@@ -317,7 +317,7 @@ public class JsonParser  {
             "    {\n" +
             "      \"user_id\": \"a\",\n" +
             "      \"user_pw\": \"b\",\n" +
-            "      \"group_name\": \"gruop_C\"\n" +
+            "      \"group_name\": \"guest_C\"\n" +
             "    }\n" +
             "  ]\n" +
             "}";
