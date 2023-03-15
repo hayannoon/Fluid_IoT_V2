@@ -495,7 +495,7 @@ public class JsonParser  {
         //여기서부터 Bulb1
         authForBulb1Object.put(BULB_ON_OFF, String.valueOf(auth.isBulb1OnOff()));
         authForBulb1Object.put(BULB_BRIGHTNESS, String.valueOf(auth.isBulb1Brightness()));
-        authForBulb1Object.put(BULB_SUPERVISED, String.valueOf(auth.isBulb1IsSupervised()));
+        authForBulb1Object.put(BULB_SUPERVISED, String.valueOf(auth.getBulb1SupervisedBy()));
 
         authForBulb1Temporal.put(BULB_ISTEMPORAL, String.valueOf(auth.isBulb1IsTemporal()));
         authForBulb1Temporal.put(BULB_START_TIME, "");
@@ -508,7 +508,7 @@ public class JsonParser  {
 
         authForBulb2Object.put(BULB_ON_OFF, String.valueOf(auth.isBulb2OnOff()));
         authForBulb2Object.put(BULB_BRIGHTNESS, String.valueOf(auth.isBulb2Brightness()));
-        authForBulb2Object.put(BULB_SUPERVISED, String.valueOf(auth.isBulb2IsSupervised()));
+        authForBulb2Object.put(BULB_SUPERVISED, String.valueOf(auth.getBulb2SupervisedBy()));
 
         authForBUlb2Temporal.put(BULB_ISTEMPORAL, String.valueOf(auth.isBulb2IsTemporal()));
         authForBUlb2Temporal.put(BULB_START_TIME, "");
@@ -520,7 +520,7 @@ public class JsonParser  {
 
         authForStripObject.put(BULB_ON_OFF, String.valueOf(auth.isLedStripOnOff()));
         authForStripObject.put(BULB_BRIGHTNESS, String.valueOf(auth.isLedStripBrightness()));
-        authForStripObject.put(BULB_SUPERVISED, String.valueOf(auth.isLedStripIsSupervised()));
+        authForStripObject.put(BULB_SUPERVISED, String.valueOf(auth.getLedStripSupervisedBy()));
 
         authForStripTemporal.put(BULB_ISTEMPORAL, String.valueOf(auth.isLedStripIsTemporal()));
         authForStripTemporal.put(BULB_START_TIME,"");
@@ -537,9 +537,10 @@ public class JsonParser  {
         authForSpeakerObject.put(SPEAKER_MUTE, String.valueOf(auth.isSpeakerMute()));
         authForSpeakerObject.put(SPEAKER_ON_OFF, String.valueOf(auth.isSpeakerOnOff()));
         authForSpeakerObject.put(SPEAKER_START_STOP, String.valueOf(auth.isSpeakerStartStop()));
+        authForSpeakerObject.put(SPEAKER_SUPERVISED, String.valueOf(auth.getSpeakerSupervisedBy()));
 
-        authForSpeakerTemporal.put(SPEAKER_ISTEMPORAL, String.valueOf(auth.isSpeakerIsTemporal()));
-        authForSpeakerTemporal.put(SPEAKER_START_STOP, "");
+    authForSpeakerTemporal.put(SPEAKER_ISTEMPORAL, String.valueOf(auth.isSpeakerIsTemporal()));
+        authForSpeakerTemporal.put(SPEAKER_START_TIME, "");
         authForSpeakerTemporal.put(SPEAKER_END_TIME, "");
 
         authForSpeakerObject.put(SPEAKER_TEMPORAL, authForSpeakerTemporal);
